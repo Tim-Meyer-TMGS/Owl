@@ -17,7 +17,7 @@
     <symbol id="i-mouse" viewBox="0 0 24 24"><path d="M7 9C3 9 2 5 4 3c3-1 5 2 4 5 7-3 12 1 12 6 0 4-4 7-9 7-5 0-8-3-8-7 0-2 1-4 4-5Zm13 5c2 0 3-1 3-3M8 13h.01"/></symbol>
     <symbol id="i-bat" viewBox="0 0 24 24"><path d="M12 9c-3-5-8-5-10-3 1 1 1 3 0 5 3-1 4 2 5 5l5 5 5-5c1-3 2-6 5-5-1-2-1-4 0-5-2-2-7-2-10 3Z"/></symbol>
     <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 5.7c-2.1-2.2-5.6-1.9-7.4.4L12 7.8l-1.4-1.7C8.8 3.8 5.3 3.5 3.2 5.7 1 8 1.2 11.6 3.6 13.8L12 21l8.4-7.2c2.4-2.2 2.6-5.8.4-8.1Z"/></symbol>
-    <symbol id="i-echo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M8.5 8.5a5 5 0 0 0 0 7M5.5 5.5a9.2 9.2 0 0 0 0 13M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9.2 9.2 0 0 1 0 13"/></symbol>
+    <symbol id="i-hoot" viewBox="0 0 24 24"><path d="M9 9c1.8 1.5 4.2 1.5 6 0v6c-1.8-1.5-4.2-1.5-6 0V9Zm-3.5-.5a5 5 0 0 0 0 7m13-7a5 5 0 0 1 0 7M2.5 5.5a9 9 0 0 0 0 13m19-13a9 9 0 0 1 0 13"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M19 5l-1.5 1.5m-11 11L5 19"/></symbol>
     <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4Zm12-1c1.5 1.5 1.5 4.5 0 6m2.5-8.5c3 3 3 8 0 11"/></symbol>
     <symbol id="i-muted" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4Zm12-1 6 6m0-6-6 6"/></symbol>
@@ -37,7 +37,7 @@
     <div class="card">
       <div class="label"><svg class="uiIcon hudIcon" aria-hidden="true"><use href="#i-bolt"/></svg><span class="labelText">Ausdauer</span></div>
       <div class="bar"><span id="energyFill"></span></div>
-      <div class="subvalue">Sturzflug · Orientierung</div>
+      <div class="subvalue">Sturzflug · <span id="hootChargeText">HUU 100%</span></div>
     </div>
     <div class="card">
       <div class="label"><svg class="uiIcon hudIcon" aria-hidden="true"><use href="#i-moon"/></svg><span class="labelText">Verbleibende Nacht</span></div>
@@ -47,43 +47,47 @@
   </div>
 
   <div id="missionBanner"><span class="iconSequence"><svg class="uiIcon"><use href="#i-mouse"/></svg>→<svg class="uiIcon"><use href="#i-nest"/></svg></span></div>
+  <div id="bonusGoal" aria-live="polite">☆ Bonusziel</div>
   <div id="toast"></div>
-  <div id="touchHint">Finger auf dem Spielfeld bewegen · rechts: Sturzflug und Orientierung</div>
+  <div id="touchHint">Finger lenkt · rechts: Sturzflug und Huuu</div>
 
   <button id="soundBtn" type="button" aria-label="Ton ein- oder ausschalten"><svg class="uiIcon"><use href="#i-speaker"/></svg></button>
+  <button id="pauseBtn" type="button" aria-label="Spiel pausieren">Ⅱ</button>
 
   <div class="overlay" id="startOverlay">
     <div class="panel">
       <div class="eyebrow">Jagd am Waldrand</div>
       <h1>Eulenflug</h1>
       <p class="lead"><span class="desktopLead">Im Nest wartet der Nachwuchs. Sammle wertvolle Beute und bringe sie zurück, bevor es hell wird.</span><span class="mobileLead iconSequence"><svg class="uiIcon"><use href="#i-mouse"/></svg>→<svg class="uiIcon"><use href="#i-nest"/></svg>·<svg class="uiIcon"><use href="#i-sun"/></svg>!</span></p>
-      <div class="story"><strong>So funktioniert es:</strong> Beute zählt erst im Nest. Sturzflüge kosten Ausdauer. Ohne Beute kannst du im Nest 2,5 Sekunden ruhen und ein Herz regenerieren; dafür vergehen acht Sekunden.</div>
+      <div class="story"><strong>So funktioniert es:</strong> Beute zählt erst im Nest. Dort bist du geschützt. Sturzflüge kosten Ausdauer. Dein Huuu-Ruf lädt sich selbst auf und vertreibt Feinde in der Nähe.</div>
       <section class="progressHub" aria-label="Eule und Fortschritt">
         <div class="progressMeta">
           <strong>Level <span id="playerLevel">1</span></strong>
           <span><span id="xpCurrent">0</span>/<span id="xpNext">180</span> XP</span>
-          <span><span id="upgradePoints">0</span> &#10022;</span>
+          <span title="Goldene Tiere für Upgrades"><span id="upgradePoints">0</span> <svg class="uiIcon" aria-label="Goldpunkte"><use href="#i-star"/></svg></span>
         </div>
         <div class="xpBar"><span id="xpFill"></span></div>
         <div id="owlPicker" class="owlPicker" aria-label="Eule auswählen"></div>
         <div id="owlDetail" class="owlDetail" aria-live="polite"></div>
         <div class="upgradeGrid">
-          <button id="upgradeOwlBtn" class="upgradeBtn" type="button"><span>&#9889; Eule</span><small>Stufe <b id="owlUpgradeLevel">0</b>/5</small></button>
-          <button id="upgradeNestBtn" class="upgradeBtn" type="button"><span>&#8962; Nest</span><small>Stufe <b id="nestUpgradeLevel">0</b>/5</small></button>
+          <button id="upgradeOwlBtn" class="upgradeBtn" type="button"><span>&#9889; Eule</span><small>Stufe <b id="owlUpgradeLevel">0</b>/5 · ★1</small></button>
+          <button id="upgradeNestBtn" class="upgradeBtn" type="button"><span>&#8962; Nest</span><small>Stufe <b id="nestUpgradeLevel">0</b>/5 · ★1</small></button>
         </div>
+        <div id="upgradeInfo" class="upgradeInfo" aria-live="polite"></div>
       </section>
       <div class="controls">
         <div class="control"><kbd>WASD</kbd><kbd>←↑↓→</kbd> fliegen</div>
         <div class="control"><kbd>Leertaste</kbd> Sturzflug</div>
-        <div class="control"><kbd>E</kbd> Orientierung: Beute kurz hervorheben</div>
+        <div class="control"><kbd>E</kbd> Huuu: Feinde im Umkreis vertreiben</div>
         <div class="control"><kbd>P</kbd> Pause · Finger auf dem Spielfeld bewegen</div>
       </div>
       <div class="mobileGuide" aria-label="Touch-Steuerung">
-        <div class="guideItem" aria-label="Steuern"><strong>◎</strong></div>
+        <div class="guideItem" aria-label="Mit dem Finger lenken"><strong>☝↗</strong></div>
         <div class="guideItem" aria-label="Sturzflug"><strong><svg class="uiIcon"><use href="#i-bolt"/></svg></strong></div>
-        <div class="guideItem" aria-label="Echo"><strong><svg class="uiIcon"><use href="#i-echo"/></svg></strong></div>
+        <div class="guideItem" aria-label="Huuu-Ruf"><strong>HUU</strong></div>
       </div>
-      <button id="startBtn" type="button">Starten</button>
+      <button id="continueBtn" class="hidden" type="button">Fortsetzen</button>
+      <button id="startBtn" class="secondary" type="button">Neue Jagd</button>
     </div>
   </div>
 
@@ -93,6 +97,21 @@
       <h1>Pause</h1>
       <p class="lead">Setze das Spiel fort, sobald du bereit bist.</p>
       <button id="resumeBtn" type="button">Weiterspielen</button>
+      <button id="saveExitBtn" class="secondary" type="button">Speichern &amp; Beenden</button>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="levelOverlay">
+    <div class="panel levelPanel">
+      <div class="eyebrow">Level geschafft</div>
+      <h1 id="levelCompleteTitle">Geschafft!</h1>
+      <div class="resultGrid levelResults">
+        <div class="resultCell"><strong id="levelFoodResult">0</strong><span>Futter</span></div>
+        <div class="resultCell"><strong id="levelScoreResult">0</strong><span>Punkte</span></div>
+        <div class="resultCell"><strong id="levelBonusResult">—</strong><span>Bonus</span></div>
+        <div class="resultCell"><strong id="levelXpResult">+0</strong><span>XP</span></div>
+      </div>
+      <button id="nextLevelBtn" type="button">Nächstes Level</button>
     </div>
   </div>
 
@@ -112,9 +131,8 @@
   </div>
 
   <div class="mobile">
-    <div class="mobileGroup"><div class="joystick" id="joystick" role="application" aria-label="Flugsteuerung"><span class="joystickKnob"></span></div></div>
     <div class="mobileGroup">
-      <button type="button" class="echo" data-action="echo" aria-label="Echo-Ortung"><svg class="uiIcon"><use href="#i-echo"/></svg></button>
+      <button type="button" class="hoot" data-action="hoot" data-charge="100%" aria-label="Huuu-Ruf bereit"><span class="hootGlyph">HUU</span></button>
       <button type="button" class="action" data-action="dive" aria-label="Sturzflug"><svg class="uiIcon"><use href="#i-bolt"/></svg></button>
     </div>
   </div>

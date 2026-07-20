@@ -45,7 +45,8 @@ window.OWL_LEVEL_DATA = {
         "prey": {
           "normal": 5,
           "beetle": 1,
-          "rabbit": 1
+          "rabbit": 1,
+          "gold": 1
         },
         "startingPrey": 4,
         "maximumPrey": 10,
@@ -122,7 +123,8 @@ window.OWL_LEVEL_DATA = {
         "prey": {
           "normal": 5,
           "beetle": 1,
-          "rabbit": 1
+          "rabbit": 1,
+          "gold": 1
         },
         "startingPrey": 4,
         "maximumPrey": 10,
@@ -202,7 +204,8 @@ window.OWL_LEVEL_DATA = {
           "normal": 5,
           "beetle": 1,
           "rabbit": 1,
-          "swift": 1
+          "swift": 1,
+          "gold": 1
         },
         "startingPrey": 4,
         "maximumPrey": 10,
@@ -282,7 +285,8 @@ window.OWL_LEVEL_DATA = {
           "normal": 5,
           "beetle": 1,
           "rabbit": 1,
-          "swift": 1
+          "swift": 1,
+          "gold": 1
         },
         "startingPrey": 4,
         "maximumPrey": 11,
@@ -363,7 +367,8 @@ window.OWL_LEVEL_DATA = {
           "beetle": 1,
           "rabbit": 1,
           "swift": 1,
-          "frog": 1
+          "frog": 1,
+          "gold": 1
         },
         "startingPrey": 4,
         "maximumPrey": 11,
@@ -444,7 +449,8 @@ window.OWL_LEVEL_DATA = {
           "beetle": 1,
           "rabbit": 1,
           "swift": 1,
-          "frog": 1
+          "frog": 1,
+          "gold": 2
         },
         "startingPrey": 5,
         "maximumPrey": 11,
@@ -525,7 +531,8 @@ window.OWL_LEVEL_DATA = {
           "beetle": 1,
           "rabbit": 1,
           "swift": 1,
-          "frog": 1
+          "frog": 1,
+          "gold": 2
         },
         "startingPrey": 5,
         "maximumPrey": 12,
@@ -606,7 +613,8 @@ window.OWL_LEVEL_DATA = {
           "beetle": 1,
           "rabbit": 1,
           "swift": 1,
-          "frog": 1
+          "frog": 1,
+          "gold": 2
         },
         "startingPrey": 5,
         "maximumPrey": 12,
@@ -687,7 +695,8 @@ window.OWL_LEVEL_DATA = {
           "beetle": 1,
           "rabbit": 1,
           "swift": 1,
-          "frog": 1
+          "frog": 1,
+          "gold": 2
         },
         "startingPrey": 5,
         "maximumPrey": 12,
@@ -768,7 +777,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 2,
           "swift": 1,
           "frog": 1,
-          "gold": 2
+          "gold": 3
         },
         "startingPrey": 5,
         "maximumPrey": 13,
@@ -848,7 +857,8 @@ window.OWL_LEVEL_DATA = {
           "beetle": 1,
           "rabbit": 2,
           "swift": 1,
-          "frog": 1
+          "frog": 1,
+          "gold": 2
         },
         "startingPrey": 6,
         "maximumPrey": 13,
@@ -928,7 +938,8 @@ window.OWL_LEVEL_DATA = {
           "beetle": 1,
           "rabbit": 2,
           "swift": 1,
-          "frog": 1
+          "frog": 1,
+          "gold": 2
         },
         "startingPrey": 6,
         "maximumPrey": 13,
@@ -1009,7 +1020,8 @@ window.OWL_LEVEL_DATA = {
           "beetle": 2,
           "rabbit": 2,
           "swift": 2,
-          "frog": 1
+          "frog": 1,
+          "gold": 2
         },
         "startingPrey": 6,
         "maximumPrey": 14,
@@ -1091,7 +1103,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 2,
           "swift": 2,
           "frog": 2,
-          "gold": 1
+          "gold": 2
         },
         "startingPrey": 6,
         "maximumPrey": 14,
@@ -1173,7 +1185,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 2,
           "swift": 2,
           "frog": 2,
-          "gold": 1
+          "gold": 2
         },
         "startingPrey": 6,
         "maximumPrey": 14,
@@ -1255,7 +1267,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 2,
           "swift": 2,
           "frog": 2,
-          "gold": 1
+          "gold": 2
         },
         "startingPrey": 7,
         "maximumPrey": 15,
@@ -1335,7 +1347,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 2,
           "swift": 2,
           "frog": 2,
-          "gold": 1
+          "gold": 2
         },
         "startingPrey": 7,
         "maximumPrey": 15,
@@ -1417,7 +1429,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 2,
           "swift": 2,
           "frog": 2,
-          "gold": 1
+          "gold": 2
         },
         "startingPrey": 7,
         "maximumPrey": 15,
@@ -1499,7 +1511,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 3,
           "swift": 2,
           "frog": 2,
-          "gold": 1
+          "gold": 2
         },
         "startingPrey": 7,
         "maximumPrey": 16,
@@ -1580,7 +1592,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 3,
           "swift": 2,
           "frog": 2,
-          "gold": 3
+          "gold": 4
         },
         "startingPrey": 7,
         "maximumPrey": 16,
@@ -1661,7 +1673,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 3,
           "swift": 2,
           "frog": 2,
-          "gold": 1
+          "gold": 3
         },
         "startingPrey": 8,
         "maximumPrey": 16,
@@ -1743,7 +1755,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 3,
           "swift": 2,
           "frog": 2,
-          "gold": 1
+          "gold": 3
         },
         "startingPrey": 8,
         "maximumPrey": 17,
@@ -1825,7 +1837,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 3,
           "swift": 3,
           "frog": 3,
-          "gold": 1
+          "gold": 3
         },
         "startingPrey": 8,
         "maximumPrey": 17,
@@ -1867,12 +1879,12 @@ window.OWL_LEVEL_DATA = {
       }
     },
     {
-      "id": "level-24-echoschlucht",
+      "id": "level-24-rufschlucht",
       "order": 24,
-      "name": "Echoschlucht",
+      "name": "Rufschlucht",
       "presentation": {
         "theme": "storm",
-        "intro": "Nur Echo-Ortung schafft Übersicht in der überfüllten Schlucht.",
+        "intro": "Ein gut getimtes Huuu hält dir in der überfüllten Schlucht den Weg frei.",
         "mission": "Sammle 180 Futterpunkte im Nest.",
         "shortMission": "180 Futterpunkte",
         "scenery": {
@@ -1906,7 +1918,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 3,
           "swift": 3,
           "frog": 3,
-          "gold": 1
+          "gold": 3
         },
         "startingPrey": 8,
         "maximumPrey": 17,
@@ -1987,7 +1999,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 3,
           "swift": 3,
           "frog": 3,
-          "gold": 1
+          "gold": 4
         },
         "startingPrey": 8,
         "maximumPrey": 18,
@@ -2068,7 +2080,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 3,
           "swift": 3,
           "frog": 3,
-          "gold": 1
+          "gold": 4
         },
         "startingPrey": 9,
         "maximumPrey": 18,
@@ -2149,7 +2161,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 3,
           "swift": 3,
           "frog": 3,
-          "gold": 1
+          "gold": 4
         },
         "startingPrey": 9,
         "maximumPrey": 18,
@@ -2230,7 +2242,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 4,
           "swift": 3,
           "frog": 3,
-          "gold": 1
+          "gold": 4
         },
         "startingPrey": 9,
         "maximumPrey": 19,
@@ -2311,7 +2323,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 4,
           "swift": 3,
           "frog": 3,
-          "gold": 1
+          "gold": 4
         },
         "startingPrey": 9,
         "maximumPrey": 19,
@@ -2392,7 +2404,7 @@ window.OWL_LEVEL_DATA = {
           "rabbit": 4,
           "swift": 3,
           "frog": 3,
-          "gold": 1
+          "gold": 4
         },
         "startingPrey": 9,
         "maximumPrey": 19,
