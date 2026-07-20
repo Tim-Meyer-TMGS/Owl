@@ -42,6 +42,7 @@
     backdrop-filter:blur(12px);box-shadow:0 8px 25px rgba(0,0,0,.2)
   }
   .label{font-size:.68rem;line-height:1;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+  .hudIcon{display:inline-block;margin-right:.35em;font-size:.9rem;line-height:1}
   .value{margin-top:4px;font-size:1.03rem;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .subvalue{margin-top:2px;color:var(--muted);font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .bar{height:8px;margin-top:7px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.1)}
@@ -74,12 +75,16 @@
   .eyebrow{font-size:.76rem;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);font-weight:850}
   h1{margin:.25rem 0 0;font-size:clamp(2.35rem,8vw,5rem);line-height:.92;letter-spacing:-.06em}
   .lead{margin:.85rem auto 1rem;color:var(--muted);max-width:52ch;line-height:1.5}
+  .mobileLead{display:none}
   .story{
     margin:16px 0;padding:14px 16px;text-align:left;border-radius:17px;
     border:1px solid rgba(130,231,255,.22);background:rgba(130,231,255,.07);line-height:1.45
   }
   .controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px 0 20px;text-align:left;color:var(--muted);font-size:.88rem}
   .control{min-width:0;padding:10px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.035)}
+  .mobileGuide{display:none;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0 15px}
+  .guideItem{padding:9px 4px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.035);color:var(--muted);font-size:.72rem}
+  .guideItem strong{display:block;margin-bottom:4px;color:white;font-size:1.35rem;line-height:1}
   kbd{display:inline-grid;place-items:center;min-width:28px;height:27px;padding:0 7px;margin-right:4px;border-radius:7px;border:1px solid var(--line);background:#172139;color:white;font:700 .75rem/1 inherit;box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
   button{
     appearance:none;border:0;border-radius:14px;padding:13px 18px;width:100%;cursor:pointer;
@@ -112,14 +117,19 @@
   .resultCell span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
   @media (max-width:820px), (any-pointer:coarse){
     #shell{width:100vw;height:100vh;height:100dvh;border:0}
-    .hud{left:max(7px,env(safe-area-inset-left));right:max(7px,env(safe-area-inset-right));top:max(7px,env(safe-area-inset-top));gap:5px;grid-template-columns:1fr 1fr}
-    .card{padding:7px 9px;border-radius:11px}
-    .label{font-size:.61rem;letter-spacing:.07em}
-    .value{font-size:.91rem;margin-top:3px}
-    .subvalue{font-size:.64rem}
-    .bar{height:6px;margin-top:5px}
-    #missionBanner{top:calc(max(7px,env(safe-area-inset-top)) + 106px);width:calc(100% - 14px);padding:8px 10px;font-size:.78rem;line-height:1.25}
-    .controls{grid-template-columns:1fr}
+    .hud{left:max(5px,env(safe-area-inset-left));right:max(5px,env(safe-area-inset-right));top:max(5px,env(safe-area-inset-top));gap:4px;grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{min-height:46px;padding:5px 4px;border-radius:10px;text-align:center}
+    .label{font-size:.82rem;letter-spacing:0}
+    .labelText{display:none}
+    .hudIcon{margin:0}
+    .value{font-size:.69rem;margin-top:3px}
+    .subvalue{display:none}
+    .bar{height:5px;margin-top:5px}
+    #missionBanner{top:calc(max(5px,env(safe-area-inset-top)) + 51px);width:auto;max-width:calc(100% - 14px);padding:6px 11px;border-radius:999px;font-size:.74rem;line-height:1.15}
+    .story,.controls{display:none}
+    .desktopLead{display:none}
+    .mobileLead{display:inline}
+    .mobileGuide{display:grid}
     .mobile{display:flex;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}
     #touchHint{display:none}
     #soundBtn{width:38px;height:38px;bottom:67px;right:9px;font-size:.8rem}
@@ -133,9 +143,9 @@
     kbd{height:25px;min-width:26px}
   }
   @media (max-width:380px){
-    .hud{left:5px;right:5px;gap:4px}
-    .card{padding:6px 7px}
-    #missionBanner{width:calc(100% - 10px);font-size:.72rem}
+    .hud{left:4px;right:4px;gap:3px}
+    .card{padding:5px 3px}
+    #missionBanner{max-width:calc(100% - 10px);font-size:.7rem}
     .mobile button{width:44px;height:44px}
     .mobile .action{width:48px;height:48px}
     #touchHint{max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis}
@@ -144,9 +154,8 @@
   }
   @media (max-height:600px) and (orientation:landscape){
     .hud{grid-template-columns:repeat(4,1fr)}
-    .card{padding:5px 7px}
-    .subvalue{display:none}
-    #missionBanner{top:calc(max(7px,env(safe-area-inset-top)) + 49px);width:min(560px,calc(100% - 150px));padding:6px 9px}
+    .card{padding:4px 6px;min-height:42px}
+    #missionBanner{top:calc(max(5px,env(safe-area-inset-top)) + 46px);width:auto;max-width:calc(100% - 150px);padding:5px 9px}
     .mobile button{width:42px;height:42px}
     .mobile .action{width:46px;height:46px}
     #touchHint{display:none}
@@ -168,28 +177,28 @@
 
   <div class="hud">
     <div class="card">
-      <div class="label">Punkte · Gesundheit</div>
+      <div class="label"><span class="hudIcon" aria-hidden="true">★</span><span class="labelText">Punkte · Gesundheit</span></div>
       <div class="value"><span id="score">0</span> · <span id="hearts">♥♥♥</span></div>
       <div class="subvalue" id="comboText">Keine Kombo</div>
     </div>
     <div class="card">
-      <div class="label">Nestauftrag</div>
+      <div class="label"><span class="hudIcon" aria-hidden="true">⌂</span><span class="labelText">Nestauftrag</span></div>
       <div class="value" id="phaseName">Wiesenrand</div>
       <div class="subvalue"><span id="delivered">0</span> / <span id="target">3</span> geliefert</div>
     </div>
     <div class="card">
-      <div class="label">Ausdauer</div>
+      <div class="label"><span class="hudIcon" aria-hidden="true">⚡</span><span class="labelText">Ausdauer</span></div>
       <div class="bar"><span id="energyFill"></span></div>
       <div class="subvalue">Sturzflug · Orientierung</div>
     </div>
     <div class="card">
-      <div class="label">Verbleibende Nacht</div>
+      <div class="label"><span class="hudIcon" aria-hidden="true">☾</span><span class="labelText">Verbleibende Nacht</span></div>
       <div class="bar"><span id="timeFill"></span></div>
       <div class="subvalue"><span id="timeText">90</span> Sekunden</div>
     </div>
   </div>
 
-  <div id="missionBanner">Fange eine Maus und bringe sie zum Nest.</div>
+  <div id="missionBanner">🐭 → 🪺</div>
   <div id="toast"></div>
   <div id="touchHint">Finger auf dem Spielfeld bewegen · rechts: Sturzflug und Orientierung</div>
 
@@ -199,13 +208,18 @@
     <div class="panel">
       <div class="eyebrow">Jagd am Waldrand</div>
       <h1>Eulenflug</h1>
-      <p class="lead">Im Nest wartet der Nachwuchs. Fange Mäuse am Boden und bringe sie zurück, bevor es hell wird.</p>
+      <p class="lead"><span class="desktopLead">Im Nest wartet der Nachwuchs. Fange Mäuse am Boden und bringe sie zurück, bevor es hell wird.</span><span class="mobileLead">🐭 jagen · 🪺 füttern · ☀ vermeiden</span></p>
       <div class="story"><strong>So funktioniert es:</strong> Beute zählt erst im Nest. Sturzflüge kosten Ausdauer. Ohne Beute kannst du im Nest 2,5 Sekunden ruhen und ein Herz regenerieren; dafür vergehen acht Sekunden.</div>
       <div class="controls">
         <div class="control"><kbd>WASD</kbd><kbd>←↑↓→</kbd> fliegen</div>
         <div class="control"><kbd>Leertaste</kbd> Sturzflug</div>
         <div class="control"><kbd>E</kbd> Orientierung: Beute kurz hervorheben</div>
         <div class="control"><kbd>P</kbd> Pause · Finger auf dem Spielfeld bewegen</div>
+      </div>
+      <div class="mobileGuide" aria-label="Touch-Steuerung">
+        <div class="guideItem"><strong>☝</strong>Fliegen</div>
+        <div class="guideItem"><strong>⚡</strong>Sturzflug</div>
+        <div class="guideItem"><strong>◉</strong>Echo</div>
       </div>
       <button id="startBtn" type="button">Starten</button>
     </div>
@@ -279,16 +293,19 @@
     {
       name:'Wiesenrand', target:3, timeBonus:0, mouseDelay:[.65,1.05], batDelay:[3.1,4.4], fireflyDelay:[2.2,3.6], mouseCap:10, batCap:5, fireflyCap:6, startMice:4, branchCount:2,
       mission:'Fange 3 Feldmäuse und bringe sie einzeln zum Nest.',
+      missionShort:'🐭 ×3 → 🪺', introShort:'🐭 → 🪺',
       intro:'Die erste Jagd beginnt am ruhigen Wiesenrand.'
     },
     {
       name:'Mondwald', target:4, timeBonus:24, mouseDelay:[.42,.75], batDelay:[1.65,2.55], fireflyDelay:[1.8,3], mouseCap:12, batCap:8, fireflyCap:7, startMice:5, branchCount:4,
       mission:'Füttere das Nest 4-mal. Rote Mäuse sind schneller und mehr wert.',
+      missionShort:'🐭 ×4 → 🪺  ·  🦇 !', introShort:'🌙 🌲  ·  🦇 !',
       intro:'Der Mondwald ist enger. Fledermäuse und Äste kreuzen deinen Weg.'
     },
     {
       name:'Goldene Spur', target:1, timeBonus:26, mouseDelay:[.34,.62], batDelay:[1.1,1.85], fireflyDelay:[1.5,2.6], mouseCap:14, batCap:10, fireflyCap:8, startMice:6, branchCount:5,
       mission:'Finde die goldene Maus, fange sie und bringe sie sicher ins Nest.',
+      missionShort:'✨ 🐭 → 🪺', introShort:'✨ 🐭 !',
       intro:'Vor der Dämmerung erscheint eine seltene goldene Feldmaus.'
     }
   ];
@@ -383,7 +400,7 @@
     }
 
     const edge=38*state.gameScale;
-    const top=state.h<600?74:(state.touchMode?150:88);
+    const top=state.h<600?74:(state.touchMode?105:88);
     owl.x = Math.min(Math.max(edge,owl.x || state.w*.22),state.w-edge);
     owl.y = Math.min(Math.max(top,owl.y || state.h*.32),state.groundY-20*state.gameScale);
   }
@@ -400,7 +417,7 @@
 
   function nest(){
     const s=state.gameScale;
-    const top=state.h<600?88:(state.touchMode?170:142);
+    const top=state.h<600?88:(state.touchMode?120:142);
     return {x:Math.max(62*s,state.w*.09),y:Math.max(top,state.h*.2),r:58*s};
   }
 
@@ -480,13 +497,14 @@
     ui.timeText.textContent=Math.max(0,Math.ceil(state.time));
     const n=nest();
     const resting=!owl.carrying&&state.hearts<state.maxHearts&&dist2(owl,n)<(n.r+owl.r-5*state.gameScale)**2;
+    const mission=state.touchMode?phase.missionShort:phase.mission;
     ui.mission.textContent=owl.carrying
-      ? `Beute im Fang. Bring sie zum Nest.`
+      ? (state.touchMode?'🐭 → 🪺':`Beute im Fang. Bring sie zum Nest.`)
       : resting
-        ? `Im Nest ruhen: ${Math.min(2.5,state.restProgress).toFixed(1)} / 2,5 s`
+        ? (state.touchMode?`♥ ${Math.min(2.5,state.restProgress).toFixed(1)} / 2,5`:`Im Nest ruhen: ${Math.min(2.5,state.restProgress).toFixed(1)} / 2,5 s`)
         : state.hearts<state.maxHearts
-          ? `${phase.mission} Im Nest kannst du ein Herz regenerieren.`
-          : phase.mission;
+          ? (state.touchMode?`${mission}  ·  🪺 = ♥`:`${phase.mission} Im Nest kannst du ein Herz regenerieren.`)
+          : mission;
   }
 
   function showToast(text,color='#fff',duration=900){
@@ -634,7 +652,7 @@
     state.mouseClock=.25;state.batClock=1.1;state.fireflyClock=.5;
     state.transitionQueued=false;
     showToast(phases[state.phaseIndex].name,'#82e7ff',1000);
-    ui.mission.textContent=phases[state.phaseIndex].intro;
+    ui.mission.textContent=state.touchMode?phases[state.phaseIndex].introShort:phases[state.phaseIndex].intro;
   }
 
   function damage(){
@@ -694,7 +712,7 @@
     // Der alte Fehler lag hier: Die Eule war bei 70 % der Höhe abgeschnitten.
     // Jetzt ist der komplette Bereich bis knapp über den Boden erreichbar.
     const owlEdge=38*state.gameScale;
-    const playTop=state.h<600?74:(state.touchMode?150:88);
+    const playTop=state.h<600?74:(state.touchMode?105:88);
     owl.x=clamp(owl.x,owlEdge,state.w-owlEdge);
     owl.y=clamp(owl.y,playTop,state.groundY-20*state.gameScale);
 
