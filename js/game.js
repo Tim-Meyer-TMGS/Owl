@@ -29,31 +29,29 @@
     sound:document.getElementById('soundBtn')
   };
 
-  const phases = [
-    {
-      name:'Wiesenrand', target:3, timeBonus:0, mouseDelay:[.48,.78], batDelay:[3.1,4.4], fireflyDelay:[2.2,3.6], mouseCap:10, batCap:5, fireflyCap:6, startMice:4, waveSize:5, waveBreak:4.2, branchCount:2,
-      mission:'Fange 3 Feldmäuse und bringe sie einzeln zum Nest.',
-      missionShort:'Beute ×3 zum Nest', introShort:'Beute zum Nest',
-      intro:'Die erste Jagd beginnt am ruhigen Wiesenrand.'
-    },
-    {
-      name:'Mondwald', target:4, timeBonus:24, mouseDelay:[.34,.6], batDelay:[1.65,2.55], fireflyDelay:[1.8,3], mouseCap:12, batCap:8, fireflyCap:7, startMice:5, waveSize:7, waveBreak:3.5, branchCount:4,
-      mission:'Füttere das Nest 4-mal. Rote Mäuse sind schneller und mehr wert.',
-      missionShort:'Beute ×4 zum Nest', introShort:'Mondwald',
-      intro:'Der Mondwald ist enger. Fledermäuse und Äste kreuzen deinen Weg.'
-    },
-    {
-      name:'Goldene Spur', target:1, timeBonus:26, mouseDelay:[.28,.5], batDelay:[1.1,1.85], fireflyDelay:[1.5,2.6], mouseCap:14, batCap:10, fireflyCap:8, startMice:6, waveSize:9, waveBreak:3, branchCount:5,
-      mission:'Finde die goldene Maus, fange sie und bringe sie sicher ins Nest.',
-      missionShort:'Goldene Maus zum Nest', introShort:'Goldene Spur',
-      intro:'Vor der Dämmerung erscheint eine seltene goldene Feldmaus.'
-    }
-  ];
+  const levelData=window.OWL_LEVEL_DATA;
+  if(!levelData||levelData.formatVersion!==1||!Array.isArray(levelData.levels)||!levelData.levels.length){
+    throw new Error('Keine gültigen Leveldaten geladen. Bitte tools/build-levels.ps1 ausführen.');
+  }
+  const campaign=levelData.campaign;
+  const expandPreyWeights=weights=>Object.entries(weights).flatMap(([type,weight])=>Array(Math.max(0,Math.round(weight))).fill(type));
+  const phases=[...levelData.levels].sort((a,b)=>a.order-b.order).map(level=>({
+    id:level.id,name:level.name,target:level.objective.target,requiredType:level.objective.requiredPrey,
+    timeBonus:level.timeBonusSeconds,theme:level.presentation.theme,intro:level.presentation.intro,
+    introShort:level.name,mission:level.presentation.mission,missionShort:level.presentation.shortMission,
+    preyTypes:expandPreyWeights(level.population.prey),startMice:level.population.startingPrey,
+    mouseCap:level.population.maximumPrey,mouseDelay:[level.population.spawnDelaySeconds.min,level.population.spawnDelaySeconds.max],
+    waveSize:level.waves.size,waveBreak:level.waves.breakSeconds,branchCount:level.hazards.branches,
+    batCap:level.hazards.maximumBats,batDelay:[level.hazards.batSpawnDelaySeconds.min,level.hazards.batSpawnDelaySeconds.max],
+    fireflyCap:level.pickups.maximumFireflies,fireflyDelay:[level.pickups.fireflySpawnDelaySeconds.min,level.pickups.fireflySpawnDelaySeconds.max],
+    speedMultiplier:level.difficulty.speedMultiplier,timeDrainMultiplier:level.difficulty.timeDrainMultiplier,
+    hitPenaltySeconds:level.difficulty.hitPenaltySeconds,audioChord:level.audio.chordHz
+  }));
 
   const state = {
     w:0,h:0,dpr:1,groundY:0,gameScale:1,touchMode:false,tabletMode:false,
     running:false,paused:false,ended:false,
-    score:0,hearts:3,maxHearts:4,energy:100,time:90,maxTime:90,
+    score:0,hearts:campaign.startingHearts,maxHearts:campaign.maximumHearts,energy:100,time:campaign.startingTimeSeconds,maxTime:campaign.startingTimeSeconds,
     phaseIndex:0,phaseDelivered:0,totalDelivered:0,
     combo:0,bestCombo:0,comboClock:0,
     mouseClock:0,batClock:0,fireflyClock:0,wave:1,waveRemaining:0,waveBreak:0,
@@ -80,8 +78,8 @@
     else ui.mission.textContent=desktopText;
   }
   function phaseMissionIcons(phase){
-    const gold=state.phaseIndex===2?`${iconSvg('star')} `:'';
-    const danger=state.phaseIndex>0?` · ${iconSvg('bat')} !`:'';
+    const gold=phase.requiredType==='gold'?`${iconSvg('star')} `:'';
+    const danger=phase.batCap>=8?` · ${iconSvg('bat')} !`:'';
     return `${gold}${iconSvg('mouse')} ×${phase.target} → ${iconSvg('nest')}${danger}`;
   }
   function haptic(pattern){
@@ -149,8 +147,7 @@
   }
 
   function playMusicPhrase(){
-    const chords=[[196,246.94,293.66],[174.61,220,261.63],[220,261.63,329.63]];
-    const chord=chords[state.phaseIndex]||chords[0];
+    const chord=currentPhase().audioChord;
     chord.forEach((f,i)=>padTone(f,2.8,.007,i*.12));
     padTone(chord[0]/2,3.4,.009,.04);
   }
@@ -245,7 +242,7 @@
   }
 
   function reset(){
-    state.score=0;state.hearts=3;state.energy=100;state.restProgress=0;state.restCooldown=0;state.time=90;state.maxTime=90;
+    state.score=0;state.hearts=campaign.startingHearts;state.maxHearts=campaign.maximumHearts;state.energy=100;state.restProgress=0;state.restCooldown=0;state.time=campaign.startingTimeSeconds;state.maxTime=campaign.startingTimeSeconds;
     state.phaseIndex=0;state.phaseDelivered=0;state.totalDelivered=0;
     state.combo=0;state.bestCombo=0;state.comboClock=0;
     state.mouseClock=.35;state.batClock=1.8;state.fireflyClock=.45;state.wave=1;state.waveRemaining=currentPhase().waveSize;state.waveBreak=0;
@@ -354,14 +351,11 @@
 
   function spawnMouse(forcedType){
     let type=forcedType;
-    const phase=state.phaseIndex;
+    const phase=currentPhase();
     if(!type){
-      const roll=Math.random();
-      if(phase===0) type=roll<.52?'normal':(roll<.76?'beetle':'rabbit');
-      else if(phase===1) type=roll<.24?'swift':(roll<.52?'rabbit':(roll<.78?'frog':'normal'));
-      else type=roll<.18?'gold':(roll<.42?'rabbit':(roll<.66?'frog':(roll<.84?'swift':'beetle')));
+      type=phase.preyTypes[Math.floor(Math.random()*phase.preyTypes.length)];
     }
-    if(phase===2 && !owl.carrying && !state.mice.some(m=>m.type==='gold') && state.phaseDelivered===0) type='gold';
+    if(phase.requiredType==='gold'&&!owl.carrying&&!state.mice.some(m=>m.type==='gold')&&state.phaseDelivered<phase.target)type='gold';
 
     let fromRight=owl.x<state.w*.5;
     if(Math.random()<.18)fromRight=!fromRight;
@@ -378,7 +372,7 @@
     }[type];
     state.mice.push({
       type,x:spawnX,y:state.groundY-rand(17,25)*s,
-      dir:fromRight?-1:1,speed:config.speed*s,r:config.r*s,value:config.value,color:config.color,
+      dir:fromRight?-1:1,speed:config.speed*s*phase.speedMultiplier,r:config.r*s,value:config.value,color:config.color,
       phase:rand(0,6),turn:rand(1.8,4.5),dash:0,glow:rand(0,6)
     });
   }
@@ -391,7 +385,7 @@
     for(let i=0;i<5&&Math.hypot((fromRight?state.w:0)-owl.x,y-owl.y)<180*s;i++)y=state.h*rand(.23,.65);
     state.bats.push({
       x:fromRight?state.w+50*s:-50*s,y,dir:fromRight?-1:1,
-      speed:(rand(105,175)+state.phaseIndex*18)*s,r:23*s,phase:rand(0,6),turn:rand(1,3)
+      speed:rand(105,175)*s*currentPhase().speedMultiplier,r:23*s,phase:rand(0,6),turn:rand(1,3)
     });
     if(state.running&&Math.random()<.3)sfx('bat');
   }
@@ -459,7 +453,7 @@
   function deliverPrey(){
     if(!owl.carrying) return;
     const p=owl.carrying;
-    const valid=state.phaseIndex<2 || p.type==='gold';
+    const valid=!currentPhase().requiredType||p.type===currentPhase().requiredType;
     const comboMult=1+Math.min(4,Math.max(0,state.combo-1))*.2;
     const gain=Math.round(p.value*comboMult);
     state.score+=gain;state.totalDelivered++;
@@ -498,7 +492,7 @@
 
   function damage(){
     if(owl.invuln>0) return;
-    owl.invuln=1.25;state.hearts--;state.energy=Math.max(0,state.energy-30);state.time=Math.max(0,state.time-3);state.score=Math.max(0,state.score-120);
+    owl.invuln=1.25;state.hearts--;state.energy=Math.max(0,state.energy-30);state.time=Math.max(0,state.time-currentPhase().hitPenaltySeconds);state.score=Math.max(0,state.score-120);
     state.combo=0;state.comboClock=0;state.shake=.3;
     dropPrey();burst(owl.x,owl.y,'#ff7772',26,240);floater(owl.x,owl.y-40,'Treffer','#ff7772',20);sfx('hit');
     haptic([55,35,70]);
@@ -508,7 +502,7 @@
   function update(dt){
     const phase=currentPhase();
     state.elapsed+=dt;updateAudio(dt);
-    state.time-=dt;
+    state.time-=dt*phase.timeDrainMultiplier;
     state.energy=Math.min(100,state.energy+(owl.dive?3.5:9.5)*dt);
     state.echo=Math.max(0,state.echo-dt);
     state.shake=Math.max(0,state.shake-dt);
@@ -674,11 +668,14 @@
 
   function drawBackground(){
     const dawn=clamp(1-state.time/state.maxTime,0,1);
+    const theme=currentPhase().theme;
     const sky=ctx.createLinearGradient(0,0,0,state.h);
     sky.addColorStop(0,`rgb(${Math.round(13+62*dawn)},${Math.round(23+43*dawn)},${Math.round(49+45*dawn)})`);
     sky.addColorStop(.55,`rgb(${Math.round(54+92*dawn)},${Math.round(43+52*dawn)},${Math.round(82+42*dawn)})`);
     sky.addColorStop(.72,'#29402f');sky.addColorStop(1,'#101d17');
     ctx.fillStyle=sky;ctx.fillRect(0,0,state.w,state.h);
+    const washes={mist:'rgba(119,151,161,.13)',storm:'rgba(22,31,64,.2)',gold:'rgba(126,83,25,.1)',blood:'rgba(105,12,28,.2)'};
+    if(washes[theme]){ctx.fillStyle=washes[theme];ctx.fillRect(0,0,state.w,state.h)}
 
     for(const s of state.stars){
       const tw=.55+.45*Math.sin(state.elapsed*1.8+s.p);
@@ -687,7 +684,8 @@
     ctx.globalAlpha=1;
 
     const mx=state.w*.82,my=state.h*.16,s=state.gameScale;
-    ctx.shadowColor='rgba(255,236,174,.55)';ctx.shadowBlur=30*s;ctx.fillStyle='#ffedb6';ctx.beginPath();ctx.arc(mx,my,42*s,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+    const moonColors={gold:'#ffd469',blood:'#ff8175',storm:'#b8c9e5',mist:'#dce8e5'};
+    ctx.shadowColor=theme==='blood'?'rgba(255,80,72,.6)':'rgba(255,236,174,.55)';ctx.shadowBlur=30*s;ctx.fillStyle=moonColors[theme]||'#ffedb6';ctx.beginPath();ctx.arc(mx,my,42*s,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
     ctx.fillStyle='rgba(31,39,62,.18)';ctx.beginPath();ctx.arc(mx+13*s,my-7*s,38*s,0,Math.PI*2);ctx.fill();
 
     for(const c of state.clouds){
@@ -711,8 +709,8 @@
       ctx.beginPath();ctx.moveTo(x,state.groundY);ctx.lineTo(x+24,state.groundY-h);ctx.lineTo(x+48,state.groundY);ctx.closePath();ctx.fill();
     }
 
-    const ground=ctx.createLinearGradient(0,state.h*.68,0,state.h);
-    ground.addColorStop(0,'#2b4933');ground.addColorStop(1,'#102016');ctx.fillStyle=ground;ctx.fillRect(0,state.h*.70,state.w,state.h*.30);
+    const ground=ctx.createLinearGradient(0,state.h*.68,0,state.h),groundColors={mist:['#344d47','#142522'],storm:['#263c38','#0d1918'],gold:['#4a4b2c','#1b2115'],blood:['#432d32','#1e1218']}[theme]||['#2b4933','#102016'];
+    ground.addColorStop(0,groundColors[0]);ground.addColorStop(1,groundColors[1]);ctx.fillStyle=ground;ctx.fillRect(0,state.h*.70,state.w,state.h*.30);
 
     ctx.strokeStyle='rgba(131,177,119,.35)';ctx.lineWidth=1.4;
     for(const g of state.grass){
@@ -721,9 +719,13 @@
     }
 
     // leichter Bodennebel
-    const fog=ctx.createLinearGradient(0,state.h*.56,0,state.groundY);
-    fog.addColorStop(0,'rgba(201,220,224,0)');fog.addColorStop(.65,'rgba(201,220,224,.08)');fog.addColorStop(1,'rgba(201,220,224,.02)');
+    const fogStrength=theme==='mist' ? .24 : (theme==='storm' ? .12 : .08),fog=ctx.createLinearGradient(0,state.h*.48,0,state.groundY);
+    fog.addColorStop(0,'rgba(201,220,224,0)');fog.addColorStop(.65,`rgba(201,220,224,${fogStrength})`);fog.addColorStop(1,'rgba(201,220,224,.02)');
     ctx.fillStyle=fog;ctx.fillRect(0,state.h*.52,state.w,state.h*.34);
+    if(theme==='storm'){
+      const flash=Math.pow(Math.max(0,Math.sin(state.elapsed*.83)),36)*.12;
+      if(flash>.002){ctx.fillStyle=`rgba(196,220,255,${flash})`;ctx.fillRect(0,0,state.w,state.h)}
+    }
   }
 
   function drawNest(){
