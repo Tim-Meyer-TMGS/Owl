@@ -277,17 +277,17 @@
 
   const phases = [
     {
-      name:'Wiesenrand', target:3, timeBonus:0, mouseDelay:[1.1,1.8], batDelay:[4.5,6.5], branchCount:2,
+      name:'Wiesenrand', target:3, timeBonus:0, mouseDelay:[.65,1.05], batDelay:[3.1,4.4], fireflyDelay:[2.2,3.6], mouseCap:10, batCap:5, fireflyCap:6, startMice:4, branchCount:2,
       mission:'Fange 3 Feldmäuse und bringe sie einzeln zum Nest.',
       intro:'Die erste Jagd beginnt am ruhigen Wiesenrand.'
     },
     {
-      name:'Mondwald', target:4, timeBonus:24, mouseDelay:[.8,1.35], batDelay:[2.8,4.2], branchCount:4,
+      name:'Mondwald', target:4, timeBonus:24, mouseDelay:[.42,.75], batDelay:[1.65,2.55], fireflyDelay:[1.8,3], mouseCap:12, batCap:8, fireflyCap:7, startMice:5, branchCount:4,
       mission:'Füttere das Nest 4-mal. Rote Mäuse sind schneller und mehr wert.',
       intro:'Der Mondwald ist enger. Fledermäuse und Äste kreuzen deinen Weg.'
     },
     {
-      name:'Goldene Spur', target:1, timeBonus:26, mouseDelay:[.7,1.1], batDelay:[1.9,3.1], branchCount:5,
+      name:'Goldene Spur', target:1, timeBonus:26, mouseDelay:[.34,.62], batDelay:[1.1,1.85], fireflyDelay:[1.5,2.6], mouseCap:14, batCap:10, fireflyCap:8, startMice:6, branchCount:5,
       mission:'Finde die goldene Maus, fange sie und bringe sie sicher ins Nest.',
       intro:'Vor der Dämmerung erscheint eine seltene goldene Feldmaus.'
     }
@@ -408,12 +408,13 @@
     state.score=0;state.hearts=3;state.energy=100;state.restProgress=0;state.restCooldown=0;state.time=90;state.maxTime=90;
     state.phaseIndex=0;state.phaseDelivered=0;state.totalDelivered=0;
     state.combo=0;state.bestCombo=0;state.comboClock=0;
-    state.mouseClock=.5;state.batClock=3;state.fireflyClock=1;
+    state.mouseClock=.35;state.batClock=1.8;state.fireflyClock=.45;
     state.mice=[];state.bats=[];state.branches=[];state.fireflies=[];state.particles=[];state.floaters=[];state.rings=[];
     state.echo=0;state.shake=0;state.transition=0;state.transitionQueued=false;state.elapsed=0;
     owl.x=state.w*.25;owl.y=state.h*.30;owl.vx=0;owl.vy=0;owl.angle=0;owl.dive=false;owl.diveTime=0;owl.invuln=0;owl.carrying=null;
     setupBranches();
-    spawnMouse('normal');
+    for(let i=0;i<currentPhase().startMice;i++) spawnMouse(i<2?'normal':undefined);
+    for(let i=0;i<3;i++) spawnFirefly();
     updateHud();
   }
 
@@ -627,7 +628,10 @@
     state.maxTime=Math.max(state.maxTime,state.time);
     state.mice=[];state.bats=[];state.fireflies=[];owl.carrying=null;
     setupBranches();
-    state.mouseClock=.35;state.batClock=2;state.fireflyClock=.7;
+    for(let i=0;i<currentPhase().startMice;i++) spawnMouse();
+    for(let i=0;i<Math.min(2+state.phaseIndex,4);i++) spawnBat();
+    for(let i=0;i<Math.min(4+state.phaseIndex,6);i++) spawnFirefly();
+    state.mouseClock=.25;state.batClock=1.1;state.fireflyClock=.5;
     state.transitionQueued=false;
     showToast(phases[state.phaseIndex].name,'#82e7ff',1000);
     ui.mission.textContent=phases[state.phaseIndex].intro;
@@ -696,16 +700,16 @@
 
     const slow=state.echo>0?.42:1;
     state.mouseClock-=dt;
-    if(state.mouseClock<=0&&state.mice.length<7){
+    if(state.mouseClock<=0&&state.mice.length<phase.mouseCap){
       spawnMouse();state.mouseClock=rand(phase.mouseDelay[0],phase.mouseDelay[1]);
     }
     state.batClock-=dt;
-    if(state.batClock<=0&&state.bats.length<6){
+    if(state.batClock<=0&&state.bats.length<phase.batCap){
       spawnBat();state.batClock=rand(phase.batDelay[0],phase.batDelay[1]);
     }
     state.fireflyClock-=dt;
-    if(state.fireflyClock<=0&&state.fireflies.length<4){
-      spawnFirefly();state.fireflyClock=rand(3.2,5.6);
+    if(state.fireflyClock<=0&&state.fireflies.length<phase.fireflyCap){
+      spawnFirefly();state.fireflyClock=rand(phase.fireflyDelay[0],phase.fireflyDelay[1]);
     }
 
     for(const m of state.mice){
