@@ -99,10 +99,10 @@
   }
   .mobileGroup{display:flex;gap:8px;pointer-events:auto}
   .mobile button{
-    width:64px;height:64px;padding:0;border-radius:50%;background:rgba(9,15,29,.76);color:white;
-    border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.25);backdrop-filter:blur(8px);font-size:1.2rem
+    width:46px;height:46px;padding:0;border-radius:50%;background:rgba(9,15,29,.76);color:white;
+    border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.25);backdrop-filter:blur(8px);font-size:.9rem
   }
-  .mobile .action{width:78px;height:78px;background:rgba(255,212,105,.9);color:#281e09;font-size:1.35rem}
+  .mobile .action{width:52px;height:52px;background:rgba(255,212,105,.9);color:#281e09;font-size:1rem}
   .mobile .echo{background:rgba(130,231,255,.83);color:#08212a}
   #touchHint{display:none;position:absolute;z-index:24;left:50%;bottom:max(108px,calc(env(safe-area-inset-bottom) + 96px));transform:translateX(-50%);padding:7px 11px;border-radius:999px;background:rgba(9,15,29,.72);border:1px solid var(--line);color:var(--muted);font-size:.76rem;pointer-events:none;white-space:nowrap}
   .restHint{color:#a9d7b0}
@@ -121,8 +121,8 @@
     #missionBanner{top:calc(max(7px,env(safe-area-inset-top)) + 106px);width:calc(100% - 14px);padding:8px 10px;font-size:.78rem;line-height:1.25}
     .controls{grid-template-columns:1fr}
     .mobile{display:flex;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}
-    #touchHint{display:block}
-    #soundBtn{bottom:92px;right:9px}
+    #touchHint{display:none}
+    #soundBtn{width:38px;height:38px;bottom:67px;right:9px;font-size:.8rem}
     .overlay{padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));align-items:start}
     .panel{padding:18px;margin:auto 0;max-height:none}
     h1{font-size:clamp(2.15rem,13vw,3.8rem)}
@@ -136,10 +136,10 @@
     .hud{left:5px;right:5px;gap:4px}
     .card{padding:6px 7px}
     #missionBanner{width:calc(100% - 10px);font-size:.72rem}
-    .mobile button{width:58px;height:58px}
-    .mobile .action{width:70px;height:70px}
-    #touchHint{bottom:max(92px,calc(env(safe-area-inset-bottom) + 82px));max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis}
-    #soundBtn{width:42px;height:42px;bottom:82px}
+    .mobile button{width:44px;height:44px}
+    .mobile .action{width:48px;height:48px}
+    #touchHint{max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis}
+    #soundBtn{width:36px;height:36px;bottom:63px}
     .panel{padding:14px;border-radius:20px}
   }
   @media (max-height:600px) and (orientation:landscape){
@@ -147,10 +147,10 @@
     .card{padding:5px 7px}
     .subvalue{display:none}
     #missionBanner{top:calc(max(7px,env(safe-area-inset-top)) + 49px);width:min(560px,calc(100% - 150px));padding:6px 9px}
-    .mobile button{width:54px;height:54px}
-    .mobile .action{width:64px;height:64px}
+    .mobile button{width:42px;height:42px}
+    .mobile .action{width:46px;height:46px}
     #touchHint{display:none}
-    #soundBtn{width:40px;height:40px;bottom:max(78px,calc(env(safe-area-inset-bottom) + 70px))}
+    #soundBtn{width:34px;height:34px;bottom:max(62px,calc(env(safe-area-inset-bottom) + 54px))}
     .panel{max-width:720px;padding:13px 18px}
     h1{font-size:2.1rem}
     .lead{margin:.35rem auto .45rem;font-size:.85rem}
@@ -294,7 +294,7 @@
   ];
 
   const state = {
-    w:0,h:0,dpr:1,groundY:0,
+    w:0,h:0,dpr:1,groundY:0,gameScale:1,touchMode:false,
     running:false,paused:false,ended:false,
     score:0,hearts:3,maxHearts:4,energy:100,time:90,maxTime:90,
     phaseIndex:0,phaseDelivered:0,totalDelivered:0,
@@ -354,6 +354,7 @@
 
   function resize(){
     const rect = shell.getBoundingClientRect();
+    const previousScale = state.gameScale || 1;
     state.dpr = Math.min(window.devicePixelRatio || 1,2);
     canvas.width = Math.round(rect.width*state.dpr);
     canvas.height = Math.round(rect.height*state.dpr);
@@ -362,7 +363,18 @@
     ctx.setTransform(state.dpr,0,0,state.dpr,0,0);
     state.w = rect.width;
     state.h = rect.height;
-    state.groundY = state.h-48;
+    state.touchMode=state.w<=820||window.matchMedia('(any-pointer:coarse)').matches;
+    state.gameScale = clamp(Math.min(state.w/760,state.h/620),.46,1);
+    state.groundY = state.h-(state.touchMode?78:48);
+
+    const radiusRatio=state.gameScale/previousScale;
+    [...state.mice,...state.bats,...state.fireflies].forEach(item=>{item.r*=radiusRatio;if(item.speed)item.speed*=radiusRatio});
+    state.branches.forEach(branch=>branch.scale=state.gameScale);
+    state.rings.forEach(ring=>ring.r*=radiusRatio);
+    state.particles.forEach(particle=>particle.size*=radiusRatio);
+    state.floaters.forEach(floater=>floater.size*=radiusRatio);
+    owl.vx*=radiusRatio;owl.vy*=radiusRatio;
+    owl.r=35*state.gameScale;
 
     if(!state.stars.length){
       for(let i=0;i<120;i++) state.stars.push({x:Math.random(),y:Math.random()*.65,s:.4+Math.random()*1.8,a:.2+Math.random()*.8,p:Math.random()*6});
@@ -370,8 +382,10 @@
       for(let i=0;i<140;i++) state.grass.push({x:Math.random(),h:7+Math.random()*24,b:Math.random()*6});
     }
 
-    owl.x = Math.min(Math.max(45,owl.x || state.w*.22),state.w-45);
-    owl.y = Math.min(Math.max(92,owl.y || state.h*.32),state.groundY-24);
+    const edge=38*state.gameScale;
+    const top=state.h<600?74:(state.touchMode?150:88);
+    owl.x = Math.min(Math.max(edge,owl.x || state.w*.22),state.w-edge);
+    owl.y = Math.min(Math.max(top,owl.y || state.h*.32),state.groundY-20*state.gameScale);
   }
   addEventListener('resize',resize);
   addEventListener('orientationchange',resize);
@@ -381,11 +395,13 @@
   function rand(min,max){return min+Math.random()*(max-min)}
   function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
   function dist2(a,b){const dx=a.x-b.x,dy=a.y-b.y;return dx*dx+dy*dy}
-  function collide(a,b,pad=0){const rr=(a.r+b.r+pad);return dist2(a,b)<rr*rr}
+  function collide(a,b,pad=0){const rr=(a.r+b.r+pad*state.gameScale);return dist2(a,b)<rr*rr}
   function currentPhase(){return phases[state.phaseIndex]}
 
   function nest(){
-    return {x:Math.max(88,state.w*.09),y:Math.max(142,state.h*.2),r:58};
+    const s=state.gameScale;
+    const top=state.h<600?88:(state.touchMode?170:142);
+    return {x:Math.max(62*s,state.w*.09),y:Math.max(top,state.h*.2),r:58*s};
   }
 
   function reset(){
@@ -408,7 +424,7 @@
       state.branches.push({
         x:state.w*(.34+i/(Math.max(1,count-1))*.58)+rand(-35,35),
         y:state.h*rand(.30,.66),
-        w:rand(95,175),
+        w:rand(95,175),scale:state.gameScale,
         angle:rand(-.18,.14),
         sway:rand(0,6),
         r:28
@@ -462,7 +478,7 @@
     ui.time.style.width=clamp(state.time/state.maxTime*100,0,100)+'%';
     ui.timeText.textContent=Math.max(0,Math.ceil(state.time));
     const n=nest();
-    const resting=!owl.carrying&&state.hearts<state.maxHearts&&dist2(owl,n)<(n.r+owl.r-5)**2;
+    const resting=!owl.carrying&&state.hearts<state.maxHearts&&dist2(owl,n)<(n.r+owl.r-5*state.gameScale)**2;
     ui.mission.textContent=owl.carrying
       ? `Beute im Fang. Bring sie zum Nest.`
       : resting
@@ -484,13 +500,14 @@
   }
 
   function floater(x,y,text,color='#fff',size=20){
-    state.floaters.push({x,y,text,color,size,life:1,max:1});
+    state.floaters.push({x,y,text,color,size:size*state.gameScale,life:1,max:1});
   }
 
   function burst(x,y,color,count=20,power=180){
+    power*=state.gameScale;
     for(let i=0;i<count;i++){
       const a=Math.random()*Math.PI*2,s=rand(35,power);
-      state.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:rand(.45,1),max:1,color,size:rand(2,6),spin:rand(-5,5)});
+      state.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:rand(.45,1),max:1,color,size:rand(2,6)*state.gameScale,spin:rand(-5,5)});
     }
   }
 
@@ -505,28 +522,31 @@
     if(phase===2 && !owl.carrying && !state.mice.some(m=>m.type==='gold') && state.phaseDelivered===0) type='gold';
 
     const fromRight=Math.random()>.5;
+    const s=state.gameScale;
     const config={
       normal:{speed:rand(70,105),r:16,value:120,color:'#aeb4c0'},
       swift:{speed:rand(125,165),r:15,value:220,color:'#d07c69'},
       gold:{speed:rand(105,145),r:17,value:850,color:'#ffd469'}
     }[type];
     state.mice.push({
-      type,x:fromRight?state.w+35:-35,y:state.groundY-rand(17,25),
-      dir:fromRight?-1:1,speed:config.speed,r:config.r,value:config.value,color:config.color,
+      type,x:fromRight?state.w+35*s:-35*s,y:state.groundY-rand(17,25)*s,
+      dir:fromRight?-1:1,speed:config.speed*s,r:config.r*s,value:config.value,color:config.color,
       phase:rand(0,6),turn:rand(1.8,4.5),dash:0,glow:rand(0,6)
     });
   }
 
   function spawnBat(){
     const fromRight=Math.random()>.5;
+    const s=state.gameScale;
     state.bats.push({
-      x:fromRight?state.w+50:-50,y:state.h*rand(.23,.65),dir:fromRight?-1:1,
-      speed:rand(105,175)+state.phaseIndex*18,r:23,phase:rand(0,6),turn:rand(1,3)
+      x:fromRight?state.w+50*s:-50*s,y:state.h*rand(.23,.65),dir:fromRight?-1:1,
+      speed:(rand(105,175)+state.phaseIndex*18)*s,r:23*s,phase:rand(0,6),turn:rand(1,3)
     });
   }
 
   function spawnFirefly(){
-    state.fireflies.push({x:rand(70,state.w-70),y:rand(state.h*.30,state.groundY-70),r:11,phase:rand(0,6),life:rand(8,14)});
+    const margin=70*state.gameScale;
+    state.fireflies.push({x:rand(margin,state.w-margin),y:rand(state.h*.30,state.groundY-margin),r:11*state.gameScale,phase:rand(0,6),life:rand(8,14)});
   }
 
   function activateDive(){
@@ -541,15 +561,15 @@
     const len=Math.hypot(dx,dy)||1;
     owl.diveDirX=dx/len;owl.diveDirY=dy/len;
     owl.dive=true;owl.diveTime=.58;state.energy-=22;
-    owl.vx+=owl.diveDirX*720;owl.vy+=owl.diveDirY*720;
-    state.rings.push({x:owl.x,y:owl.y,r:12,life:.35,max:.35,color:'rgba(255,212,105,.8)'});
+    owl.vx+=owl.diveDirX*720*state.gameScale;owl.vy+=owl.diveDirY*720*state.gameScale;
+    state.rings.push({x:owl.x,y:owl.y,r:12*state.gameScale,life:.35,max:.35,color:'rgba(255,212,105,.8)'});
     sfx('dive');
   }
 
   function activateEcho(){
     if(!state.running||state.paused||state.energy<34||state.echo>0) return;
     state.energy-=34;state.echo=2.8;
-    state.rings.push({x:owl.x,y:owl.y,r:20,life:1.15,max:1.15,color:'rgba(130,231,255,.85)',sonar:true});
+    state.rings.push({x:owl.x,y:owl.y,r:20*state.gameScale,life:1.15,max:1.15,color:'rgba(130,231,255,.85)',sonar:true});
     showToast('ECHO-ORTUNG','#82e7ff',850);sfx('echo');
   }
 
@@ -557,8 +577,8 @@
     if(!owl.carrying) return;
     const p=owl.carrying;
     state.mice.push({
-      type:p.type,x:owl.x,y:state.groundY-22,dir:Math.random()>.5?1:-1,
-      speed:p.type==='gold'?135:(p.type==='swift'?155:95),r:p.type==='gold'?17:16,value:p.value,
+      type:p.type,x:owl.x,y:state.groundY-22*state.gameScale,dir:Math.random()>.5?1:-1,
+      speed:(p.type==='gold'?135:(p.type==='swift'?155:95))*state.gameScale,r:(p.type==='gold'?17:16)*state.gameScale,value:p.value,
       color:p.type==='gold'?'#ffd469':(p.type==='swift'?'#d07c69':'#aeb4c0'),phase:0,turn:2,dash:.45,glow:0
     });
     owl.carrying=null;
@@ -649,19 +669,19 @@
       if(d>18){ax+=dx/d;ay+=dy/d}
     }
 
-    const acc=owl.carrying?560:720;
+    const acc=(owl.carrying?560:720)*state.gameScale;
     owl.vx+=ax*acc*dt;owl.vy+=ay*acc*dt;
     const damping=Math.pow(owl.dive?.22:.12,dt);
     owl.vx*=damping;owl.vy*=damping;
 
     if(owl.dive){
       owl.diveTime-=dt;
-      owl.vx+=owl.diveDirX*500*dt;owl.vy+=owl.diveDirY*500*dt;
+      owl.vx+=owl.diveDirX*500*state.gameScale*dt;owl.vy+=owl.diveDirY*500*state.gameScale*dt;
       if(owl.diveTime<=0)owl.dive=false;
       if(Math.random()<.65) state.particles.push({x:owl.x-rand(-8,8),y:owl.y+rand(-5,5),vx:-owl.diveDirX*rand(80,170),vy:-owl.diveDirY*rand(80,170),life:.25,max:.25,color:'rgba(255,232,168,.75)',size:rand(2,5),spin:0});
     }
 
-    const speedLimit=owl.carrying?330:(owl.dive?700:430);
+    const speedLimit=(owl.carrying?330:(owl.dive?700:430))*state.gameScale;
     const sp=Math.hypot(owl.vx,owl.vy);
     if(sp>speedLimit){owl.vx=owl.vx/sp*speedLimit;owl.vy=owl.vy/sp*speedLimit}
     if(sp>8)owl.angle=Math.atan2(owl.vy,owl.vx);
@@ -669,8 +689,10 @@
     owl.x+=owl.vx*dt;owl.y+=owl.vy*dt;
     // Der alte Fehler lag hier: Die Eule war bei 70 % der Höhe abgeschnitten.
     // Jetzt ist der komplette Bereich bis knapp über den Boden erreichbar.
-    owl.x=clamp(owl.x,38,state.w-38);
-    owl.y=clamp(owl.y,88,state.groundY-20);
+    const owlEdge=38*state.gameScale;
+    const playTop=state.h<600?74:(state.touchMode?150:88);
+    owl.x=clamp(owl.x,owlEdge,state.w-owlEdge);
+    owl.y=clamp(owl.y,playTop,state.groundY-20*state.gameScale);
 
     const slow=state.echo>0?.42:1;
     state.mouseClock-=dt;
@@ -696,15 +718,16 @@
       m.dash=Math.max(0,m.dash-dt);
       const ms=m.speed*(m.dash>0?1.75:1)*slow;
       m.x+=m.dir*ms*dt;
-      if(m.x<22){m.x=22;m.dir=1}if(m.x>state.w-22){m.x=state.w-22;m.dir=-1}
+      const mouseEdge=22*state.gameScale;
+      if(m.x<mouseEdge){m.x=mouseEdge;m.dir=1}if(m.x>state.w-mouseEdge){m.x=state.w-mouseEdge;m.dir=-1}
     }
 
     for(const b of state.bats){
       b.phase+=dt*10;b.turn-=dt;
       if(b.turn<=0){b.turn=rand(1,2.7);if(Math.random()<.35)b.dir*=-1}
       b.x+=b.dir*b.speed*slow*dt;b.y+=Math.sin(b.phase)*22*dt*slow;
-      if(b.x<-65)b.x=state.w+60;if(b.x>state.w+65)b.x=-60;
-      b.y=clamp(b.y,state.h*.2,state.groundY-95);
+      if(b.x<-65*state.gameScale)b.x=state.w+60*state.gameScale;if(b.x>state.w+65*state.gameScale)b.x=-60*state.gameScale;
+      b.y=clamp(b.y,state.h*.2,state.groundY-95*state.gameScale);
     }
 
     for(const f of state.fireflies){f.phase+=dt*4;f.life-=dt;f.x+=Math.sin(f.phase*.7)*6*dt;f.y+=Math.cos(f.phase)*5*dt}
@@ -715,7 +738,7 @@
     }
 
     const n=nest();
-    const atNest=dist2(owl,n)<(n.r+owl.r-8)**2;
+    const atNest=dist2(owl,n)<(n.r+owl.r-8*state.gameScale)**2;
     if(owl.carrying&&atNest)deliverPrey();
 
     state.restCooldown=Math.max(0,state.restCooldown-dt);
@@ -741,8 +764,7 @@
       for(const b of state.bats){if(collide(owl,b,-8)){damage();break}}
       if(owl.invuln<=0){
         for(const br of state.branches){
-          const bx=br.x+Math.cos(br.angle)*br.w*.5,by=br.y+Math.sin(br.angle)*br.w*.5;
-          const hazard={x:bx,y:by,r:Math.min(34,br.w*.25)};
+          const hazard={x:br.x+Math.cos(br.angle)*br.w*.5*br.scale,y:br.y+Math.sin(br.angle)*br.w*.5*br.scale,r:Math.min(34,br.w*.25)*br.scale};
           if(collide(owl,hazard,-7)){damage();break}
         }
       }
@@ -763,7 +785,7 @@
       const f=state.floaters[i];f.life-=dt;f.y-=38*dt;if(f.life<=0)state.floaters.splice(i,1);
     }
     for(let i=state.rings.length-1;i>=0;i--){
-      const r=state.rings[i];r.life-=dt;r.r+=dt*(r.sonar?520:260);if(r.life<=0)state.rings.splice(i,1);
+      const r=state.rings[i];r.life-=dt;r.r+=dt*(r.sonar?520:260)*state.gameScale;if(r.life<=0)state.rings.splice(i,1);
     }
 
     if(state.time<=0&&!state.ended)finish(false);
@@ -789,14 +811,14 @@
     }
     ctx.globalAlpha=1;
 
-    const mx=state.w*.82,my=state.h*.16;
-    ctx.shadowColor='rgba(255,236,174,.55)';ctx.shadowBlur=30;ctx.fillStyle='#ffedb6';ctx.beginPath();ctx.arc(mx,my,42,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-    ctx.fillStyle='rgba(31,39,62,.18)';ctx.beginPath();ctx.arc(mx+13,my-7,38,0,Math.PI*2);ctx.fill();
+    const mx=state.w*.82,my=state.h*.16,s=state.gameScale;
+    ctx.shadowColor='rgba(255,236,174,.55)';ctx.shadowBlur=30*s;ctx.fillStyle='#ffedb6';ctx.beginPath();ctx.arc(mx,my,42*s,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(31,39,62,.18)';ctx.beginPath();ctx.arc(mx+13*s,my-7*s,38*s,0,Math.PI*2);ctx.fill();
 
     for(const c of state.clouds){
       c.x=(c.x+c.v*.016)%1.2;
       ctx.globalAlpha=c.a;ctx.fillStyle='#d7e0ef';
-      const x=(c.x-.1)*state.w,y=c.y*state.h,w=190*c.s,h=42*c.s;
+      const x=(c.x-.1)*state.w,y=c.y*state.h,w=190*c.s*s,h=42*c.s*s;
       ctx.beginPath();ctx.ellipse(x,y,w*.55,h*.6,0,0,Math.PI*2);ctx.ellipse(x+w*.32,y-12*c.s,w*.35,h*.8,0,0,Math.PI*2);ctx.ellipse(x+w*.58,y,w*.42,h*.58,0,0,Math.PI*2);ctx.fill();
     }
     ctx.globalAlpha=1;
@@ -831,7 +853,7 @@
 
   function drawNest(){
     const n=nest();
-    ctx.save();ctx.translate(n.x,n.y);
+    ctx.save();ctx.translate(n.x,n.y);ctx.scale(state.gameScale,state.gameScale);
     ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=15;ctx.shadowOffsetY=8;
     ctx.strokeStyle='#20150d';ctx.lineWidth=6;ctx.lineCap='round';
     for(let i=0;i<18;i++){
@@ -854,7 +876,7 @@
   }
 
   function drawBranch(br){
-    ctx.save();ctx.translate(br.x,br.y);ctx.rotate(br.angle+Math.sin(state.elapsed*1.2+br.sway)*.015);
+    ctx.save();ctx.translate(br.x,br.y);ctx.rotate(br.angle+Math.sin(state.elapsed*1.2+br.sway)*.015);ctx.scale(br.scale,br.scale);
     ctx.lineCap='round';ctx.strokeStyle='#17100c';ctx.lineWidth=26;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(br.w,0);ctx.stroke();
     ctx.strokeStyle='#6e452d';ctx.lineWidth=18;ctx.stroke();
     ctx.strokeStyle='#17100c';ctx.lineWidth=13;ctx.beginPath();ctx.moveTo(br.w*.55,0);ctx.lineTo(br.w*.72,-36);ctx.stroke();
@@ -865,9 +887,10 @@
   }
 
   function drawMouse(m){
-    ctx.save();ctx.translate(m.x,m.y+Math.sin(m.phase)*2);ctx.scale(m.dir,1);
+    const s=state.gameScale;
+    ctx.save();ctx.translate(m.x,m.y+Math.sin(m.phase)*2*s);ctx.scale(m.dir*s,s);
     if(state.echo>0||m.type==='gold'){
-      ctx.globalAlpha=.23+.12*Math.sin(m.glow);ctx.fillStyle=m.color;ctx.beginPath();ctx.arc(0,0,m.r*2.4,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+      ctx.globalAlpha=.23+.12*Math.sin(m.glow);ctx.fillStyle=m.color;ctx.beginPath();ctx.arc(0,0,m.r/s*2.4,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
     }
     ctx.strokeStyle='#17191d';ctx.lineWidth=4;ctx.lineJoin='round';
     ctx.fillStyle=m.color;ctx.beginPath();ctx.ellipse(0,0,24,15,-.04,0,Math.PI*2);ctx.fill();ctx.stroke();
@@ -884,7 +907,7 @@
   }
 
   function drawBat(b){
-    ctx.save();ctx.translate(b.x,b.y);ctx.scale(b.dir,1);
+    ctx.save();ctx.translate(b.x,b.y);ctx.scale(b.dir*state.gameScale,state.gameScale);
     if(state.echo>0){ctx.globalAlpha=.15;ctx.fillStyle='#82e7ff';ctx.beginPath();ctx.arc(0,0,42,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
     const flap=Math.sin(b.phase)*12;
     ctx.fillStyle='#302943';ctx.strokeStyle='#111019';ctx.lineWidth=4;ctx.lineJoin='round';
@@ -896,13 +919,13 @@
 
   function drawFirefly(f){
     const pulse=.65+.35*Math.sin(f.phase*2);
-    ctx.save();ctx.translate(f.x,f.y);ctx.globalAlpha=.18*pulse;ctx.fillStyle='#c8ff84';ctx.beginPath();ctx.arc(0,0,25,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    ctx.save();ctx.translate(f.x,f.y);ctx.scale(state.gameScale,state.gameScale);ctx.globalAlpha=.18*pulse;ctx.fillStyle='#c8ff84';ctx.beginPath();ctx.arc(0,0,25,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
     ctx.fillStyle='#ecffad';ctx.beginPath();ctx.arc(0,0,4.5,0,Math.PI*2);ctx.fill();
     ctx.strokeStyle='rgba(220,255,191,.55)';ctx.lineWidth=1.3;ctx.beginPath();ctx.ellipse(-5,-1,6,3,-.5,0,Math.PI*2);ctx.ellipse(5,-1,6,3,.5,0,Math.PI*2);ctx.stroke();ctx.restore();
   }
 
   function drawOwl(){
-    ctx.save();ctx.translate(owl.x,owl.y);
+    ctx.save();ctx.translate(owl.x,owl.y);ctx.scale(state.gameScale,state.gameScale);
     let drawAngle=clamp(owl.angle,-.65,.65);
     if(owl.dive)drawAngle=owl.angle;
     ctx.rotate(drawAngle*.45);
