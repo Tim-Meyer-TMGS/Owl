@@ -80,6 +80,23 @@
   .mobileGuide{display:none;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0 15px}
   .guideItem{padding:8px 4px;border:0;border-radius:0;background:transparent;color:var(--muted);font-size:0}
   .guideItem strong{display:block;margin:0;color:white;font-size:1.5rem;line-height:1}
+  .progressHub{margin:14px 0 12px;text-align:left}
+  .progressMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:.76rem}
+  .progressMeta strong{color:var(--gold);font-size:.88rem}
+  .xpBar{height:5px;margin:6px 0 10px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.1)}
+  .xpBar span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#82e7ff,#7ee09b);transition:width .25s ease}
+  .owlPicker{display:flex;gap:6px;overflow-x:auto;padding:2px 1px 7px;scrollbar-width:thin;scroll-snap-type:x proximity}
+  .owlChoice{flex:0 0 70px;width:70px;padding:4px 2px;border:1px solid transparent;border-radius:13px;background:transparent;color:var(--muted);box-shadow:none;scroll-snap-align:start}
+  .owlChoice:hover{filter:none;color:white}
+  .owlChoice.selected{border-color:rgba(255,212,105,.7);color:white;background:rgba(255,212,105,.06)}
+  .owlChoice.locked{opacity:.42}
+  .owlAvatar{display:grid;place-items:center;width:42px;height:42px;margin:0 auto 4px;border-radius:50%;border:2px solid rgba(255,255,255,.3);background:var(--owl-color,#8b6345);color:#fff4d2;font-size:.68rem;font-weight:950;box-shadow:inset 0 -8px 0 rgba(0,0,0,.15)}
+  .owlChoice small{display:block;overflow:hidden;text-overflow:ellipsis;font-size:.62rem;white-space:nowrap}
+  .owlDetail{min-height:34px;padding:5px 2px;color:var(--muted);font-size:.72rem;line-height:1.35;text-align:center}
+  .owlDetail strong{color:white}.owlPlus{color:#7ee09b}.owlMinus{color:#ff9b9b}
+  .upgradeGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .upgradeBtn{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.05);color:white;box-shadow:none;font-size:.78rem}
+  .upgradeBtn small{color:var(--muted);font-size:.65rem}.upgradeBtn:disabled{opacity:.4;cursor:not-allowed}
   kbd{display:inline-grid;place-items:center;min-width:28px;height:27px;padding:0 7px;margin-right:4px;border-radius:7px;border:1px solid var(--line);background:#172139;color:white;font:700 .75rem/1 inherit;box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
   button{
     appearance:none;border:0;border-radius:14px;padding:13px 18px;width:100%;cursor:pointer;
@@ -109,7 +126,7 @@
   .mobile .echo{background:rgba(130,231,255,.83);color:#08212a}
   #touchHint{display:none;position:absolute;z-index:24;left:50%;bottom:max(108px,calc(env(safe-area-inset-bottom) + 96px));transform:translateX(-50%);padding:7px 11px;border-radius:999px;background:rgba(9,15,29,.72);border:1px solid var(--line);color:var(--muted);font-size:.76rem;pointer-events:none;white-space:nowrap}
   .restHint{color:#a9d7b0}
-  .resultGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+  .resultGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
   .resultCell{padding:12px 8px;border:1px solid rgba(255,255,255,.1);border-radius:13px;background:rgba(255,255,255,.035)}
   .resultCell strong{display:block;font-size:1.35rem;color:var(--gold)}
   .resultCell span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
@@ -129,6 +146,12 @@
     .desktopLead{display:none}
     .mobileLead{display:inline}
     .mobileGuide{display:grid}
+    .progressHub{margin:8px 0 6px}
+    .owlPicker{gap:3px;padding-bottom:4px}
+    .owlChoice{flex-basis:58px;width:58px;padding:2px 1px}
+    .owlAvatar{width:34px;height:34px;margin-bottom:2px;font-size:.58rem}
+    .owlDetail{min-height:29px;padding:2px;font-size:.65rem}
+    .upgradeBtn{padding:7px 9px;font-size:.72rem}
     .mobile{display:flex;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}
     #touchHint{display:none}
     #soundBtn{width:38px;height:38px;bottom:67px;right:9px;font-size:.8rem}
@@ -177,6 +200,9 @@
     .joystick::before{inset:17px}
     .joystickKnob{width:30px;height:30px}
     .mobileGuide{max-width:430px;margin:6px auto 8px;gap:5px}
+    .progressHub{margin:4px 0}.xpBar{margin:3px 0 4px}.owlPicker{justify-content:center;overflow:visible;padding-bottom:2px}
+    .owlChoice{flex-basis:52px;width:52px}.owlAvatar{width:29px;height:29px}.owlDetail{min-height:20px;font-size:.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .upgradeGrid{max-width:430px;margin:auto}.upgradeBtn{padding:5px 8px}
     .guideItem{padding:5px 4px;font-size:.66rem}
     .guideItem strong{font-size:1.1rem;margin-bottom:2px}
   }

@@ -16,8 +16,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "meadow",
         "intro": "Die erste Jagd beginnt am ruhigen Wiesenrand.",
-        "mission": "Liefere 3 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×3 zum Nest",
+        "mission": "Sammle 30 Futterpunkte im Nest.",
+        "shortMission": "30 Futterpunkte",
         "scenery": {
           "terrain": "rolling-hills",
           "trees": [
@@ -31,8 +31,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 3,
+        "type": "foodPoints",
+        "target": 30,
         "requiredPrey": null
       },
       "timeBonusSeconds": 0,
@@ -93,8 +93,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "meadow",
         "intro": "Zwischen engen Hecken werden die ersten Ausweichmanöver nötig.",
-        "mission": "Liefere 3 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×3 zum Nest",
+        "mission": "Sammle 35 Futterpunkte im Nest.",
+        "shortMission": "35 Futterpunkte",
         "scenery": {
           "terrain": "rolling-hills",
           "trees": [
@@ -108,8 +108,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 3,
+        "type": "foodPoints",
+        "target": 35,
         "requiredPrey": null
       },
       "timeBonusSeconds": 19,
@@ -170,8 +170,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "forest",
         "intro": "Am Bachufer huscht die Beute zwischen Wasser und Wurzeln.",
-        "mission": "Liefere 3 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×3 zum Nest",
+        "mission": "Sammle 40 Futterpunkte im Nest.",
+        "shortMission": "40 Futterpunkte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -187,8 +187,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 3,
+        "type": "foodPoints",
+        "target": 40,
         "requiredPrey": null
       },
       "timeBonusSeconds": 19,
@@ -250,8 +250,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "forest",
         "intro": "Im Mondwald kreuzen mehr Fledermäuse und Äste deinen Weg.",
-        "mission": "Liefere 3 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×3 zum Nest",
+        "mission": "Sammle 45 Futterpunkte im Nest.",
+        "shortMission": "45 Futterpunkte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -267,8 +267,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 3,
+        "type": "foodPoints",
+        "target": 45,
         "requiredPrey": null
       },
       "timeBonusSeconds": 20,
@@ -330,8 +330,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "forest",
         "intro": "Der Dornenhain lässt nur schmale Flugwege offen.",
-        "mission": "Liefere 4 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×4 zum Nest",
+        "mission": "Sammle 50 Futterpunkte im Nest.",
+        "shortMission": "50 Futterpunkte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -347,8 +347,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 4,
+        "type": "foodPoints",
+        "target": 50,
         "requiredPrey": null
       },
       "timeBonusSeconds": 21,
@@ -411,8 +411,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "mist",
         "intro": "Im Nebelmoor verschwinden Beute und Hindernisse im Dunst.",
-        "mission": "Liefere 4 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×4 zum Nest",
+        "mission": "Sammle 55 Futterpunkte im Nest.",
+        "shortMission": "55 Futterpunkte",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -428,8 +428,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 4,
+        "type": "foodPoints",
+        "target": 55,
         "requiredPrey": null
       },
       "timeBonusSeconds": 21,
@@ -492,8 +492,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "mist",
         "intro": "Frösche springen unberechenbar durch den tiefen Sumpf.",
-        "mission": "Liefere 4 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×4 zum Nest",
+        "mission": "Sammle 60 Futterpunkte im Nest.",
+        "shortMission": "60 Futterpunkte",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -509,8 +509,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 4,
+        "type": "foodPoints",
+        "target": 60,
         "requiredPrey": null
       },
       "timeBonusSeconds": 22,
@@ -573,8 +573,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "mist",
         "intro": "Kleine Käfer verstecken sich zwischen dichten Nebelbänken.",
-        "mission": "Liefere 4 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×4 zum Nest",
+        "mission": "Sammle 65 Futterpunkte im Nest.",
+        "shortMission": "65 Futterpunkte",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -590,8 +590,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 4,
+        "type": "foodPoints",
+        "target": 65,
         "requiredPrey": null
       },
       "timeBonusSeconds": 23,
@@ -654,8 +654,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "forest",
         "intro": "Rund um die Alte Eiche wird der Luftraum immer enger.",
-        "mission": "Liefere 5 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×5 zum Nest",
+        "mission": "Sammle 70 Futterpunkte im Nest.",
+        "shortMission": "70 Futterpunkte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -671,8 +671,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 5,
+        "type": "foodPoints",
+        "target": 70,
         "requiredPrey": null
       },
       "timeBonusSeconds": 23,
@@ -735,8 +735,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "gold",
         "intro": "Eine seltene goldene Maus erscheint zwischen den Wurzeln.",
-        "mission": "Fange die goldene Maus und bringe sie sicher zum Nest.",
-        "shortMission": "Goldbeute ×1 zum Nest",
+        "mission": "Sammle 50 Futterpunkte mit goldener Beute.",
+        "shortMission": "Gold 50 Punkte",
         "scenery": {
           "terrain": "autumn-hills",
           "trees": [
@@ -751,8 +751,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 1,
+        "type": "foodPoints",
+        "target": 50,
         "requiredPrey": "gold"
       },
       "timeBonusSeconds": 24,
@@ -816,8 +816,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "storm",
         "intro": "An den Sturmklippen jagen Schwärme durch peitschenden Wind.",
-        "mission": "Liefere 5 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×5 zum Nest",
+        "mission": "Sammle 80 Futterpunkte im Nest.",
+        "shortMission": "80 Futterpunkte",
         "scenery": {
           "terrain": "cliffs",
           "trees": [
@@ -832,8 +832,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 5,
+        "type": "foodPoints",
+        "target": 80,
         "requiredPrey": null
       },
       "timeBonusSeconds": 25,
@@ -896,8 +896,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "storm",
         "intro": "In der Windschlucht bleibt kaum Zeit für Kurskorrekturen.",
-        "mission": "Liefere 5 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×5 zum Nest",
+        "mission": "Sammle 85 Futterpunkte im Nest.",
+        "shortMission": "85 Futterpunkte",
         "scenery": {
           "terrain": "cliffs",
           "trees": [
@@ -912,8 +912,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 5,
+        "type": "foodPoints",
+        "target": 85,
         "requiredPrey": null
       },
       "timeBonusSeconds": 25,
@@ -976,8 +976,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "forest",
         "intro": "Das Dunkeltal ist voller schneller Beute und verborgener Äste.",
-        "mission": "Liefere 6 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×6 zum Nest",
+        "mission": "Sammle 90 Futterpunkte im Nest.",
+        "shortMission": "90 Futterpunkte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -993,8 +993,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 6,
+        "type": "foodPoints",
+        "target": 90,
         "requiredPrey": null
       },
       "timeBonusSeconds": 26,
@@ -1057,8 +1057,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "forest",
         "intro": "Aus der Höhle brechen immer neue Fledermauswellen hervor.",
-        "mission": "Liefere 6 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×6 zum Nest",
+        "mission": "Sammle 95 Futterpunkte im Nest.",
+        "shortMission": "95 Futterpunkte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -1074,8 +1074,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 6,
+        "type": "foodPoints",
+        "target": 95,
         "requiredPrey": null
       },
       "timeBonusSeconds": 27,
@@ -1139,8 +1139,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "mist",
         "intro": "Blasser Dunst verschluckt jede sichere Fluglinie.",
-        "mission": "Liefere 6 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×6 zum Nest",
+        "mission": "Sammle 100 Futterpunkte im Nest.",
+        "shortMission": "100 Futterpunkte",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -1156,8 +1156,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 6,
+        "type": "foodPoints",
+        "target": 100,
         "requiredPrey": null
       },
       "timeBonusSeconds": 27,
@@ -1221,8 +1221,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "mist",
         "intro": "Über dem Silbersee spiegeln sich Beute und Gefahren im Nebel.",
-        "mission": "Liefere 6 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×6 zum Nest",
+        "mission": "Sammle 110 Futterpunkte im Nest.",
+        "shortMission": "110 Futterpunkte",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -1238,8 +1238,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 6,
+        "type": "foodPoints",
+        "target": 110,
         "requiredPrey": null
       },
       "timeBonusSeconds": 28,
@@ -1303,8 +1303,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "meadow",
         "intro": "Die kalte Frostwiese fordert lange Wege und schnelle Lieferungen.",
-        "mission": "Liefere 7 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×7 zum Nest",
+        "mission": "Sammle 120 Futterpunkte im Nest.",
+        "shortMission": "120 Futterpunkte",
         "scenery": {
           "terrain": "rolling-hills",
           "trees": [
@@ -1318,8 +1318,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 7,
+        "type": "foodPoints",
+        "target": 120,
         "requiredPrey": null
       },
       "timeBonusSeconds": 29,
@@ -1383,8 +1383,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "forest",
         "intro": "Im Schattenbruch wechseln ruhige Momente und dichte Wellen.",
-        "mission": "Liefere 7 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×7 zum Nest",
+        "mission": "Sammle 130 Futterpunkte im Nest.",
+        "shortMission": "130 Futterpunkte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -1400,8 +1400,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 7,
+        "type": "foodPoints",
+        "target": 130,
         "requiredPrey": null
       },
       "timeBonusSeconds": 29,
@@ -1465,8 +1465,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "mist",
         "intro": "Irrlichter locken dich zwischen Äste und schnelle Tiere.",
-        "mission": "Liefere 7 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×7 zum Nest",
+        "mission": "Sammle 140 Futterpunkte im Nest.",
+        "shortMission": "140 Futterpunkte",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -1482,8 +1482,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 7,
+        "type": "foodPoints",
+        "target": 140,
         "requiredPrey": null
       },
       "timeBonusSeconds": 30,
@@ -1547,8 +1547,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "gold",
         "intro": "Zwei goldene Mäuse müssen durch den Goldregen getragen werden.",
-        "mission": "Fange 2 goldene Mäuse und bringe sie einzeln sicher zum Nest.",
-        "shortMission": "Goldbeute ×2 zum Nest",
+        "mission": "Sammle 100 Futterpunkte mit goldener Beute.",
+        "shortMission": "Gold 100 Punkte",
         "scenery": {
           "terrain": "autumn-hills",
           "trees": [
@@ -1563,8 +1563,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 2,
+        "type": "foodPoints",
+        "target": 100,
         "requiredPrey": "gold"
       },
       "timeBonusSeconds": 31,
@@ -1628,8 +1628,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "storm",
         "intro": "Blitze erhellen am Donnergrat gewaltige Fledermausschwärme.",
-        "mission": "Liefere 8 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×8 zum Nest",
+        "mission": "Sammle 150 Futterpunkte im Nest.",
+        "shortMission": "150 Futterpunkte",
         "scenery": {
           "terrain": "cliffs",
           "trees": [
@@ -1644,8 +1644,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 8,
+        "type": "foodPoints",
+        "target": 150,
         "requiredPrey": null
       },
       "timeBonusSeconds": 31,
@@ -1709,8 +1709,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "forest",
         "intro": "Der Schwarze Forst verzeiht kaum einen Zusammenstoß.",
-        "mission": "Liefere 8 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×8 zum Nest",
+        "mission": "Sammle 160 Futterpunkte im Nest.",
+        "shortMission": "160 Futterpunkte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -1726,8 +1726,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 8,
+        "type": "foodPoints",
+        "target": 160,
         "requiredPrey": null
       },
       "timeBonusSeconds": 32,
@@ -1791,8 +1791,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "mist",
         "intro": "Im Mondsichelmoor wird die Nacht spürbar kürzer.",
-        "mission": "Liefere 8 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×8 zum Nest",
+        "mission": "Sammle 170 Futterpunkte im Nest.",
+        "shortMission": "170 Futterpunkte",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -1808,8 +1808,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 8,
+        "type": "foodPoints",
+        "target": 170,
         "requiredPrey": null
       },
       "timeBonusSeconds": 32,
@@ -1873,8 +1873,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "storm",
         "intro": "Nur Echo-Ortung schafft Übersicht in der überfüllten Schlucht.",
-        "mission": "Liefere 8 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×8 zum Nest",
+        "mission": "Sammle 180 Futterpunkte im Nest.",
+        "shortMission": "180 Futterpunkte",
         "scenery": {
           "terrain": "cliffs",
           "trees": [
@@ -1889,8 +1889,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 8,
+        "type": "foodPoints",
+        "target": 180,
         "requiredPrey": null
       },
       "timeBonusSeconds": 33,
@@ -1954,8 +1954,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "gold",
         "intro": "Die Dämmerung rückt näher und jede Lieferung zählt.",
-        "mission": "Liefere 9 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×9 zum Nest",
+        "mission": "Sammle 190 Futterpunkte im Nest.",
+        "shortMission": "190 Futterpunkte",
         "scenery": {
           "terrain": "autumn-hills",
           "trees": [
@@ -1970,8 +1970,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 9,
+        "type": "foodPoints",
+        "target": 190,
         "requiredPrey": null
       },
       "timeBonusSeconds": 34,
@@ -2035,8 +2035,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "blood",
         "intro": "Der Blutmond weckt den gesamten Wald zu einer wilden Jagd.",
-        "mission": "Liefere 9 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×9 zum Nest",
+        "mission": "Sammle 200 Futterpunkte im Nest.",
+        "shortMission": "200 Futterpunkte",
         "scenery": {
           "terrain": "deadlands",
           "trees": [
@@ -2051,8 +2051,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 9,
+        "type": "foodPoints",
+        "target": 200,
         "requiredPrey": null
       },
       "timeBonusSeconds": 34,
@@ -2116,8 +2116,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "storm",
         "intro": "Sturm, Äste und Schwärme treffen ohne Pause aufeinander.",
-        "mission": "Liefere 9 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×9 zum Nest",
+        "mission": "Sammle 215 Futterpunkte im Nest.",
+        "shortMission": "215 Futterpunkte",
         "scenery": {
           "terrain": "cliffs",
           "trees": [
@@ -2132,8 +2132,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 9,
+        "type": "foodPoints",
+        "target": 215,
         "requiredPrey": null
       },
       "timeBonusSeconds": 35,
@@ -2197,8 +2197,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "blood",
         "intro": "Auf der letzten Lichtung bleibt kein sicherer Flugweg.",
-        "mission": "Liefere 9 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×9 zum Nest",
+        "mission": "Sammle 230 Futterpunkte im Nest.",
+        "shortMission": "230 Futterpunkte",
         "scenery": {
           "terrain": "deadlands",
           "trees": [
@@ -2213,8 +2213,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 9,
+        "type": "foodPoints",
+        "target": 230,
         "requiredPrey": null
       },
       "timeBonusSeconds": 36,
@@ -2278,8 +2278,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "gold",
         "intro": "Das erste Licht erscheint bereits über den Baumkronen.",
-        "mission": "Liefere 10 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×10 zum Nest",
+        "mission": "Sammle 245 Futterpunkte im Nest.",
+        "shortMission": "245 Futterpunkte",
         "scenery": {
           "terrain": "autumn-hills",
           "trees": [
@@ -2294,8 +2294,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 10,
+        "type": "foodPoints",
+        "target": 245,
         "requiredPrey": null
       },
       "timeBonusSeconds": 36,
@@ -2359,8 +2359,8 @@ window.OWL_LEVEL_DATA = {
       "presentation": {
         "theme": "blood",
         "intro": "Die schwerste Jagd vereint alle Tiere und Gefahren der Nacht.",
-        "mission": "Liefere 10 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×10 zum Nest",
+        "mission": "Sammle 260 Futterpunkte im Nest.",
+        "shortMission": "260 Futterpunkte",
         "scenery": {
           "terrain": "deadlands",
           "trees": [
@@ -2375,8 +2375,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "deliver",
-        "target": 10,
+        "type": "foodPoints",
+        "target": 260,
         "requiredPrey": null
       },
       "timeBonusSeconds": 37,
