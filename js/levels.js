@@ -1,4 +1,4 @@
-/* Generated from data/levels.json. Run tools/build-levels.ps1 after editing the JSON source. */
+﻿/* Generated from data/levels.json. Run tools/build-levels.ps1 after editing the JSON source. */
 window.OWL_LEVEL_DATA = {
   "formatVersion": 1,
   "campaign": {
@@ -17,7 +17,18 @@ window.OWL_LEVEL_DATA = {
         "theme": "meadow",
         "intro": "Die erste Jagd beginnt am ruhigen Wiesenrand.",
         "mission": "Liefere 3 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×3 zum Nest"
+        "shortMission": "Beute ×3 zum Nest",
+        "scenery": {
+          "terrain": "rolling-hills",
+          "trees": [
+            "oak",
+            "birch"
+          ],
+          "obstacles": [
+            "stump",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -83,7 +94,18 @@ window.OWL_LEVEL_DATA = {
         "theme": "meadow",
         "intro": "Zwischen engen Hecken werden die ersten Ausweichmanöver nötig.",
         "mission": "Liefere 3 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×3 zum Nest"
+        "shortMission": "Beute ×3 zum Nest",
+        "scenery": {
+          "terrain": "rolling-hills",
+          "trees": [
+            "birch",
+            "oak"
+          ],
+          "obstacles": [
+            "branch",
+            "stump"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -149,7 +171,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "forest",
         "intro": "Am Bachufer huscht die Beute zwischen Wasser und Wurzeln.",
         "mission": "Liefere 3 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×3 zum Nest"
+        "shortMission": "Beute ×3 zum Nest",
+        "scenery": {
+          "terrain": "deep-forest",
+          "trees": [
+            "pine",
+            "oak",
+            "birch"
+          ],
+          "obstacles": [
+            "branch",
+            "thorn",
+            "trunk"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -216,7 +251,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "forest",
         "intro": "Im Mondwald kreuzen mehr Fledermäuse und Äste deinen Weg.",
         "mission": "Liefere 3 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×3 zum Nest"
+        "shortMission": "Beute ×3 zum Nest",
+        "scenery": {
+          "terrain": "deep-forest",
+          "trees": [
+            "oak",
+            "birch",
+            "pine"
+          ],
+          "obstacles": [
+            "thorn",
+            "trunk",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -283,7 +331,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "forest",
         "intro": "Der Dornenhain lässt nur schmale Flugwege offen.",
         "mission": "Liefere 4 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×4 zum Nest"
+        "shortMission": "Beute ×4 zum Nest",
+        "scenery": {
+          "terrain": "deep-forest",
+          "trees": [
+            "birch",
+            "pine",
+            "oak"
+          ],
+          "obstacles": [
+            "trunk",
+            "branch",
+            "thorn"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -351,7 +412,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "mist",
         "intro": "Im Nebelmoor verschwinden Beute und Hindernisse im Dunst.",
         "mission": "Liefere 4 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×4 zum Nest"
+        "shortMission": "Beute ×4 zum Nest",
+        "scenery": {
+          "terrain": "marsh",
+          "trees": [
+            "willow",
+            "birch",
+            "dead"
+          ],
+          "obstacles": [
+            "branch",
+            "stump",
+            "thorn"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -419,7 +493,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "mist",
         "intro": "Frösche springen unberechenbar durch den tiefen Sumpf.",
         "mission": "Liefere 4 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×4 zum Nest"
+        "shortMission": "Beute ×4 zum Nest",
+        "scenery": {
+          "terrain": "marsh",
+          "trees": [
+            "birch",
+            "dead",
+            "willow"
+          ],
+          "obstacles": [
+            "stump",
+            "thorn",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -487,7 +574,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "mist",
         "intro": "Kleine Käfer verstecken sich zwischen dichten Nebelbänken.",
         "mission": "Liefere 4 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×4 zum Nest"
+        "shortMission": "Beute ×4 zum Nest",
+        "scenery": {
+          "terrain": "marsh",
+          "trees": [
+            "dead",
+            "willow",
+            "birch"
+          ],
+          "obstacles": [
+            "thorn",
+            "branch",
+            "stump"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -555,7 +655,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "forest",
         "intro": "Rund um die Alte Eiche wird der Luftraum immer enger.",
         "mission": "Liefere 5 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×5 zum Nest"
+        "shortMission": "Beute ×5 zum Nest",
+        "scenery": {
+          "terrain": "deep-forest",
+          "trees": [
+            "pine",
+            "oak",
+            "birch"
+          ],
+          "obstacles": [
+            "branch",
+            "thorn",
+            "trunk"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -623,7 +736,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "gold",
         "intro": "Eine seltene goldene Maus erscheint zwischen den Wurzeln.",
         "mission": "Fange die goldene Maus und bringe sie sicher zum Nest.",
-        "shortMission": "Goldbeute ×1 zum Nest"
+        "shortMission": "Goldbeute ×1 zum Nest",
+        "scenery": {
+          "terrain": "autumn-hills",
+          "trees": [
+            "birch",
+            "oak"
+          ],
+          "obstacles": [
+            "stump",
+            "rock",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -692,7 +817,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "storm",
         "intro": "An den Sturmklippen jagen Schwärme durch peitschenden Wind.",
         "mission": "Liefere 5 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×5 zum Nest"
+        "shortMission": "Beute ×5 zum Nest",
+        "scenery": {
+          "terrain": "cliffs",
+          "trees": [
+            "dead",
+            "pine"
+          ],
+          "obstacles": [
+            "trunk",
+            "rock",
+            "thorn"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -760,7 +897,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "storm",
         "intro": "In der Windschlucht bleibt kaum Zeit für Kurskorrekturen.",
         "mission": "Liefere 5 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×5 zum Nest"
+        "shortMission": "Beute ×5 zum Nest",
+        "scenery": {
+          "terrain": "cliffs",
+          "trees": [
+            "pine",
+            "dead"
+          ],
+          "obstacles": [
+            "rock",
+            "thorn",
+            "trunk"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -828,7 +977,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "forest",
         "intro": "Das Dunkeltal ist voller schneller Beute und verborgener Äste.",
         "mission": "Liefere 6 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×6 zum Nest"
+        "shortMission": "Beute ×6 zum Nest",
+        "scenery": {
+          "terrain": "deep-forest",
+          "trees": [
+            "oak",
+            "birch",
+            "pine"
+          ],
+          "obstacles": [
+            "thorn",
+            "trunk",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -896,7 +1058,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "forest",
         "intro": "Aus der Höhle brechen immer neue Fledermauswellen hervor.",
         "mission": "Liefere 6 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×6 zum Nest"
+        "shortMission": "Beute ×6 zum Nest",
+        "scenery": {
+          "terrain": "deep-forest",
+          "trees": [
+            "birch",
+            "pine",
+            "oak"
+          ],
+          "obstacles": [
+            "trunk",
+            "branch",
+            "thorn"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -965,7 +1140,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "mist",
         "intro": "Blasser Dunst verschluckt jede sichere Fluglinie.",
         "mission": "Liefere 6 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×6 zum Nest"
+        "shortMission": "Beute ×6 zum Nest",
+        "scenery": {
+          "terrain": "marsh",
+          "trees": [
+            "willow",
+            "birch",
+            "dead"
+          ],
+          "obstacles": [
+            "branch",
+            "stump",
+            "thorn"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1034,7 +1222,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "mist",
         "intro": "Über dem Silbersee spiegeln sich Beute und Gefahren im Nebel.",
         "mission": "Liefere 6 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×6 zum Nest"
+        "shortMission": "Beute ×6 zum Nest",
+        "scenery": {
+          "terrain": "marsh",
+          "trees": [
+            "birch",
+            "dead",
+            "willow"
+          ],
+          "obstacles": [
+            "stump",
+            "thorn",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1103,7 +1304,18 @@ window.OWL_LEVEL_DATA = {
         "theme": "meadow",
         "intro": "Die kalte Frostwiese fordert lange Wege und schnelle Lieferungen.",
         "mission": "Liefere 7 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×7 zum Nest"
+        "shortMission": "Beute ×7 zum Nest",
+        "scenery": {
+          "terrain": "rolling-hills",
+          "trees": [
+            "oak",
+            "birch"
+          ],
+          "obstacles": [
+            "stump",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1172,7 +1384,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "forest",
         "intro": "Im Schattenbruch wechseln ruhige Momente und dichte Wellen.",
         "mission": "Liefere 7 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×7 zum Nest"
+        "shortMission": "Beute ×7 zum Nest",
+        "scenery": {
+          "terrain": "deep-forest",
+          "trees": [
+            "pine",
+            "oak",
+            "birch"
+          ],
+          "obstacles": [
+            "branch",
+            "thorn",
+            "trunk"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1241,7 +1466,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "mist",
         "intro": "Irrlichter locken dich zwischen Äste und schnelle Tiere.",
         "mission": "Liefere 7 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×7 zum Nest"
+        "shortMission": "Beute ×7 zum Nest",
+        "scenery": {
+          "terrain": "marsh",
+          "trees": [
+            "birch",
+            "dead",
+            "willow"
+          ],
+          "obstacles": [
+            "stump",
+            "thorn",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1310,7 +1548,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "gold",
         "intro": "Zwei goldene Mäuse müssen durch den Goldregen getragen werden.",
         "mission": "Fange 2 goldene Mäuse und bringe sie einzeln sicher zum Nest.",
-        "shortMission": "Goldbeute ×2 zum Nest"
+        "shortMission": "Goldbeute ×2 zum Nest",
+        "scenery": {
+          "terrain": "autumn-hills",
+          "trees": [
+            "birch",
+            "oak"
+          ],
+          "obstacles": [
+            "rock",
+            "branch",
+            "stump"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1379,7 +1629,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "storm",
         "intro": "Blitze erhellen am Donnergrat gewaltige Fledermausschwärme.",
         "mission": "Liefere 8 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×8 zum Nest"
+        "shortMission": "Beute ×8 zum Nest",
+        "scenery": {
+          "terrain": "cliffs",
+          "trees": [
+            "dead",
+            "pine"
+          ],
+          "obstacles": [
+            "rock",
+            "thorn",
+            "trunk"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1448,7 +1710,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "forest",
         "intro": "Der Schwarze Forst verzeiht kaum einen Zusammenstoß.",
         "mission": "Liefere 8 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×8 zum Nest"
+        "shortMission": "Beute ×8 zum Nest",
+        "scenery": {
+          "terrain": "deep-forest",
+          "trees": [
+            "oak",
+            "birch",
+            "pine"
+          ],
+          "obstacles": [
+            "thorn",
+            "trunk",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1517,7 +1792,20 @@ window.OWL_LEVEL_DATA = {
         "theme": "mist",
         "intro": "Im Mondsichelmoor wird die Nacht spürbar kürzer.",
         "mission": "Liefere 8 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×8 zum Nest"
+        "shortMission": "Beute ×8 zum Nest",
+        "scenery": {
+          "terrain": "marsh",
+          "trees": [
+            "dead",
+            "willow",
+            "birch"
+          ],
+          "obstacles": [
+            "thorn",
+            "branch",
+            "stump"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1586,7 +1874,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "storm",
         "intro": "Nur Echo-Ortung schafft Übersicht in der überfüllten Schlucht.",
         "mission": "Liefere 8 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×8 zum Nest"
+        "shortMission": "Beute ×8 zum Nest",
+        "scenery": {
+          "terrain": "cliffs",
+          "trees": [
+            "pine",
+            "dead"
+          ],
+          "obstacles": [
+            "rock",
+            "thorn",
+            "trunk"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1655,7 +1955,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "gold",
         "intro": "Die Dämmerung rückt näher und jede Lieferung zählt.",
         "mission": "Liefere 9 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×9 zum Nest"
+        "shortMission": "Beute ×9 zum Nest",
+        "scenery": {
+          "terrain": "autumn-hills",
+          "trees": [
+            "oak",
+            "birch"
+          ],
+          "obstacles": [
+            "stump",
+            "rock",
+            "branch"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1724,7 +2036,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "blood",
         "intro": "Der Blutmond weckt den gesamten Wald zu einer wilden Jagd.",
         "mission": "Liefere 9 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×9 zum Nest"
+        "shortMission": "Beute ×9 zum Nest",
+        "scenery": {
+          "terrain": "deadlands",
+          "trees": [
+            "dead",
+            "pine"
+          ],
+          "obstacles": [
+            "trunk",
+            "thorn",
+            "rock"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1793,7 +2117,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "storm",
         "intro": "Sturm, Äste und Schwärme treffen ohne Pause aufeinander.",
         "mission": "Liefere 9 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×9 zum Nest"
+        "shortMission": "Beute ×9 zum Nest",
+        "scenery": {
+          "terrain": "cliffs",
+          "trees": [
+            "dead",
+            "pine"
+          ],
+          "obstacles": [
+            "rock",
+            "thorn",
+            "trunk"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1862,7 +2198,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "blood",
         "intro": "Auf der letzten Lichtung bleibt kein sicherer Flugweg.",
         "mission": "Liefere 9 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×9 zum Nest"
+        "shortMission": "Beute ×9 zum Nest",
+        "scenery": {
+          "terrain": "deadlands",
+          "trees": [
+            "dead",
+            "pine"
+          ],
+          "obstacles": [
+            "rock",
+            "trunk",
+            "thorn"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -1931,7 +2279,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "gold",
         "intro": "Das erste Licht erscheint bereits über den Baumkronen.",
         "mission": "Liefere 10 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×10 zum Nest"
+        "shortMission": "Beute ×10 zum Nest",
+        "scenery": {
+          "terrain": "autumn-hills",
+          "trees": [
+            "oak",
+            "birch"
+          ],
+          "obstacles": [
+            "rock",
+            "branch",
+            "stump"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -2000,7 +2360,19 @@ window.OWL_LEVEL_DATA = {
         "theme": "blood",
         "intro": "Die schwerste Jagd vereint alle Tiere und Gefahren der Nacht.",
         "mission": "Liefere 10 Tiere am Nest ab und überstehe die nächste Jagdwelle.",
-        "shortMission": "Beute ×10 zum Nest"
+        "shortMission": "Beute ×10 zum Nest",
+        "scenery": {
+          "terrain": "deadlands",
+          "trees": [
+            "dead",
+            "pine"
+          ],
+          "obstacles": [
+            "thorn",
+            "rock",
+            "trunk"
+          ]
+        }
       },
       "objective": {
         "type": "deliver",
@@ -2062,4 +2434,5 @@ window.OWL_LEVEL_DATA = {
       }
     }
   ]
-};
+}
+;

@@ -30,12 +30,12 @@
     pointer-events:none;
   }
   .card{
-    min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:14px;
-    background:linear-gradient(145deg,var(--panel2),var(--panel));
-    backdrop-filter:blur(12px);box-shadow:0 8px 25px rgba(0,0,0,.2)
+    min-width:0;padding:7px 10px;border:0;border-radius:0;
+    background:transparent;backdrop-filter:none;box-shadow:none
   }
   .label{font-size:.68rem;line-height:1;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
   .hudIcon{display:inline-block;margin-right:.35em;font-size:.9rem;line-height:1}
+  .labelText{display:none}
   .uiIcon{width:1em;height:1em;display:inline-block;vertical-align:-.14em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
   .iconSequence{display:inline-flex;align-items:center;justify-content:center;gap:.35em}
   .value{margin-top:4px;font-size:1.03rem;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -78,8 +78,8 @@
   .controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px 0 20px;text-align:left;color:var(--muted);font-size:.88rem}
   .control{min-width:0;padding:10px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.035)}
   .mobileGuide{display:none;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0 15px}
-  .guideItem{padding:9px 4px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.035);color:var(--muted);font-size:.72rem}
-  .guideItem strong{display:block;margin-bottom:4px;color:white;font-size:1.35rem;line-height:1}
+  .guideItem{padding:8px 4px;border:0;border-radius:0;background:transparent;color:var(--muted);font-size:0}
+  .guideItem strong{display:block;margin:0;color:white;font-size:1.5rem;line-height:1}
   kbd{display:inline-grid;place-items:center;min-width:28px;height:27px;padding:0 7px;margin-right:4px;border-radius:7px;border:1px solid var(--line);background:#172139;color:white;font:700 .75rem/1 inherit;box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
   button{
     appearance:none;border:0;border-radius:14px;padding:13px 18px;width:100%;cursor:pointer;
@@ -117,7 +117,7 @@
     #shell{width:100vw;height:100vh;height:100dvh;border:0}
     .hud{left:max(5px,env(safe-area-inset-left));right:max(5px,env(safe-area-inset-right));top:max(5px,env(safe-area-inset-top));gap:4px;grid-template-columns:repeat(3,minmax(0,1fr))}
     .hud .card:nth-child(2){display:none}
-    .card{min-height:46px;padding:5px 4px;border-radius:10px;text-align:center}
+    .card{min-height:42px;padding:4px;text-align:center}
     .label{font-size:.82rem;letter-spacing:0}
     .labelText{display:none}
     .hudIcon{margin:0}
@@ -154,7 +154,7 @@
   }
   @media (max-height:600px) and (orientation:landscape){
     .hud{left:50%;right:auto;width:min(620px,calc(100% - 24px));transform:translateX(-50%);grid-template-columns:repeat(3,1fr);gap:4px}
-    .card{padding:3px 6px;min-height:36px;border-radius:9px}
+    .card{padding:3px 6px;min-height:34px}
     .label{font-size:.72rem}
     .value{font-size:.63rem;margin-top:2px}
     .bar{height:4px;margin-top:4px}
