@@ -38,16 +38,16 @@ Diese Punkte erhöhen Wiederspielwert und Präsentationsqualität, dürfen aber 
 
 ## 1.1 Bestehenden Stand sichern
 
-- [ ] Aktuellen spielbaren Stand als Referenz markieren.
-- [ ] Vorhandene Speicherstände, Leveldaten und Eulendaten dokumentieren.
-- [ ] Bestehende Kernfunktionen identifizieren, die übernommen werden können:
+- [x] Aktuellen spielbaren Stand als Referenz markieren.
+- [x] Vorhandene Speicherstände, Leveldaten und Eulendaten dokumentieren.
+- [x] Bestehende Kernfunktionen identifizieren, die übernommen werden können:
   - Audio-Kontext und Lautstärkeschalter
   - Touch- und Tastatureingaben
   - Huuu-Ladung
   - Partikelsystem
   - Checkpoints und Fortschrittsspeicherung
   - Responsive HUD-Grundlage
-- [ ] Nicht mehr benötigte Jagd-, Gegner- und Arena-Logik kennzeichnen, aber erst nach erfolgreichem Ersatz entfernen.
+- [x] Nicht mehr benötigte Jagd-, Gegner- und Arena-Logik kennzeichnen, aber erst nach erfolgreichem Ersatz entfernen.
 
 ## 1.2 JavaScript aufteilen
 
@@ -94,15 +94,15 @@ js/
 ```
 
 - [ ] Abhängigkeiten über einen gemeinsamen `window.OWL`-Namensraum kapseln.
-- [ ] Spiel weiterhin ohne verpflichtende Paketinstallation startbar halten.
+- [x] Spiel weiterhin ohne verpflichtende Paketinstallation startbar halten.
 - [ ] Initialisierung nur noch über `bootstrap.js` ausführen.
 - [ ] Einen Entwicklungsmodus für Szenenauswahl, Trigger und Kollisionsflächen vorsehen.
 
 ## 1.3 Datenquellen erweitern
 
-- [ ] `story.json` als zentrale Storyquelle beibehalten.
-- [ ] Weltdateien unter `data/worlds/` anlegen.
-- [ ] Jede Szene mit folgenden Kerndaten beschreiben:
+- [x] `story.json` als zentrale Storyquelle beibehalten.
+- [x] Weltdateien unter `data/worlds/` anlegen.
+- [x] Jede Szene mit folgenden Kerndaten beschreiben:
 
 ```json
 {
@@ -215,48 +215,48 @@ assets/
 
 ## 3.1 Weltkoordinaten
 
-- [ ] Spiellogik vollständig von Bildschirmkoordinaten auf Weltkoordinaten umstellen.
-- [ ] Szenenbreiten von etwa drei bis sechs Bildschirmbreiten ermöglichen.
-- [ ] Objekte nur relativ zur Kamera zeichnen.
-- [ ] Kollisions- und Triggerpositionen ebenfalls in Weltkoordinaten speichern.
-- [ ] Offscreen-Objekte nicht zeichnen.
+- [x] Spiellogik vollständig von Bildschirmkoordinaten auf Weltkoordinaten umstellen.
+- [x] Szenenbreiten von etwa drei bis sechs Bildschirmbreiten ermöglichen.
+- [x] Objekte nur relativ zur Kamera zeichnen.
+- [x] Kollisions- und Triggerpositionen ebenfalls in Weltkoordinaten speichern.
+- [x] Offscreen-Objekte nicht zeichnen.
 
 ## 3.2 Kamerasystem
 
-- [ ] Weiches horizontales Folgen implementieren.
-- [ ] Eine innere Ruhezone definieren, in der sich die Kamera nicht bewegt.
-- [ ] Blickvorsprung in Flugrichtung ergänzen.
-- [ ] Vertikale Kamerabewegung begrenzen, damit Boden und Orientierung sichtbar bleiben.
-- [ ] Kameramodi ergänzen:
+- [x] Weiches horizontales Folgen implementieren.
+- [x] Eine innere Ruhezone definieren, in der sich die Kamera nicht bewegt.
+- [x] Blickvorsprung in Flugrichtung ergänzen.
+- [x] Vertikale Kamerabewegung begrenzen, damit Boden und Orientierung sichtbar bleiben.
+- [x] Kameramodi ergänzen:
   - `follow`
   - `race`
   - `dialogue`
   - `escort`
   - `cinematic`
-- [ ] Bei Sturzflug leicht herauszoomen.
+- [x] Bei Sturzflug leicht herauszoomen.
 - [ ] Beim Landen sanft zur Ruhe kommen.
-- [ ] Beim Huuu-Ruf kurz den sichtbaren Bereich erweitern.
-- [ ] Im Fynn-Kapitel Lumi und Fynn gemeinsam im Bild halten.
+- [x] Beim Huuu-Ruf kurz den sichtbaren Bereich erweitern.
+- [x] Im Fynn-Kapitel Lumi und Fynn gemeinsam im Bild halten.
 
 ## 3.3 Parallax und Tiefe
 
-- [ ] Fünf feste Tiefenebenen implementieren:
+- [x] Fünf feste Tiefenebenen implementieren:
   1. Himmel, Sterne und Mond
   2. entfernte Hügel und Waldsilhouetten
   3. mittlere Baumreihen und Nebel
   4. spielbare Ebene
   5. unscharfer Vordergrund
-- [ ] Pro Ebene einen eigenen Scrollfaktor verwenden.
-- [ ] Vordergrundelemente dürfen kurz verdecken, aber keine Missionsobjekte dauerhaft verbergen.
+- [x] Pro Ebene einen eigenen Scrollfaktor verwenden.
+- [x] Vordergrundelemente dürfen kurz verdecken, aber keine Missionsobjekte dauerhaft verbergen.
 - [ ] Nebel, Licht und Wind nach Kapitel variieren.
 - [ ] Wiederholte Elemente durch handgesetzte Varianten ersetzen.
 
 ## 3.4 Landmarken und Orientierung
 
-- [ ] Jede Szene erhält mindestens zwei unverwechselbare Landmarken.
-- [ ] Zielrichtung über kleine, iconbasierte Hinweise zeigen.
-- [ ] Nestposition über einen warmen Lichtkegel erkennbar machen.
-- [ ] Sichere Äste optisch einheitlich markieren.
+- [x] Jede Szene erhält mindestens zwei unverwechselbare Landmarken.
+- [x] Zielrichtung über kleine, iconbasierte Hinweise zeigen.
+- [x] Nestposition über einen warmen Lichtkegel erkennbar machen.
+- [x] Sichere Äste optisch einheitlich markieren.
 - [ ] Optional eine sehr kleine symbolische Weganzeige ergänzen; keine detaillierte Minimap.
 
 ### Abnahmekriterien für Punkt 3
@@ -315,34 +315,34 @@ assets/
 
 ## 5.1 Direktsteuerung
 
-- [ ] Fingerzielsteuerung als Hauptsteuerung beibehalten.
-- [ ] Zielpunkt oberhalb des Fingers darstellen, damit Lumi sichtbar bleibt.
-- [ ] Beschleunigung und Bremsweg pro Figur fest definieren.
-- [ ] Keine Upgrade-basierten Änderungen der Lenkempfindlichkeit.
-- [ ] Tastatursteuerung gleichwertig erhalten.
+- [x] Fingerzielsteuerung als Hauptsteuerung beibehalten.
+- [x] Zielpunkt oberhalb des Fingers darstellen, damit Lumi sichtbar bleibt.
+- [x] Beschleunigung und Bremsweg pro Figur fest definieren.
+- [x] Keine Upgrade-basierten Änderungen der Lenkempfindlichkeit.
+- [x] Tastatursteuerung gleichwertig erhalten.
 
 ## 5.2 Landen
 
-- [ ] Äste mit großzügigen unsichtbaren Landezonen ausstatten.
-- [ ] Antippen eines nahen Asts löst automatischen Landeanflug aus.
-- [ ] Landung kann durch erneutes Lenken abgebrochen werden.
-- [ ] Auf Ästen Ausdauer ruhig regenerieren.
+- [x] Äste mit großzügigen unsichtbaren Landezonen ausstatten.
+- [x] Antippen eines nahen Asts löst automatischen Landeanflug aus.
+- [x] Landung kann durch erneutes Lenken abgebrochen werden.
+- [x] Auf Ästen Ausdauer ruhig regenerieren.
 - [ ] Dialoge und Beobachtungsaktionen primär im Sitzen auslösen.
-- [ ] Sichere Äste als Checkpoints speichern.
+- [x] Sichere Äste als Checkpoints speichern.
 
 ## 5.3 Sturzflug
 
-- [ ] Sturzflug als kurze, klar animierte Aktion behalten.
+- [x] Sturzflug als kurze, klar animierte Aktion behalten.
 - [ ] Einsatz für schnelle Richtungswechsel, Rennen und Windpassagen verwenden.
 - [ ] Sturzflug nicht zum Angriff auf freundliche Tiere verwenden.
-- [ ] Kollisionen führen zu Taumeln oder einer weichen Buschlandung.
+- [x] Kollisionen führen zu Taumeln oder einer weichen Buschlandung.
 
 ## 5.4 Tragen
 
-- [ ] Kleine Gegenstände ohne Einschränkung tragen.
-- [ ] Große Gegenstände senken nur Auftrieb und Bremsvermögen, nicht die Lenkempfindlichkeit.
-- [ ] Getragene Gegenstände sichtbar und typgerecht darstellen.
-- [ ] Ablegen auf markierten Ästen und im Nest ermöglichen.
+- [x] Kleine Gegenstände ohne Einschränkung tragen.
+- [x] Große Gegenstände senken nur Auftrieb und Bremsvermögen, nicht die Lenkempfindlichkeit.
+- [x] Getragene Gegenstände sichtbar und typgerecht darstellen.
+- [x] Ablegen auf markierten Ästen und im Nest ermöglichen.
 
 ### Abnahmekriterien für Punkt 5
 
@@ -357,28 +357,28 @@ assets/
 
 ## 6.1 Grundsystem
 
-- [ ] Eigene Huuu-Ladung beibehalten.
-- [ ] Reichweite und verfügbarer Kontext über visuelle Symbole anzeigen.
-- [ ] Huuu-Effekt über handgezeichnete Wellen und verzögerte Umweltantwort darstellen.
-- [ ] Unterschiedliche akustische Antworten je Kontext verwenden.
+- [x] Eigene Huuu-Ladung beibehalten.
+- [x] Reichweite und verfügbarer Kontext über visuelle Symbole anzeigen.
+- [x] Huuu-Effekt über handgezeichnete Wellen und verzögerte Umweltantwort darstellen.
+- [x] Unterschiedliche akustische Antworten je Kontext verwenden.
 
 ## 6.2 Kontextaktionen
 
-- [ ] Verlorene Lichtspuren aufdecken.
-- [ ] Versteckte Gegenstände unter Blättern markieren.
-- [ ] Glühwürmchen und Fynn beruhigen.
-- [ ] Entfernte Figuren ansprechen.
-- [ ] Leichte Blätter und Samen bewegen.
-- [ ] Rivalen zurückdrängen, ohne sie zu verletzen.
-- [ ] Im Nebel Orientierungspunkte hör- und sichtbar machen.
-- [ ] Im Finale eine Antwortkette aller Figuren auslösen.
+- [x] Verlorene Lichtspuren aufdecken.
+- [x] Versteckte Gegenstände unter Blättern markieren.
+- [x] Glühwürmchen und Fynn beruhigen.
+- [x] Entfernte Figuren ansprechen.
+- [x] Leichte Blätter und Samen bewegen.
+- [x] Rivalen zurückdrängen, ohne sie zu verletzen.
+- [x] Im Nebel Orientierungspunkte hör- und sichtbar machen.
+- [x] Im Finale eine Antwortkette aller Figuren auslösen.
 
 ## 6.3 Rückmeldung
 
-- [ ] Farbe der Rufwelle nach Funktion variieren.
-- [ ] Antwortquelle am Bildschirmrand anzeigen, wenn sie außerhalb der Kamera liegt.
-- [ ] Huuu nicht verbrauchen, wenn im Tutorial ein falscher Kontext getroffen wurde.
-- [ ] Ladezustand am mobilen Button und im Desktop-HUD zeigen.
+- [x] Farbe der Rufwelle nach Funktion variieren.
+- [x] Antwortquelle am Bildschirmrand anzeigen, wenn sie außerhalb der Kamera liegt.
+- [x] Huuu nicht verbrauchen, wenn im Tutorial ein falscher Kontext getroffen wurde.
+- [x] Ladezustand am mobilen Button und im Desktop-HUD zeigen.
 
 ### Abnahmekriterien für Punkt 6
 
@@ -529,8 +529,8 @@ assets/
 
 - [ ] Abgeschlossene Szenen und Kapitel speichern.
 - [x] Kapitelkarte schrittweise freischalten.
-- [ ] Unterbrechung an jedem sicheren Ast ermöglichen.
-- [ ] Fortsetzen direkt an der richtigen Szene und am richtigen Ast ermöglichen.
+- [x] Unterbrechung an jedem sicheren Ast ermöglichen.
+- [x] Fortsetzen direkt an der richtigen Szene und am richtigen Ast ermöglichen.
 
 ## 9.2 Erinnerungsalbum
 
@@ -695,8 +695,8 @@ Zielwerte:
 - [ ] Projektstruktur aufteilen.
 - [x] Art Bible erstellen.
 - [ ] Lumi, Fynn und Ava als finale SVG-Charaktere zeichnen.
-- [ ] Horizontale Kamera und Parallax-System bauen.
-- [ ] Landemechanik und sichere Äste implementieren.
+- [x] Horizontale Kamera und Parallax-System bauen.
+- [x] Landemechanik und sichere Äste implementieren.
 - [ ] Prolog und erstes Wiesenlevel vollständig neu bauen.
 - [ ] Auf Handy und Tablet testen.
 
@@ -704,7 +704,7 @@ Zielwerte:
 
 ## Meilenstein 2 – Kernsysteme
 
-- [ ] Kontextabhängigen Huuu-Ruf fertigstellen.
+- [x] Kontextabhängigen Huuu-Ruf fertigstellen.
 - [ ] Dialog- und Triggersystem fertigstellen.
 - [ ] Begleitersystem fertigstellen.
 - [x] Horizontale Kapitelkarte bauen.
@@ -746,8 +746,8 @@ Die vollständige Implementierung gilt erst als abgeschlossen, wenn:
 - [ ] Lumi, Fynn, Ava, Bruno und der Kauz vollständige Animationssätze besitzen;
 - [ ] Kamera, Touch-Steuerung und Landung auf allen Zielgeräten funktionieren;
 - [ ] Huuu in jedem Kapitel eine nachvollziehbare Storyfunktion besitzt;
-- [ ] Fehler niemals zu Tod oder vollständigem Fortschrittsverlust führen;
-- [ ] Checkpoints nach Neustart korrekt geladen werden;
+- [x] Fehler niemals zu Tod oder vollständigem Fortschrittsverlust führen;
+- [x] Checkpoints nach Neustart korrekt geladen werden;
 - [ ] alle Geschenkvarianten im Finale sichtbar sind;
 - [ ] der letzte Huuu-Ruf eine vollständige audiovisuelle Schlusssequenz auslöst;
 - [ ] die Kampagne in etwa 25 bis 35 Minuten abgeschlossen werden kann;

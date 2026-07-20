@@ -17,6 +17,7 @@
       "ability": "balanced",
       "size": 1,
       "flightSpeed": 1,
+      "flight": { "acceleration": 720, "brakeDrag": 0.12, "turnResponse": 8.5, "landingSpeed": 210, "perchRecharge": 18 },
       "stats": { "speed": 1, "handling": 1, "energy": 1, "diveCost": 1, "hootRecharge": 1, "carrySpeed": 1, "resistance": 1 }
     },
     {
@@ -30,6 +31,7 @@
       "ability": "wideHoot",
       "size": 0.93,
       "flightSpeed": 1.04,
+      "flight": { "acceleration": 700, "brakeDrag": 0.115, "turnResponse": 8.8, "landingSpeed": 215, "perchRecharge": 19 },
       "stats": { "speed": 1, "handling": 1, "energy": 0.9, "diveCost": 1, "hootRecharge": 0.92, "carrySpeed": 0.96, "resistance": 0.82 }
     },
     {
@@ -43,6 +45,7 @@
       "ability": "agile",
       "size": 0.78,
       "flightSpeed": 1.12,
+      "flight": { "acceleration": 820, "brakeDrag": 0.1, "turnResponse": 10.5, "landingSpeed": 230, "perchRecharge": 20 },
       "stats": { "speed": 1, "handling": 1, "energy": 0.92, "diveCost": 0.78, "hootRecharge": 0.96, "carrySpeed": 0.82, "resistance": 0.9 }
     },
     {
@@ -56,6 +59,7 @@
       "ability": "intimidate",
       "size": 1.2,
       "flightSpeed": 0.9,
+      "flight": { "acceleration": 610, "brakeDrag": 0.17, "turnResponse": 6.6, "landingSpeed": 180, "perchRecharge": 15 },
       "stats": { "speed": 1, "handling": 1, "energy": 1.12, "diveCost": 1.18, "hootRecharge": 0.84, "carrySpeed": 1.02, "resistance": 1.35 }
     },
     {
@@ -69,6 +73,7 @@
       "ability": "fireflyBoost",
       "size": 1.1,
       "flightSpeed": 0.94,
+      "flight": { "acceleration": 650, "brakeDrag": 0.15, "turnResponse": 7.2, "landingSpeed": 190, "perchRecharge": 17 },
       "stats": { "speed": 1, "handling": 1, "energy": 1.28, "diveCost": 1.08, "hootRecharge": 1.12, "carrySpeed": 0.95, "resistance": 1.08 }
     },
     {
@@ -82,6 +87,7 @@
       "ability": "courier",
       "size": 0.9,
       "flightSpeed": 1.06,
+      "flight": { "acceleration": 760, "brakeDrag": 0.12, "turnResponse": 9.4, "landingSpeed": 220, "perchRecharge": 18 },
       "stats": { "speed": 1, "handling": 1, "energy": 1, "diveCost": 1.2, "hootRecharge": 1, "carrySpeed": 1.22, "resistance": 0.94 }
     }
   ]

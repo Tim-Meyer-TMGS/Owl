@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Eulenflug – Jagd am Waldrand</title>
+<title>Eulenflug – Das Fest der ersten Nacht</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div id="shell">
-  <canvas id="game" aria-label="Nachtjäger 2"></canvas>
+  <canvas id="game" aria-label="Eulenflug: Lumis Reise durch den Nachtwald"></canvas>
   <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
     <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/></symbol>
     <symbol id="i-nest" viewBox="0 0 24 24"><path d="M3 13c1.8 6.8 16.2 6.8 18 0M5 13h14M7 10c1-3 3.3-4.6 5-6 1.7 1.4 4 3 5 6"/></symbol>
@@ -25,6 +25,8 @@
     <symbol id="i-lock" viewBox="0 0 24 24"><path d="M6 10h12v11H6V10Zm3 0V7a3 3 0 0 1 6 0v3m-3 4v3"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
     <symbol id="i-feather" viewBox="0 0 24 24"><path d="M20 3C12 3 6 8 6 15l-3 6m3-6c4 0 8-3 11-7M7 12l4 4"/></symbol>
+    <symbol id="i-perch" viewBox="0 0 24 24"><path d="M3 15c5 2 13 2 18-1M8 16v5m8-6v6M6 11c3-3 9-4 13-2"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 20h14"/></symbol>
   </svg>
 
   <div class="hud">
@@ -79,12 +81,13 @@
           <button id="upgradeNestBtn" class="upgradeBtn" type="button"><span>&#8962; Nest</span><small>Stufe <b id="nestUpgradeLevel">0</b>/5 · ★1</small></button>
         </div>
         <div id="upgradeInfo" class="upgradeInfo" aria-live="polite"></div>
+        <label class="storyReplaySetting"><input id="replayIntros" type="checkbox"> Gesehene Kapitelintros erneut zeigen</label>
       </section>
       <div class="controls">
         <div class="control"><kbd>WASD</kbd><kbd>←↑↓→</kbd> fliegen</div>
         <div class="control"><kbd>Leertaste</kbd> Sturzflug</div>
         <div class="control"><kbd>E</kbd> Huuu: Feinde im Umkreis vertreiben</div>
-        <div class="control"><kbd>P</kbd> Pause · Finger auf dem Spielfeld bewegen</div>
+        <div class="control"><kbd>F</kbd> nahen Ast anfliegen · <kbd>P</kbd> Pause</div>
       </div>
       <div class="mobileGuide" aria-label="Touch-Steuerung">
         <div class="guideItem" aria-label="Mit dem Finger lenken"><strong>☝↗</strong></div>
@@ -169,7 +172,7 @@
 
   <div class="mobile">
     <div class="mobileGroup">
-      <button type="button" class="hoot" data-action="hoot" data-charge="100%" aria-label="Huuu-Ruf bereit"><span class="hootGlyph">HUU</span></button>
+      <button type="button" class="hoot" data-action="hoot" data-charge="100%" aria-label="Huuu-Ruf bereit"><svg class="uiIcon hootContextIcon" aria-hidden="true"><use id="hootContextUse" href="#i-hoot"/></svg><span class="hootGlyph">HUU</span></button>
       <button type="button" class="action" data-action="dive" aria-label="Sturzflug"><svg class="uiIcon"><use href="#i-bolt"/></svg></button>
     </div>
   </div>
@@ -178,6 +181,16 @@
 <script src="js/levels.js" defer></script>
 <script src="js/owls.js" defer></script>
 <script src="js/story.js" defer></script>
+<script src="js/story-events.js" defer></script>
+<script src="js/worlds.js" defer></script>
+<script src="js/hoot-contexts.js" defer></script>
+<script src="js/core/namespace.js" defer></script>
+<script src="js/core/camera.js" defer></script>
+<script src="js/world/world-loader.js" defer></script>
+<script src="js/world/perches.js" defer></script>
+<script src="js/systems/hoot.js" defer></script>
+<script src="js/systems/story.js" defer></script>
+<script src="js/render/parallax.js" defer></script>
 <script src="js/ui/chapter-map.js" defer></script>
 <script src="js/game.js" defer></script>
 </body>

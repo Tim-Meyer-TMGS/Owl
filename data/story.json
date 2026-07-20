@@ -2,12 +2,12 @@
   "formatVersion": 1,
   "title": "Das Fest der ersten Nacht",
   "characters": {
-    "lumi": { "name": "Lumi", "symbol": "LU", "color": "#ffd469" },
-    "fynn": { "name": "Fynn", "symbol": "FY", "color": "#9fe7ff" },
-    "ava": { "name": "Ava", "symbol": "AV", "color": "#d9c7a4" },
-    "bruno": { "name": "Bruno", "symbol": "BR", "color": "#c59a70" },
-    "kauz": { "name": "Alter Kauz", "symbol": "AK", "color": "#b9c990" },
-    "glow": { "name": "Glühwürmchen", "symbol": "✦", "color": "#dfff8d" }
+    "lumi": { "name": "Lumi", "symbol": "LU", "color": "#ffd469", "motif": [392, 523] },
+    "fynn": { "name": "Fynn", "symbol": "FY", "color": "#9fe7ff", "motif": [440, 554] },
+    "ava": { "name": "Ava", "symbol": "AV", "color": "#d9c7a4", "motif": [294, 392] },
+    "bruno": { "name": "Bruno", "symbol": "BR", "color": "#c59a70", "motif": [185, 247] },
+    "kauz": { "name": "Alter Kauz", "symbol": "AK", "color": "#b9c990", "motif": [220, 330] },
+    "glow": { "name": "Glühwürmchen", "symbol": "✦", "color": "#dfff8d", "motif": [740, 990] }
   },
   "giftChoices": [
     { "id": "feather", "icon": "◜", "name": "weiche Feder" },
@@ -104,8 +104,7 @@
         { "speaker": "fynn", "text": "Vielleicht fliege ich morgen." },
         { "speaker": "lumi", "text": "Morgen fühlt es sich wahrscheinlich genauso an." },
         { "speaker": "fynn", "text": "Hattest du heute Angst?" },
-        { "speaker": "lumi", "text": "Beim Bach. Im hohen Gras. Und ein bisschen bei Bruno." },
-        { "speaker": "bruno", "text": "Das ist vernünftig." }
+        { "speaker": "lumi", "text": "Beim Bach, im hohen Gras und ein bisschen bei Bruno." }
       ],
       "beats": [
         { "progress": 0.3, "speaker": "lumi", "text": "Nur bis zum nächsten Ast. Ich warte dort auf dich." },
@@ -118,8 +117,7 @@
         { "speaker": "ava", "text": "Wir feiern keinen perfekten Flug. Wir feiern, dass Fynn gesprungen ist." },
         { "speaker": "fynn", "text": "War dein erster Flug eigentlich besser?" },
         { "speaker": "lumi", "text": "Natürlich. Also gut – ich bin in einen Busch gefallen." },
-        { "speaker": "fynn", "text": "Mit Absicht?" },
-        { "speaker": "lumi", "text": "Selbstverständlich." }
+        { "speaker": "fynn", "text": "Mit Absicht? Selbstverständlich." }
       ],
       "beats": [
         { "progress": 0.5, "speaker": "ava", "text": "Bringt die letzten Leckerbissen. Das Fest beginnt!" }

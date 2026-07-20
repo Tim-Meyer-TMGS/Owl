@@ -1,0 +1,128 @@
+﻿/* Generated from data/story-events.json. Run tools/build-levels.ps1 after editing the JSON source. */
+window.OWL_STORY_EVENT_DATA = {
+  "formatVersion": 1,
+  "scenes": [
+    {"levelOrder":1,"levelId":"level-01-wiesenrand","chapter":"prologue","companions":[{"id":"fynn","state":"follow","xRatio":0.08,"yRatio":0.34}],"events":[
+      {"id":"story-01-wind","trigger":{"type":"position","xRatio":0.18},"once":true,"speaker":"ava","text":"Der Wind hat alles bis hinter die Wiese getragen."},
+      {"id":"story-01-land","trigger":{"type":"landing","perchId":"safe-1-a"},"once":true,"speaker":"fynn","text":"Der Ast hält. Ich glaube an euch beide.","action":{"companion":"fynn","state":"wait"}},
+      {"id":"story-01-hoot","trigger":{"type":"hoot","contextId":"hoot-01-leaves"},"once":true,"speaker":"ava","text":"Genau so. Der Wald antwortet, wenn du gut zuhörst."}
+    ]},
+    {"levelOrder":2,"levelId":"level-02-heckenpfad","chapter":"meadow","companions":[{"id":"fynn","state":"follow","xRatio":0.07,"yRatio":0.38}],"events":[
+      {"id":"story-02-path","trigger":{"type":"position","xRatio":0.32},"once":true,"speaker":"fynn","text":"Die breite Lücke sieht leichter aus als die Abkürzung."},
+      {"id":"story-02-find","trigger":{"type":"hoot","contextId":"hoot-02-stash"},"once":true,"speaker":"lumi","text":"Unter den Blättern lag wirklich etwas."}
+    ]},
+    {"levelOrder":3,"levelId":"level-03-bachufer","chapter":"meadow","companions":[{"id":"fynn","state":"follow","xRatio":0.08,"yRatio":0.35}],"events":[
+      {"id":"story-03-water","trigger":{"type":"position","xRatio":0.42},"once":true,"speaker":"fynn","text":"Am Wasser hört man schnelle Tiere früher."},
+      {"id":"story-03-half","trigger":{"type":"objective","progress":0.5},"once":true,"speaker":"lumi","text":"Halb geschafft. Jetzt die sichere Route zurück."}
+    ]},
+    {"levelOrder":4,"levelId":"level-04-mondwald","chapter":"meadow","companions":[{"id":"fynn","state":"ahead","xRatio":0.12,"yRatio":0.32}],"events":[
+      {"id":"story-04-ahead","trigger":{"type":"companionDistance","companion":"fynn","distance":230,"comparison":"near"},"once":true,"speaker":"fynn","text":"Ich markiere dir den freien Weg."},
+      {"id":"story-04-return","trigger":{"type":"objective","progress":0.75},"once":true,"speaker":"lumi","text":"Noch einmal zum Nest, dann ist die Wiesenprüfung geschafft."}
+    ]},
+    {"levelOrder":5,"levelId":"level-05-dornenhain","chapter":"firefly","companions":[{"id":"glow","state":"wait","xRatio":0.28,"yRatio":0.48}],"events":[
+      {"id":"story-05-trail","trigger":{"type":"hoot","contextId":"hoot-05-trail-1"},"once":true,"speaker":"glow","text":"Da! Sein Licht führt tiefer ins Gras.","action":{"companion":"glow","state":"ahead"}},
+      {"id":"story-05-near","trigger":{"type":"companionDistance","companion":"glow","distance":190,"comparison":"near"},"once":true,"speaker":"lumi","text":"Langsam. Ich bleibe direkt bei dir.","action":{"companion":"glow","state":"follow"}}
+    ]},
+    {"levelOrder":6,"levelId":"level-06-nebelmoor","chapter":"firefly","companions":[{"id":"glow","state":"follow","xRatio":0.1,"yRatio":0.42}],"events":[
+      {"id":"story-06-fog","trigger":{"type":"position","xRatio":0.35},"once":true,"speaker":"glow","text":"Im Nebel bleiben wir dicht zusammen."},
+      {"id":"story-06-perch","trigger":{"type":"landing","perchId":"safe-6-b"},"once":true,"speaker":"lumi","text":"Von hier sehe ich die nächste Lichtspur."}
+    ]},
+    {"levelOrder":7,"levelId":"level-07-froschsumpf","chapter":"firefly","companions":[{"id":"glow","state":"ahead","xRatio":0.14,"yRatio":0.44}],"events":[
+      {"id":"story-07-reeds","trigger":{"type":"position","xRatio":0.48},"once":true,"speaker":"glow","text":"Zwischen den Halmen blinkt etwas."},
+      {"id":"story-07-trail","trigger":{"type":"hoot","contextId":"hoot-07-trail-2"},"once":true,"speaker":"lumi","text":"Die Spur biegt am Wasser ab."}
+    ]},
+    {"levelOrder":8,"levelId":"level-08-kaferlichtung","chapter":"firefly","companions":[{"id":"glow","state":"help","xRatio":0.16,"yRatio":0.38}],"events":[
+      {"id":"story-08-family","trigger":{"type":"hoot","contextId":"hoot-08-family"},"once":true,"speaker":"glow","text":"Gefunden! Jetzt leuchtet die Familie wieder gemeinsam.","action":{"companion":"glow","state":"arrived"}},
+      {"id":"story-08-home","trigger":{"type":"objective","progress":0.7},"once":true,"speaker":"lumi","text":"Wir bringen die Kräuter gemeinsam nach Hause."}
+    ]},
+    {"levelOrder":9,"levelId":"level-09-alte-eiche","chapter":"bruno","companions":[{"id":"bruno","state":"ahead","xRatio":0.22,"yRatio":0.3}],"events":[
+      {"id":"story-09-meet","trigger":{"type":"position","xRatio":0.2},"once":true,"speaker":"bruno","text":"Du bist also Lumi. Ich bin deutlich schwerer zu übersehen."},
+      {"id":"story-09-call","trigger":{"type":"hoot","contextId":"hoot-09-bruno"},"once":true,"speaker":"bruno","text":"Ich bin hier! Meine Brille wusste den Weg."}
+    ]},
+    {"levelOrder":10,"levelId":"level-10-goldene-spur","chapter":"bruno","companions":[{"id":"bruno","state":"ahead","xRatio":0.18,"yRatio":0.32}],"events":[
+      {"id":"story-10-gap","trigger":{"type":"position","xRatio":0.42},"once":true,"speaker":"bruno","text":"Durch das große Tor. Für mich ist jedes Tor groß genug."},
+      {"id":"story-10-half","trigger":{"type":"objective","progress":0.5},"once":true,"speaker":"lumi","text":"Wir kommen schneller voran, wenn keiner schubst."}
+    ]},
+    {"levelOrder":11,"levelId":"level-11-sturmklippen","chapter":"bruno","companions":[{"id":"bruno","state":"help","xRatio":0.16,"yRatio":0.3}],"events":[
+      {"id":"story-11-shadow","trigger":{"type":"companionDistance","companion":"bruno","distance":210,"comparison":"near"},"once":true,"speaker":"bruno","text":"Bleib hinter mir. Hier ist der Wind ruhiger."},
+      {"id":"story-11-land","trigger":{"type":"landing","perchId":"safe-11-b"},"once":true,"speaker":"lumi","text":"Gute Deckung. Und tatsächlich eine gute Idee von Bruno."}
+    ]},
+    {"levelOrder":12,"levelId":"level-12-windschlucht","chapter":"bruno","companions":[{"id":"bruno","state":"help","xRatio":0.14,"yRatio":0.28}],"events":[
+      {"id":"story-12-call","trigger":{"type":"hoot","contextId":"hoot-12-bruno"},"once":true,"speaker":"bruno","text":"Zusammen durch die nächste Böe!","action":{"companion":"bruno","state":"follow"}},
+      {"id":"story-12-friend","trigger":{"type":"objective","progress":0.8},"once":true,"speaker":"lumi","text":"Konkurrent klingt inzwischen nicht mehr richtig."}
+    ]},
+    {"levelOrder":13,"levelId":"level-13-dunkeltal","chapter":"brook","companions":[{"id":"fynn","state":"follow","xRatio":0.08,"yRatio":0.34}],"events":[
+      {"id":"story-13-sound","trigger":{"type":"position","xRatio":0.3},"once":true,"speaker":"lumi","text":"Der Bach zeigt mit seinem Klang die Richtung."},
+      {"id":"story-13-echo","trigger":{"type":"hoot","contextId":"hoot-13-echo"},"once":true,"speaker":"fynn","text":"Ich sehe deinen Echo-Punkt von hier."}
+    ]},
+    {"levelOrder":14,"levelId":"level-14-fledermaushohle","chapter":"brook","companions":[{"id":"fynn","state":"follow","xRatio":0.08,"yRatio":0.36}],"events":[
+      {"id":"story-14-cave","trigger":{"type":"position","xRatio":0.36},"once":true,"speaker":"fynn","text":"Die Höhle klingt größer, als sie ist."},
+      {"id":"story-14-rest","trigger":{"type":"landing","perchId":"safe-14-a"},"once":true,"speaker":"lumi","text":"Erst hören, dann weiterfliegen."}
+    ]},
+    {"levelOrder":15,"levelId":"level-15-geisterwald","chapter":"brook","companions":[{"id":"fynn","state":"wait","xRatio":0.12,"yRatio":0.38}],"events":[
+      {"id":"story-15-far","trigger":{"type":"companionDistance","companion":"fynn","distance":430,"comparison":"far"},"once":false,"cooldown":12,"speaker":"fynn","text":"Warte kurz – im Nebel verliere ich deine Silhouette."},
+      {"id":"story-15-call","trigger":{"type":"hoot","contextId":"hoot-15-fynn"},"once":true,"speaker":"fynn","text":"Da bist du. Jetzt kenne ich wieder die Richtung.","action":{"companion":"fynn","state":"follow"}}
+    ]},
+    {"levelOrder":16,"levelId":"level-16-silbersee","chapter":"brook","companions":[{"id":"fynn","state":"follow","xRatio":0.08,"yRatio":0.34}],"events":[
+      {"id":"story-16-rest","trigger":{"type":"landing","perchId":"safe-16-b"},"once":true,"speaker":"lumi","text":"Ich war am Bach nervös. Der sichere Ast hilft wirklich."},
+      {"id":"story-16-answer","trigger":{"type":"objective","progress":0.75},"once":true,"speaker":"fynn","text":"Dann können mutige Eulen also trotzdem Angst haben."}
+    ]},
+    {"levelOrder":17,"levelId":"level-17-frostwiese","chapter":"gift","companions":[],"events":[
+      {"id":"story-17-look","trigger":{"type":"position","xRatio":0.28},"once":true,"speaker":"kauz","text":"Nicht schneller suchen. Genauer hinsehen."},
+      {"id":"story-17-find","trigger":{"type":"hoot","contextId":"hoot-17-memory"},"once":true,"speaker":"lumi","text":"Eine weiche Feder unter dem Frost."}
+    ]},
+    {"levelOrder":18,"levelId":"level-18-schattenbruch","chapter":"gift","companions":[],"events":[
+      {"id":"story-18-light","trigger":{"type":"position","xRatio":0.4},"once":true,"speaker":"kauz","text":"Manche Steine sieht man zuerst in ihrer Spiegelung."},
+      {"id":"story-18-find","trigger":{"type":"hoot","contextId":"hoot-18-memory"},"once":true,"speaker":"lumi","text":"Der Stein glänzt selbst im Schatten."}
+    ]},
+    {"levelOrder":19,"levelId":"level-19-irrlichtpfad","chapter":"gift","companions":[{"id":"glow","state":"help","xRatio":0.1,"yRatio":0.4}],"events":[
+      {"id":"story-19-shape","trigger":{"type":"position","xRatio":0.33},"once":true,"speaker":"glow","text":"Das runde Blatt bewegt sich anders als die übrigen."},
+      {"id":"story-19-find","trigger":{"type":"hoot","contextId":"hoot-19-memory"},"once":true,"speaker":"lumi","text":"Genau dieses Blatt passt zu Fynn."}
+    ]},
+    {"levelOrder":20,"levelId":"level-20-goldregen","chapter":"gift","companions":[],"events":[
+      {"id":"story-20-root","trigger":{"type":"position","xRatio":0.48},"once":true,"speaker":"kauz","text":"Die Eiche gibt nur her, was bereits lose ist."},
+      {"id":"story-20-find","trigger":{"type":"hoot","contextId":"hoot-20-memory"},"once":true,"speaker":"lumi","text":"Ein kleiner Zweig. Jetzt muss ich mich entscheiden."}
+    ]},
+    {"levelOrder":21,"levelId":"level-21-donnergrat","chapter":"wind","companions":[{"id":"bruno","state":"help","xRatio":0.16,"yRatio":0.3},{"id":"glow","state":"ahead","xRatio":0.22,"yRatio":0.4}],"events":[
+      {"id":"story-21-flow","trigger":{"type":"position","xRatio":0.3},"once":true,"speaker":"glow","text":"Unsere Lichter liegen in der ruhigen Strömung."},
+      {"id":"story-21-call","trigger":{"type":"hoot","contextId":"hoot-21-windmark"},"once":true,"speaker":"bruno","text":"Signal verstanden. Ich halte die linke Route frei."}
+    ]},
+    {"levelOrder":22,"levelId":"level-22-schwarzer-forst","chapter":"wind","companions":[{"id":"bruno","state":"help","xRatio":0.14,"yRatio":0.31},{"id":"glow","state":"ahead","xRatio":0.2,"yRatio":0.39}],"events":[
+      {"id":"story-22-close","trigger":{"type":"companionDistance","companion":"bruno","distance":220,"comparison":"near"},"once":true,"speaker":"bruno","text":"In meinem Windschatten wackeln sogar die Blätter weniger."},
+      {"id":"story-22-rest","trigger":{"type":"landing","perchId":"safe-22-b"},"once":true,"speaker":"lumi","text":"Hier sammeln wir uns vor der nächsten Böe."}
+    ]},
+    {"levelOrder":23,"levelId":"level-23-mondsichelmoor","chapter":"wind","companions":[{"id":"bruno","state":"ahead","xRatio":0.16,"yRatio":0.3},{"id":"glow","state":"help","xRatio":0.2,"yRatio":0.4}],"events":[
+      {"id":"story-23-marker","trigger":{"type":"hoot","contextId":"hoot-23-windmark"},"once":true,"speaker":"glow","text":"Der Ruf verbindet unsere sicheren Punkte."},
+      {"id":"story-23-half","trigger":{"type":"objective","progress":0.6},"once":true,"speaker":"bruno","text":"Das ist Teamarbeit. Ich übernehme den lauten Teil."}
+    ]},
+    {"levelOrder":24,"levelId":"level-24-rufschlucht","chapter":"wind","companions":[{"id":"bruno","state":"help","xRatio":0.13,"yRatio":0.29},{"id":"glow","state":"help","xRatio":0.18,"yRatio":0.39}],"events":[
+      {"id":"story-24-coordinate","trigger":{"type":"hoot","contextId":"hoot-24-windmark"},"once":true,"speaker":"lumi","text":"Auf mein Huuu: Lichter voraus, Bruno an die Böe!","action":{"companion":"bruno","state":"ahead"}},
+      {"id":"story-24-done","trigger":{"type":"objective","progress":0.85},"once":true,"speaker":"bruno","text":"Gemeinsam war der Gegenwind nur halb so windig."}
+    ]},
+    {"levelOrder":25,"levelId":"level-25-dammerhain","chapter":"first-flight","companions":[{"id":"fynn","state":"unsure","xRatio":0.08,"yRatio":0.36,"courage":28}],"events":[
+      {"id":"story-25-near","trigger":{"type":"companionDistance","companion":"fynn","distance":190,"comparison":"near"},"once":true,"speaker":"lumi","text":"Nur bis zum nächsten Ast. Ich bleibe bei dir.","action":{"companion":"fynn","state":"follow","courage":12}},
+      {"id":"story-25-land","trigger":{"type":"landing","perchId":"safe-25-a"},"once":true,"speaker":"fynn","text":"Ein Ast geschafft. Der nächste sieht schon kleiner aus.","action":{"companion":"fynn","state":"wait","courage":15}}
+    ]},
+    {"levelOrder":26,"levelId":"level-26-blutmond","chapter":"first-flight","companions":[{"id":"fynn","state":"follow","xRatio":0.08,"yRatio":0.36,"courage":42}],"events":[
+      {"id":"story-26-far","trigger":{"type":"companionDistance","companion":"fynn","distance":430,"comparison":"far"},"once":false,"cooldown":12,"speaker":"fynn","text":"Nicht so weit voraus. Ich komme gleich nach."},
+      {"id":"story-26-call","trigger":{"type":"hoot","contextId":"hoot-26-fynn"},"once":true,"speaker":"lumi","text":"Hör auf meinen Ruf. Ich warte am Ast.","action":{"companion":"fynn","state":"ahead","courage":12}}
+    ]},
+    {"levelOrder":27,"levelId":"level-27-nachtsturm","chapter":"first-flight","companions":[{"id":"fynn","state":"follow","xRatio":0.08,"yRatio":0.36,"courage":55}],"events":[
+      {"id":"story-27-rest","trigger":{"type":"landing","perchId":"safe-27-b"},"once":true,"speaker":"lumi","text":"Wir warten, bis die Böe vorbei ist.","action":{"companion":"fynn","state":"wait","courage":14}},
+      {"id":"story-27-answer","trigger":{"type":"hoot","contextId":"hoot-27-answer"},"once":true,"speaker":"fynn","text":"Ich bin bereit für den nächsten Sprung.","action":{"companion":"fynn","state":"ahead","courage":10}}
+    ]},
+    {"levelOrder":28,"levelId":"level-28-letzte-lichtung","chapter":"first-flight","companions":[{"id":"fynn","state":"ahead","xRatio":0.1,"yRatio":0.34,"courage":70}],"events":[
+      {"id":"story-28-near","trigger":{"type":"companionDistance","companion":"fynn","distance":210,"comparison":"near"},"once":true,"speaker":"fynn","text":"Diesmal fliege ich ein Stück voraus."},
+      {"id":"story-28-perch","trigger":{"type":"landing","perchId":"safe-28-b"},"once":true,"speaker":"lumi","text":"Du hast die ganze Lichtung überquert.","action":{"companion":"fynn","state":"arrived","courage":12}}
+    ]},
+    {"levelOrder":29,"levelId":"level-29-morgengrauen","chapter":"first-flight","companions":[{"id":"fynn","state":"wait","xRatio":0.12,"yRatio":0.35,"courage":84}],"events":[
+      {"id":"story-29-call","trigger":{"type":"hoot","contextId":"hoot-29-fynn"},"once":true,"speaker":"lumi","text":"Wenn du bereit bist: ein Huuu und ein Flügelschlag.","action":{"companion":"fynn","state":"ahead","courage":10}},
+      {"id":"story-29-jump","trigger":{"type":"companionDistance","companion":"fynn","distance":180,"comparison":"near"},"requires":["story-29-call"],"once":true,"speaker":"fynn","text":"Das war Absicht!","action":{"companion":"fynn","state":"arrived","courage":10}}
+    ]},
+    {"levelOrder":30,"levelId":"level-30-ewige-nacht","chapter":"epilogue","companions":[{"id":"fynn","state":"arrived","xRatio":0.14,"yRatio":0.36,"courage":100},{"id":"bruno","state":"arrived","xRatio":0.2,"yRatio":0.32},{"id":"glow","state":"arrived","xRatio":0.25,"yRatio":0.4}],"events":[
+      {"id":"story-30-home","trigger":{"type":"position","xRatio":0.18},"once":true,"speaker":"ava","text":"Alle sind da. Es fehlt nur noch euer gemeinsamer Ruf."},
+      {"id":"story-30-chorus","trigger":{"type":"hoot","contextId":"hoot-30-festival"},"once":true,"speaker":"fynn","text":"Der ganze Wald hat geantwortet!","action":{"companion":"fynn","state":"arrived","courage":100}}
+    ]}
+  ]
+}
+;
