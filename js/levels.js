@@ -53,6 +53,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.88,
           "max": 4.5
+        },
+        "maximumRivalOwls": 0,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 7.4,
+          "max": 9.6
         }
       },
       "pickups": {
@@ -114,6 +119,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.8,
           "max": 4.38
+        },
+        "maximumRivalOwls": 0,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 7.2,
+          "max": 9.4
         }
       },
       "pickups": {
@@ -176,6 +186,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.73,
           "max": 4.26
+        },
+        "maximumRivalOwls": 0,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 7,
+          "max": 9.2
         }
       },
       "pickups": {
@@ -238,6 +253,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.65,
           "max": 4.14
+        },
+        "maximumRivalOwls": 1,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 6.8,
+          "max": 9
         }
       },
       "pickups": {
@@ -301,6 +321,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.57,
           "max": 4.02
+        },
+        "maximumRivalOwls": 1,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 6.6,
+          "max": 8.8
         }
       },
       "pickups": {
@@ -364,6 +389,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.5,
           "max": 3.9
+        },
+        "maximumRivalOwls": 1,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 6.4,
+          "max": 8.6
         }
       },
       "pickups": {
@@ -427,6 +457,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.42,
           "max": 3.78
+        },
+        "maximumRivalOwls": 1,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 6.2,
+          "max": 8.4
         }
       },
       "pickups": {
@@ -490,6 +525,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.34,
           "max": 3.66
+        },
+        "maximumRivalOwls": 1,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 6,
+          "max": 8.2
         }
       },
       "pickups": {
@@ -553,6 +593,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.27,
           "max": 3.54
+        },
+        "maximumRivalOwls": 1,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 5.8,
+          "max": 8
         }
       },
       "pickups": {
@@ -617,6 +662,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.19,
           "max": 3.42
+        },
+        "maximumRivalOwls": 1,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 5.6,
+          "max": 7.8
         }
       },
       "pickups": {
@@ -680,6 +730,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.11,
           "max": 3.3
+        },
+        "maximumRivalOwls": 2,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 5.4,
+          "max": 7.6
         }
       },
       "pickups": {
@@ -743,6 +798,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 2.04,
           "max": 3.18
+        },
+        "maximumRivalOwls": 2,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 5.2,
+          "max": 7.4
         }
       },
       "pickups": {
@@ -806,6 +866,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.96,
           "max": 3.06
+        },
+        "maximumRivalOwls": 2,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 5,
+          "max": 7.2
         }
       },
       "pickups": {
@@ -870,6 +935,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.88,
           "max": 2.94
+        },
+        "maximumRivalOwls": 2,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 4.8,
+          "max": 7
         }
       },
       "pickups": {
@@ -934,6 +1004,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.8,
           "max": 2.82
+        },
+        "maximumRivalOwls": 2,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 4.6,
+          "max": 6.8
         }
       },
       "pickups": {
@@ -998,6 +1073,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.73,
           "max": 2.7
+        },
+        "maximumRivalOwls": 2,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 4.4,
+          "max": 6.6
         }
       },
       "pickups": {
@@ -1062,6 +1142,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.65,
           "max": 2.58
+        },
+        "maximumRivalOwls": 2,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 4.2,
+          "max": 6.4
         }
       },
       "pickups": {
@@ -1126,6 +1211,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.57,
           "max": 2.46
+        },
+        "maximumRivalOwls": 3,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 4,
+          "max": 6.2
         }
       },
       "pickups": {
@@ -1190,6 +1280,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.5,
           "max": 2.34
+        },
+        "maximumRivalOwls": 3,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 3.8,
+          "max": 6
         }
       },
       "pickups": {
@@ -1254,6 +1349,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.42,
           "max": 2.22
+        },
+        "maximumRivalOwls": 3,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 3.6,
+          "max": 5.8
         }
       },
       "pickups": {
@@ -1318,6 +1418,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.34,
           "max": 2.1
+        },
+        "maximumRivalOwls": 3,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 3.4,
+          "max": 5.6
         }
       },
       "pickups": {
@@ -1382,6 +1487,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.27,
           "max": 1.98
+        },
+        "maximumRivalOwls": 3,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 3.2,
+          "max": 5.4
         }
       },
       "pickups": {
@@ -1446,6 +1556,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.19,
           "max": 1.86
+        },
+        "maximumRivalOwls": 3,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 3,
+          "max": 5.2
         }
       },
       "pickups": {
@@ -1510,6 +1625,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.11,
           "max": 1.74
+        },
+        "maximumRivalOwls": 3,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 2.8,
+          "max": 5
         }
       },
       "pickups": {
@@ -1574,6 +1694,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 1.04,
           "max": 1.62
+        },
+        "maximumRivalOwls": 4,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 2.6,
+          "max": 4.8
         }
       },
       "pickups": {
@@ -1638,6 +1763,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 0.96,
           "max": 1.5
+        },
+        "maximumRivalOwls": 4,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 2.4,
+          "max": 4.6
         }
       },
       "pickups": {
@@ -1702,6 +1832,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 0.88,
           "max": 1.38
+        },
+        "maximumRivalOwls": 4,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 2.2,
+          "max": 4.4
         }
       },
       "pickups": {
@@ -1766,6 +1901,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 0.81,
           "max": 1.26
+        },
+        "maximumRivalOwls": 4,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 2.2,
+          "max": 4.2
         }
       },
       "pickups": {
@@ -1830,6 +1970,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 0.73,
           "max": 1.14
+        },
+        "maximumRivalOwls": 4,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 2.2,
+          "max": 4
         }
       },
       "pickups": {
@@ -1894,6 +2039,11 @@ window.OWL_LEVEL_DATA = {
         "batSpawnDelaySeconds": {
           "min": 0.67,
           "max": 1.05
+        },
+        "maximumRivalOwls": 4,
+        "rivalOwlSpawnDelaySeconds": {
+          "min": 2.2,
+          "max": 3.8
         }
       },
       "pickups": {
