@@ -51,7 +51,7 @@
   ];
 
   const state = {
-    w:0,h:0,dpr:1,groundY:0,gameScale:1,touchMode:false,
+    w:0,h:0,dpr:1,groundY:0,gameScale:1,touchMode:false,tabletMode:false,
     running:false,paused:false,ended:false,
     score:0,hearts:3,maxHearts:4,energy:100,time:90,maxTime:90,
     phaseIndex:0,phaseDelivered:0,totalDelivered:0,
@@ -60,7 +60,7 @@
     keys:new Set(),pointer:{active:false,x:0,y:0},joystick:{active:false,x:0,y:0},
     mice:[],bats:[],branches:[],fireflies:[],particles:[],floaters:[],rings:[],stars:[],clouds:[],grass:[],
     echo:0,shake:0,transition:0,transitionQueued:false,
-    last:0,muted:true,elapsed:0,restProgress:0,restCooldown:0
+    last:0,muted:false,elapsed:0,restProgress:0,restCooldown:0,musicClock:.4,wildlifeClock:2
   };
 
   const owl = {
@@ -69,7 +69,7 @@
     invuln:0,wing:0,carrying:null
   };
 
-  let audioCtx = null;
+  let audioCtx = null,masterGain=null,ambienceGain=null;
 
   const iconSvg=name=>`<svg class="uiIcon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
   function setMobileMission(html,desktopText){
@@ -92,9 +92,34 @@
     if(state.muted) return;
     if(!audioCtx){
       const A = window.AudioContext || window.webkitAudioContext;
-      if(A) audioCtx = new A();
+      if(A){
+        audioCtx = new A();
+        masterGain=audioCtx.createGain();masterGain.gain.value=.72;masterGain.connect(audioCtx.destination);
+        startAmbience();
+      }
     }
     if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  function startAmbience(){
+    if(!audioCtx||ambienceGain)return;
+    ambienceGain=audioCtx.createGain();ambienceGain.gain.value=.75;ambienceGain.connect(masterGain);
+    const length=audioCtx.sampleRate*2,buffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate),data=buffer.getChannelData(0);
+    let smooth=0;
+    for(let i=0;i<length;i++){smooth=smooth*.985+(Math.random()*2-1)*.015;data[i]=smooth}
+    const wind=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),windGain=audioCtx.createGain();
+    wind.buffer=buffer;wind.loop=true;filter.type='lowpass';filter.frequency.value=520;windGain.gain.value=.17;
+    wind.connect(filter).connect(windGain).connect(ambienceGain);wind.start();
+    const nightHum=audioCtx.createOscillator(),humGain=audioCtx.createGain();
+    nightHum.type='sine';nightHum.frequency.value=48;humGain.gain.value=.012;
+    nightHum.connect(humGain).connect(ambienceGain);nightHum.start();
+  }
+
+  function setAudioFocus(active){
+    if(!audioCtx||!masterGain)return;
+    const target=state.muted?0:(active ? 0.72 : 0.16);
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.setTargetAtTime(target,audioCtx.currentTime,.12);
   }
 
   function tone(freq=440,duration=.12,type='sine',gain=.035,slide=0,delay=0){
@@ -110,8 +135,41 @@
     vol.gain.setValueAtTime(.0001,t);
     vol.gain.exponentialRampToValueAtTime(gain,t+.015);
     vol.gain.exponentialRampToValueAtTime(.0001,t+duration);
-    osc.connect(vol).connect(audioCtx.destination);
+    osc.connect(vol).connect(masterGain||audioCtx.destination);
     osc.start(t);osc.stop(t+duration+.02);
+  }
+
+  function padTone(freq,duration=2,gain=.009,delay=0){
+    if(state.muted)return;
+    initAudio();if(!audioCtx)return;
+    const t=audioCtx.currentTime+delay,osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),vol=audioCtx.createGain();
+    osc.type='triangle';osc.frequency.value=freq;filter.type='lowpass';filter.frequency.value=900;
+    vol.gain.setValueAtTime(.0001,t);vol.gain.exponentialRampToValueAtTime(gain,t+.35);vol.gain.exponentialRampToValueAtTime(.0001,t+duration);
+    osc.connect(filter).connect(vol).connect(masterGain);osc.start(t);osc.stop(t+duration+.04);
+  }
+
+  function playMusicPhrase(){
+    const chords=[[196,246.94,293.66],[174.61,220,261.63],[220,261.63,329.63]];
+    const chord=chords[state.phaseIndex]||chords[0];
+    chord.forEach((f,i)=>padTone(f,2.8,.007,i*.12));
+    padTone(chord[0]/2,3.4,.009,.04);
+  }
+
+  function playWildlife(){
+    if(state.phaseIndex===0&&Math.random()<.55){
+      tone(310,.045,'square',.006,35);tone(355,.04,'square',.005,20,.09);tone(325,.04,'square',.004,-15,.18);
+    }else if(Math.random()<.5){
+      tone(190,.42,'sine',.016,-45);tone(165,.48,'sine',.013,-30,.5);
+    }else{
+      tone(720,.055,'triangle',.006,-160);tone(610,.05,'triangle',.005,-120,.07);
+    }
+  }
+
+  function updateAudio(dt){
+    if(state.muted||!audioCtx)return;
+    state.musicClock-=dt;state.wildlifeClock-=dt;
+    if(state.musicClock<=0){playMusicPhrase();state.musicClock=rand(6.5,9.5)}
+    if(state.wildlifeClock<=0){playWildlife();state.wildlifeClock=rand(4,8)}
   }
 
   function sfx(name){
@@ -122,6 +180,11 @@
     if(name==='echo'){tone(230,.45,'sine',.028,620);tone(340,.4,'triangle',.018,500,.08)}
     if(name==='power'){tone(640,.11,'sine',.03,180);tone(920,.12,'sine',.025,100,.08)}
     if(name==='phase'){[392,494,587,784].forEach((f,i)=>tone(f,.22,'triangle',.025,30,i*.09))}
+    if(name==='wave'){tone(220,.12,'triangle',.018,80);tone(330,.16,'triangle',.015,100,.12)}
+    if(name==='frog'){tone(165,.09,'square',.012,75);tone(215,.11,'square',.01,85,.1)}
+    if(name==='rabbit'){tone(510,.055,'triangle',.012,120);tone(690,.06,'triangle',.009,80,.07)}
+    if(name==='beetle'){tone(115,.035,'square',.009,20);tone(135,.03,'square',.007,-15,.055)}
+    if(name==='bat'){tone(920,.07,'sawtooth',.008,-330);tone(670,.08,'triangle',.006,-240,.06)}
     if(name==='win'){[523,659,784,1047].forEach((f,i)=>tone(f,.28,'sine',.032,60,i*.12))}
     if(name==='lose'){tone(330,.28,'triangle',.035,-80);tone(220,.35,'triangle',.03,-90,.18)}
   }
@@ -137,9 +200,11 @@
     ctx.setTransform(state.dpr,0,0,state.dpr,0,0);
     state.w = rect.width;
     state.h = rect.height;
-    state.touchMode=state.w<=820||window.matchMedia('(any-pointer:coarse)').matches;
+    const coarsePointer=window.matchMedia('(any-pointer:coarse)').matches;
+    state.touchMode=state.w<=820||coarsePointer;
+    state.tabletMode=coarsePointer&&Math.min(state.w,state.h)>=700;
     state.gameScale = clamp(Math.min(state.w/760,state.h/620),.46,1);
-    state.groundY = state.h-(state.touchMode?78:48);
+    state.groundY = state.h-(state.tabletMode?118:(state.touchMode?78:48));
 
     const radiusRatio=state.gameScale/previousScale;
     [...state.mice,...state.bats,...state.fireflies].forEach(item=>{item.r*=radiusRatio;if(item.speed)item.speed*=radiusRatio});
@@ -174,7 +239,7 @@
 
   function nest(){
     const s=state.gameScale;
-    if(state.touchMode&&state.h>state.w)return{x:state.w*.5,y:118,r:58*s};
+    if(state.touchMode&&state.h>state.w)return{x:state.w*.5,y:state.tabletMode?165:118,r:58*s};
     const top=state.h<600?88:(state.touchMode?120:142);
     return {x:Math.max(62*s,state.w*.09),y:Math.max(top,state.h*.2),r:58*s};
   }
@@ -185,7 +250,7 @@
     state.combo=0;state.bestCombo=0;state.comboClock=0;
     state.mouseClock=.35;state.batClock=1.8;state.fireflyClock=.45;state.wave=1;state.waveRemaining=currentPhase().waveSize;state.waveBreak=0;
     state.mice=[];state.bats=[];state.branches=[];state.fireflies=[];state.particles=[];state.floaters=[];state.rings=[];
-    state.echo=0;state.shake=0;state.transition=0;state.transitionQueued=false;state.elapsed=0;
+    state.echo=0;state.shake=0;state.transition=0;state.transitionQueued=false;state.elapsed=0;state.musicClock=.35;state.wildlifeClock=2;
     const portrait=state.touchMode&&state.h>state.w;
     owl.x=portrait?state.w*.5:state.w*.25;owl.y=portrait?Math.max(210,state.h*.29):state.h*.30;owl.vx=0;owl.vy=0;owl.angle=0;owl.dive=false;owl.diveTime=0;owl.invuln=0;owl.carrying=null;
     setupBranches();
@@ -211,6 +276,7 @@
 
   function startGame(){
     initAudio();
+    setAudioFocus(true);
     reset();
     state.running=true;state.paused=false;state.ended=false;
     ui.start.classList.add('hidden');ui.end.classList.add('hidden');ui.pause.classList.add('hidden');
@@ -222,13 +288,14 @@
   function pauseGame(force){
     if(!state.running || state.ended) return;
     state.paused = typeof force==='boolean' ? force : !state.paused;
+    setAudioFocus(!state.paused);
     ui.pause.classList.toggle('hidden',!state.paused);
     if(!state.paused){state.last=performance.now();requestAnimationFrame(loop)}
   }
 
   function finish(win){
     if(state.ended) return;
-    state.ended=true;state.running=false;
+    state.ended=true;state.running=false;setAudioFocus(false);
     ui.end.classList.remove('hidden');
     ui.endEyebrow.textContent=win?'Nest versorgt':'Morgengrauen';
     ui.endTitle.textContent=win?'Nest versorgt':'Die Nacht ist vorbei';
@@ -326,6 +393,7 @@
       x:fromRight?state.w+50*s:-50*s,y,dir:fromRight?-1:1,
       speed:(rand(105,175)+state.phaseIndex*18)*s,r:23*s,phase:rand(0,6),turn:rand(1,3)
     });
+    if(state.running&&Math.random()<.3)sfx('bat');
   }
 
   function spawnFirefly(){
@@ -385,7 +453,7 @@
     const preyName={gold:'Goldene Maus',rabbit:'Kaninchen',frog:'Frosch',beetle:'Käfer'}[m.type]||'Beute';
     showToast(preyName+' gefangen',m.color,750);
     haptic([18,25,28]);
-    sfx('catch');
+    sfx('catch');if(['frog','rabbit','beetle'].includes(m.type))sfx(m.type);
   }
 
   function deliverPrey(){
@@ -439,7 +507,7 @@
 
   function update(dt){
     const phase=currentPhase();
-    state.elapsed+=dt;
+    state.elapsed+=dt;updateAudio(dt);
     state.time-=dt;
     state.energy=Math.min(100,state.energy+(owl.dive?3.5:9.5)*dt);
     state.echo=Math.max(0,state.echo-dt);
@@ -497,6 +565,7 @@
       if(state.waveBreak<=0){
         state.wave++;state.waveRemaining=phase.waveSize+Math.min(3,state.wave-1);
         showToast(`Welle ${state.wave}`,'#82e7ff',520);
+        sfx('wave');
       }
     }
     state.mouseClock-=dt;
@@ -940,7 +1009,12 @@
   document.getElementById('startBtn').addEventListener('click',startGame);
   document.getElementById('restartBtn').addEventListener('click',startGame);
   document.getElementById('resumeBtn').addEventListener('click',()=>pauseGame(false));
-  ui.sound.addEventListener('click',()=>{state.muted=!state.muted;ui.sound.innerHTML=iconSvg(state.muted?'muted':'speaker');if(!state.muted)initAudio()});
+  ui.sound.addEventListener('click',()=>{
+    state.muted=!state.muted;ui.sound.innerHTML=iconSvg(state.muted?'muted':'speaker');
+    if(!state.muted)initAudio();
+    setAudioFocus(!state.muted&&state.running&&!state.paused&&!state.ended);
+  });
+  document.addEventListener('visibilitychange',()=>setAudioFocus(!document.hidden&&state.running&&!state.paused&&!state.ended));
 
   // statische Startszene
   reset();draw();

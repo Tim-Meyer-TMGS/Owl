@@ -170,3 +170,42 @@
     button{padding:10px 14px}
     .joystick{width:62px;height:62px}
   }
+
+  /* 10–12-Zoll-Tablets, z. B. Galaxy Tab S11 */
+  @media (min-width:700px) and (min-height:700px) and (any-pointer:coarse){
+    .hud{
+      left:50%;right:auto;top:max(10px,env(safe-area-inset-top));transform:translateX(-50%);
+      width:min(780px,calc(100% - 32px));grid-template-columns:repeat(4,minmax(0,1fr));gap:7px
+    }
+    .hud .card:nth-child(2){display:block}
+    .card{min-height:54px;padding:7px 9px;border-radius:13px}
+    .label{font-size:.92rem}
+    .value{font-size:.82rem;margin-top:4px}
+    .bar{height:7px;margin-top:7px}
+    #missionBanner{top:calc(max(10px,env(safe-area-inset-top)) + 61px);padding:8px 15px;font-size:.82rem}
+    .mobile{left:max(24px,env(safe-area-inset-left));right:max(24px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom))}
+    .mobileGroup{gap:12px}
+    .joystick{width:98px;height:98px;border-width:2px}
+    .joystick::before{inset:23px}
+    .joystickKnob{width:40px;height:40px}
+    .mobile button{width:58px;height:58px;font-size:1.15rem}
+    .mobile .action{width:66px;height:66px;font-size:1.25rem}
+    #soundBtn{width:44px;height:44px;right:max(24px,env(safe-area-inset-right));bottom:max(104px,calc(env(safe-area-inset-bottom) + 92px));font-size:.95rem}
+    .panel{max-width:700px;padding:24px}
+    .mobileGuide{max-width:520px;margin:16px auto 18px}
+    .guideItem{padding:12px 8px;font-size:.82rem}
+    .guideItem strong{font-size:1.55rem}
+  }
+
+  @media (min-width:1000px) and (min-height:700px) and (any-pointer:coarse) and (orientation:landscape){
+    .mobile{left:max(34px,env(safe-area-inset-left));right:max(34px,env(safe-area-inset-right))}
+    .joystick{width:104px;height:104px}
+    .mobile button{width:60px;height:60px}
+    .mobile .action{width:70px;height:70px}
+  }
+
+  /* Angeschlossene Maus oder DeX: Touch-Overlay ausblenden. */
+  @media (min-width:700px) and (hover:hover) and (pointer:fine){
+    .mobile{display:none}
+    #soundBtn{right:18px;bottom:18px}
+  }
