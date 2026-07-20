@@ -25,3 +25,14 @@ if ($owlData.formatVersion -ne 1 -or $owlData.owls.Count -lt 1) {
 $owlRuntime = "/* Generated from data/owls.json. Run tools/build-levels.ps1 after editing the JSON source. */`nwindow.OWL_ROSTER_DATA = $owlJson;"
 Set-Content -LiteralPath $owlTarget -Value $owlRuntime -Encoding UTF8
 Write-Host "Generated js/owls.js with $($owlData.owls.Count) owls."
+
+$storySource = Join-Path $ProjectRoot 'data\story.json'
+$storyTarget = Join-Path $ProjectRoot 'js\story.js'
+$storyJson = Get-Content -LiteralPath $storySource -Raw -Encoding UTF8
+$storyData = $storyJson | ConvertFrom-Json
+if ($storyData.formatVersion -ne 1 -or $storyData.chapters.Count -lt 1) {
+  throw 'story.json hat ein unbekanntes oder leeres Format.'
+}
+$storyRuntime = "/* Generated from data/story.json. Run tools/build-levels.ps1 after editing the JSON source. */`nwindow.OWL_STORY_DATA = $storyJson;"
+Set-Content -LiteralPath $storyTarget -Value $storyRuntime -Encoding UTF8
+Write-Host "Generated js/story.js with $($storyData.chapters.Count) story chapters."

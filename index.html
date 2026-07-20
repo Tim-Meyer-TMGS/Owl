@@ -21,6 +21,10 @@
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M19 5l-1.5 1.5m-11 11L5 19"/></symbol>
     <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4Zm12-1c1.5 1.5 1.5 4.5 0 6m2.5-8.5c3 3 3 8 0 11"/></symbol>
     <symbol id="i-muted" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4Zm12-1 6 6m0-6-6 6"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="m3 6 5-3 8 3 5-3v15l-5 3-8-3-5 3V6Zm5-3v15m8-12v15"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><path d="M6 10h12v11H6V10Zm3 0V7a3 3 0 0 1 6 0v3m-3 4v3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-feather" viewBox="0 0 24 24"><path d="M20 3C12 3 6 8 6 15l-3 6m3-6c4 0 8-3 11-7M7 12l4 4"/></symbol>
   </svg>
 
   <div class="hud">
@@ -42,13 +46,14 @@
     <div class="card">
       <div class="label"><svg class="uiIcon hudIcon" aria-hidden="true"><use href="#i-moon"/></svg><span class="labelText">Verbleibende Nacht</span></div>
       <div class="bar"><span id="timeFill"></span></div>
-      <div class="subvalue"><span id="timeText">90</span> Sekunden</div>
+      <div class="subvalue">Fest · <span id="timeText">90</span></div>
     </div>
   </div>
 
   <div id="missionBanner"><span class="iconSequence"><svg class="uiIcon"><use href="#i-mouse"/></svg>→<svg class="uiIcon"><use href="#i-nest"/></svg></span></div>
   <div id="bonusGoal" aria-live="polite">☆ Bonusziel</div>
   <div id="toast"></div>
+  <div id="storyBubble" class="hidden" aria-live="polite"><span id="storyBubbleAvatar">FY</span><p><strong id="storyBubbleName">Fynn</strong><span id="storyBubbleText"></span></p></div>
   <div id="touchHint">Finger lenkt · rechts: Sturzflug und Huuu</div>
 
   <button id="soundBtn" type="button" aria-label="Ton ein- oder ausschalten"><svg class="uiIcon"><use href="#i-speaker"/></svg></button>
@@ -56,9 +61,9 @@
 
   <div class="overlay" id="startOverlay">
     <div class="panel">
-      <div class="eyebrow">Jagd am Waldrand</div>
+      <div class="eyebrow">Das Fest der ersten Nacht</div>
       <h1>Eulenflug</h1>
-      <p class="lead"><span class="desktopLead">Im Nest wartet der Nachwuchs. Sammle wertvolle Beute und bringe sie zurück, bevor es hell wird.</span><span class="mobileLead iconSequence"><svg class="uiIcon"><use href="#i-mouse"/></svg>→<svg class="uiIcon"><use href="#i-nest"/></svg>·<svg class="uiIcon"><use href="#i-sun"/></svg>!</span></p>
+      <p class="lead"><span class="desktopLead">Hilf Lumi, die verlorenen Leckerbissen für Fynns ersten Flug zu sammeln.</span><span class="mobileLead iconSequence">LU · <svg class="uiIcon"><use href="#i-mouse"/></svg>→<svg class="uiIcon"><use href="#i-nest"/></svg> · FY</span></p>
       <div class="story"><strong>So funktioniert es:</strong> Beute zählt erst im Nest. Dort bist du geschützt. Sturzflüge kosten Ausdauer. Dein Huuu-Ruf lädt sich selbst auf und vertreibt Feinde in der Nähe.</div>
       <section class="progressHub" aria-label="Eule und Fortschritt">
         <div class="progressMeta">
@@ -88,6 +93,37 @@
       </div>
       <button id="continueBtn" class="hidden" type="button">Fortsetzen</button>
       <button id="startBtn" class="secondary" type="button">Neue Jagd</button>
+      <button id="openMapBtn" class="secondary mapMenuButton" type="button"><svg class="uiIcon" aria-hidden="true"><use href="#i-map"/></svg> Reisekarte</button>
+    </div>
+  </div>
+
+  <div class="overlay hidden chapterMapOverlay" id="chapterMapOverlay" aria-labelledby="chapterMapTitle">
+    <section class="chapterMapPanel">
+      <header class="chapterMapHeader">
+        <div>
+          <div class="eyebrow">Lumis Reise</div>
+          <h1 id="chapterMapTitle">Waldkarte</h1>
+        </div>
+        <button id="closeMapBtn" class="mapCloseButton" type="button" aria-label="Reisekarte schließen">×</button>
+      </header>
+      <p class="mapSwipeHint"><svg class="uiIcon" aria-hidden="true"><use href="#i-feather"/></svg> Wischen und einen erreichbaren Ast antippen</p>
+      <div id="chapterMapScroller" class="chapterMapScroller" tabindex="0" aria-label="Horizontaler Reiseweg mit 30 Szenen">
+        <div id="chapterMapTrack" class="chapterMapTrack"></div>
+      </div>
+      <aside id="chapterMapPreview" class="chapterMapPreview" aria-live="polite"></aside>
+    </section>
+  </div>
+
+  <div class="overlay hidden" id="storyOverlay">
+    <div class="panel storyPanel">
+      <div class="eyebrow" id="storyChapterNumber">Prolog</div>
+      <h1 id="storyChapterTitle">Die verlorenen Vorräte</h1>
+      <div class="storyDialogue">
+        <span id="storyAvatar" class="storyAvatar">AV</span>
+        <p><strong id="storySpeaker">Ava</strong><span id="storyText"></span></p>
+      </div>
+      <div id="giftChoices" class="giftChoices hidden" aria-label="Geschenk für Fynn auswählen"></div>
+      <div class="storyActions"><button id="storyNextBtn" type="button">Weiter</button><button id="storySkipBtn" class="secondary" type="button">Überspringen</button></div>
     </div>
   </div>
 
@@ -126,6 +162,7 @@
         <div class="resultCell"><strong id="resultBest">0×</strong><span>Beste Kombo</span></div>
         <div class="resultCell"><strong id="resultXp">+0</strong><span>XP</span></div>
       </div>
+      <button id="finalHootBtn" class="hidden" type="button">HUUU · Gemeinsam rufen</button>
       <button id="restartBtn" type="button">Zur Eulenauswahl</button>
     </div>
   </div>
@@ -140,6 +177,8 @@
 
 <script src="js/levels.js" defer></script>
 <script src="js/owls.js" defer></script>
+<script src="js/story.js" defer></script>
+<script src="js/ui/chapter-map.js" defer></script>
 <script src="js/game.js" defer></script>
 </body>
 </html>
