@@ -54,12 +54,12 @@
   const owlRoster=rosterData.owls;
   const storyData=window.OWL_STORY_DATA;
   if(!storyData||storyData.formatVersion!==1||!Array.isArray(storyData.chapters)||!storyData.chapters.length){throw new Error('Keine gültigen Storydaten geladen.')}
-  const worldLoader=window.OWL?.worlds,camera=window.OWL?.camera?.create(),parallax=window.OWL?.parallax,perches=window.OWL?.perches,hootSystem=window.OWL?.hoot,storySystem=window.OWL?.story,tutorialSystem=window.OWL?.tutorial,meadowSystem=window.OWL?.meadow,fireflyQuestSystem=window.OWL?.fireflyQuest;
-  if(!worldLoader||worldLoader.count!==levelData.levels.length||!camera||!parallax||!perches||!hootSystem||hootSystem.sceneCount!==levelData.levels.length||!storySystem||storySystem.sceneCount!==levelData.levels.length||!tutorialSystem||!meadowSystem||!fireflyQuestSystem){throw new Error('Ein erforderliches Welt-, Kamera-, Story- oder Kapitelsystem fehlt.')}
+  const worldLoader=window.OWL?.worlds,camera=window.OWL?.camera?.create(),parallax=window.OWL?.parallax,perches=window.OWL?.perches,hootSystem=window.OWL?.hoot,storySystem=window.OWL?.story,tutorialSystem=window.OWL?.tutorial,meadowSystem=window.OWL?.meadow,fireflyQuestSystem=window.OWL?.fireflyQuest,raceSystem=window.OWL?.race,brookSystem=window.OWL?.brook;
+  if(!worldLoader||worldLoader.count!==levelData.levels.length||!camera||!parallax||!perches||!hootSystem||hootSystem.sceneCount!==levelData.levels.length||!storySystem||storySystem.sceneCount!==levelData.levels.length||!tutorialSystem||!meadowSystem||!fireflyQuestSystem||!raceSystem||!brookSystem){throw new Error('Ein erforderliches Welt-, Kamera-, Story- oder Kapitelsystem fehlt.')}
   const progressKey='owl-flight-progress-v1';
   const checkpointKey='owl-flight-checkpoint-v1';
   const progress=(()=>{
-    const fallback={level:1,xp:0,goldPoints:0,selectedOwl:'tawny',owlUpgrade:0,nestUpgrade:0,highestScene:1,completedScenes:[],sceneRecords:{},seenChapters:[],replayIntros:false};
+    const fallback={level:1,xp:0,goldPoints:0,selectedOwl:'tawny',owlUpgrade:0,nestUpgrade:0,highestScene:1,completedScenes:[],sceneRecords:{},seenChapters:[],replayIntros:false,brunoAlly:false};
     try{return {...fallback,...JSON.parse(localStorage.getItem(progressKey)||'{}')}}catch(_){return fallback}
   })();
   progress.level=Math.max(1,Math.floor(Number(progress.level)||1));
@@ -105,6 +105,8 @@
   }));
   for(const scene of meadowSystem.source.scenes){const phase=phases[scene.levelOrder-1];if(!phase)continue;phase.target=scene.requirements.finds;phase.objectiveType='natureFinds';phase.requiredType=null;phase.mission=`Folge der Mondroute, sammle ${scene.requirements.finds} Naturfunde und kehre zum Nest zurück.`;phase.missionShort=`${scene.requirements.finds} Funde · Route`;phase.startMice=0;phase.mouseCap=0;phase.batCap=0;phase.rivalCap=0;phase.branchCount=0}
   for(const scene of fireflyQuestSystem.source.scenes){const phase=phases[scene.levelOrder-1];if(!phase)continue;phase.target=scene.trailContextIds.length;phase.objectiveType='lightTrail';phase.requiredType=null;phase.mission=`Enthülle ${phase.target} Lichtspuren mit Huuu und begleite ${scene.lost.name} zum Kräuterfeld.`;phase.missionShort=`${phase.target} Spuren · ${scene.lost.name}`;phase.startMice=0;phase.mouseCap=0;phase.batCap=0;phase.rivalCap=0;phase.branchCount=0}
+  for(const scene of raceSystem.source.scenes){const phase=phases[scene.levelOrder-1];if(!phase)continue;phase.target=scene.gates.length;phase.objectiveType='raceGates';phase.requiredType=null;phase.mission=`Fliege durch ${phase.target} Tore, nutze Brunos Windschatten und erreiche den Nachtfalter.`;phase.missionShort=`${phase.target} Tore · Falter`;phase.startMice=0;phase.mouseCap=0;phase.batCap=0;phase.rivalCap=0;phase.branchCount=0}
+  for(const scene of brookSystem.source.scenes){const phase=phases[scene.levelOrder-1];phase.target=3;phase.objectiveType='brookSupplies';phase.requiredType=null;phase.mission='Nutze den Wassertakt, sammle drei schwebende Vorräte und erreiche das andere Ufer.';phase.startMice=0;phase.mouseCap=0;phase.batCap=0;phase.rivalCap=0;phase.branchCount=0}
 
   const state = {
     w:0,h:0,dpr:1,groundY:0,gameScale:1,touchMode:false,tabletMode:false,tabletLandscapeMode:false,landscapePhoneMode:false,world:null,cameraPulse:0,
@@ -118,7 +120,7 @@
     hootCharge:1,shake:0,transition:0,transitionQueued:false,
     last:0,muted:false,elapsed:0,phaseElapsed:0,musicClock:.4,wildlifeClock:2,
     bonus:null,levelHits:0,levelPreyCounts:{},levelPreyTypes:new Set(),eliteSpawned:false,lastPhaseXp:0,lastBonusAwarded:false,
-    shownStories:new Set(),activeStory:null,storyLineIndex:0,storyBeatIndex:0,storyChoosingGift:false,selectedGift:null,landedPerches:new Set(),storyScene:null,storyDialogueQueue:[],storyDebug:false,lastSafePoint:null,tutorial:null,meadow:null,fireflyQuest:null
+    shownStories:new Set(),activeStory:null,storyLineIndex:0,storyBeatIndex:0,storyChoosingGift:false,selectedGift:null,landedPerches:new Set(),storyScene:null,storyDialogueQueue:[],storyDebug:false,lastSafePoint:null,tutorial:null,meadow:null,fireflyQuest:null,race:null,brook:null
   };
 
   const owl = {
@@ -140,6 +142,8 @@
   function phaseMissionIcons(phase){
     if(phase.objectiveType==='natureFinds')return `${iconSvg('star')} ${phase.target} · ${iconSvg('perch')} → ${iconSvg('nest')}`;
     if(phase.objectiveType==='lightTrail')return `${iconSvg('hoot')} ${phase.target} · ${iconSvg('sun')} → ${iconSvg('heart')}`;
+    if(phase.objectiveType==='raceGates')return `${iconSvg('perch')} ${phase.target} · ${iconSvg('feather')} → ${iconSvg('star')}`;
+    if(phase.objectiveType==='brookSupplies')return `${iconSvg('hoot')} · ${iconSvg('star')} ${phase.target} → ${iconSvg('perch')}`;
     const gold=phase.requiredType==='gold'?`${iconSvg('star')} `:'';
     const danger=phase.batCap>=8?` · ${iconSvg('bat')} !`:'';
     return `${gold}${iconSvg('star')} ${phase.target} → ${iconSvg('nest')}${danger}`;
@@ -149,6 +153,10 @@
     if(meadowDefinition){state.bonus={kind:'route',label:`Mondroute ${meadowDefinition.requirements.routeStages}/${meadowDefinition.requirements.routeStages}`,target:meadowDefinition.requirements.routeStages,progress:0,complete:false,failed:false,awarded:false};state.levelHits=0;state.levelPreyCounts={};state.levelPreyTypes=new Set();state.lastBonusAwarded=false;updateBonusHud();return}
     const fireflyDefinition=fireflyQuestSystem.source.scenes.find(scene=>scene.levelOrder===state.phaseIndex+1);
     if(fireflyDefinition){state.bonus={kind:'guide',label:'Behutsam begleiten',target:1,progress:0,complete:false,failed:false,awarded:false};state.levelHits=0;state.levelPreyCounts={};state.levelPreyTypes=new Set();state.lastBonusAwarded=false;updateBonusHud();return}
+    const raceDefinition=raceSystem.source.scenes.find(scene=>scene.levelOrder===state.phaseIndex+1);
+    if(raceDefinition){state.bonus={kind:'draft',label:`Windschatten ${raceDefinition.draft.bonusSeconds.toFixed(1)} s`,target:raceDefinition.draft.bonusSeconds,progress:0,complete:false,failed:false,awarded:false};state.levelHits=0;state.levelPreyCounts={};state.levelPreyTypes=new Set();state.lastBonusAwarded=false;updateBonusHud();return}
+    const brookDefinition=brookSystem.source.scenes.find(scene=>scene.levelOrder===state.phaseIndex+1);
+    if(brookDefinition){state.bonus={kind:'brookRhythm',label:'Ohne Gegenströmung',target:brookDefinition.windows.length,progress:0,complete:false,failed:false,awarded:false};state.levelHits=0;state.levelPreyCounts={};state.levelPreyTypes=new Set();state.lastBonusAwarded=false;updateBonusHud();return}
     const tier=Math.floor(state.phaseIndex/8),kind=['untouched','combo','rabbit','variety','gold'][state.phaseIndex%5];
     const definitions={
       untouched:{label:'Ohne Treffer',target:1},combo:{label:`Kombo ×${2+Math.min(2,tier)}`,target:2+Math.min(2,tier)},
@@ -229,6 +237,7 @@
   function updateStorySystem(dt){
     if(!state.storyScene)return;const goal={x:state.world.goal.x,y:state.world.goal.y};
     storySystem.updateCompanions(state.storyScene,{owl,goal,lastSafe:state.lastSafePoint,worldWidth:state.world.width,groundY:state.groundY,playTop:playTop(),scale:state.gameScale},dt);
+    if(state.race){const bruno=state.storyScene.companions.find(item=>item.id==='bruno');if(bruno){bruno.x=state.race.bruno.x;bruno.y=state.race.bruno.y;bruno.vx=state.race.bruno.vx;bruno.vy=state.race.bruno.vy}}
     const landedIds=new Set([...state.landedPerches].map(key=>String(key).replace(/^\d+:/,'')));if(owl.perchId)landedIds.add(owl.perchId);
     const events=storySystem.nextEvents(state.storyScene,{owl,objectiveProgress:state.phaseDelivered/Math.max(1,currentPhase().target),landedPerches:landedIds,hootContextIds:new Set(hootSystem.completedIds(state.hootContexts)),elapsed:state.elapsed,scale:state.gameScale},1);
     for(const event of events){
@@ -424,6 +433,9 @@
     if(name==='fireflyFound'){tone(523,.18,'sine',.022,70);tone(659,.22,'triangle',.018,80,.14);tone(880,.3,'sine',.012,-40,.3)}
     if(name==='fireflyWait'){tone(330,.16,'triangle',.014,-70);tone(262,.22,'sine',.011,-35,.12)}
     if(name==='herbField'){[392,523,659,784].forEach((frequency,index)=>tone(frequency,.3,'sine',.019,25,index*.11));noiseBurst(.4,.008,1250,'bandpass')}
+    if(name==='raceGate'){tone(330,.08,'triangle',.018,90);tone(494,.12,'sine',.015,130,.06);noiseBurst(.08,.005,1250,'highpass')}
+    if(name==='draft'){tone(185,.28,'sine',.013,35);noiseBurst(.32,.009,520,'bandpass')}
+    if(name==='moth'){tone(440,.12,'triangle',.02,90);tone(659,.18,'sine',.017,130,.1);tone(880,.28,'sine',.011,-40,.24)}
     if(name==='win'){[523,659,784,1047].forEach((f,i)=>tone(f,.28,'sine',.032,60,i*.12))}
     if(name==='lose'){tone(330,.28,'triangle',.035,-80);tone(220,.35,'triangle',.03,-90,.18)}
   }
@@ -482,7 +494,7 @@
   function collide(a,b,pad=0){const rr=(a.r+b.r+pad*state.gameScale);return dist2(a,b)<rr*rr}
   function currentPhase(){return phases[state.phaseIndex]}
   function loadCurrentWorld(preservePositions=false){
-    const previousWidth=state.world?.width||0,completedHoot=state.hootContexts?.length?hootSystem.completedIds(state.hootContexts):[],completedStory=state.storyScene?storySystem.completedIds(state.storyScene):[],companionSnapshot=state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],completedTutorial=state.tutorial?tutorialSystem.completedIds(state.tutorial):[],deliveredTutorial=state.tutorial?[...state.tutorial.deliveredPackageIds]:[],meadowSnapshot=meadowSystem.snapshot(state.meadow),fireflySnapshot=fireflyQuestSystem.snapshot(state.fireflyQuest);
+    const previousWidth=state.world?.width||0,completedHoot=state.hootContexts?.length?hootSystem.completedIds(state.hootContexts):[],completedStory=state.storyScene?storySystem.completedIds(state.storyScene):[],companionSnapshot=state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],completedTutorial=state.tutorial?tutorialSystem.completedIds(state.tutorial):[],deliveredTutorial=state.tutorial?[...state.tutorial.deliveredPackageIds]:[],meadowSnapshot=meadowSystem.snapshot(state.meadow),fireflySnapshot=fireflyQuestSystem.snapshot(state.fireflyQuest),raceSnapshot=raceSystem.snapshot(state.race),brookSnapshot=brookSystem.snapshot(state.brook);
     state.world=worldLoader.load(state.phaseIndex+1,{width:state.w,height:state.h,groundY:state.groundY,playTop:playTop()});
     if(preservePositions&&previousWidth>0&&previousWidth!==state.world.width){
       const ratio=state.world.width/previousWidth;
@@ -492,7 +504,7 @@
     }
     camera.resize({width:state.w,height:state.h},state.world);camera.setMode(state.world.cameraMode);
     if(preservePositions)state.safePerches=state.world.safeBranches.map(branch=>({...branch,scale:state.gameScale,r:24*state.gameScale}));
-    if(preservePositions){setupHootContexts(completedHoot);setupStoryScene(completedStory,companionSnapshot);setupTutorial(completedTutorial,deliveredTutorial);setupMeadow(meadowSnapshot);setupFireflyQuest(fireflySnapshot)}
+    if(preservePositions){setupHootContexts(completedHoot);setupStoryScene(completedStory,companionSnapshot);setupTutorial(completedTutorial,deliveredTutorial);setupMeadow(meadowSnapshot);setupFireflyQuest(fireflySnapshot);setupRace(raceSnapshot);setupBrook(brookSnapshot)}
   }
   function setupHootContexts(completedIds=[]){
     state.hootContexts=hootSystem.createScene(state.phaseIndex+1,state.world,{height:state.h,groundY:state.groundY,playTop:playTop()},completedIds);
@@ -510,6 +522,8 @@
   function setupFireflyQuest(saved={}){
     state.fireflyQuest=fireflyQuestSystem.create(state.phaseIndex+1,state.world,{height:state.h,groundY:state.groundY},state.hootContexts,saved||{});
   }
+  function setupRace(saved={}){state.race=raceSystem.create(state.phaseIndex+1,state.world,{height:state.h,groundY:state.groundY},saved||{})}
+  function setupBrook(saved={}){state.brook=brookSystem.create(state.phaseIndex+1,state.world,{height:state.h,groundY:state.groundY},saved||{})}
   function startTutorialCinematic(){
     if(!state.tutorial||tutorialSystem.completedIds(state.tutorial).length||state.tutorial.cinematic.active)return;state.tutorial.cinematic={active:true,time:0,windReleased:false};camera.setMode('cinematic');state.keys.clear();state.pointer.active=false;
   }
@@ -589,11 +603,11 @@
     state.mice=[];state.bats=[];state.rivals=[];state.branches=[];state.safePerches=[];state.bushes=[];state.groundDetails=[];state.fireflies=[];state.particles=[];state.floaters=[];state.rings=[];state.hootContexts=[];state.hootEchoes=[];state.edgeSignals=[];state.leafMotions=[];
     state.pointer.active=false;state.pointer.id=null;state.pointer.landingTap=false;
     state.hootCharge=1;state.cameraPulse=0;state.shake=0;state.transition=0;state.transitionQueued=false;state.elapsed=0;state.phaseElapsed=0;state.eliteSpawned=false;state.musicClock=.35;state.wildlifeClock=2;
-    state.shownStories=new Set();state.activeStory=null;state.storyLineIndex=0;state.storyBeatIndex=0;state.storyChoosingGift=false;state.selectedGift=null;state.landedPerches=new Set();state.storyScene=null;state.storyDialogueQueue=[];state.tutorial=null;state.meadow=null;state.fireflyQuest=null;clearTimeout(storyBubbleTimer);storyBubbleTimer=null;
+    state.shownStories=new Set();state.activeStory=null;state.storyLineIndex=0;state.storyBeatIndex=0;state.storyChoosingGift=false;state.selectedGift=null;state.landedPerches=new Set();state.storyScene=null;state.storyDialogueQueue=[];state.tutorial=null;state.meadow=null;state.fireflyQuest=null;state.race=null;state.brook=null;clearTimeout(storyBubbleTimer);storyBubbleTimer=null;
     owl.r=35*state.gameScale*stats.size;state.lastSafePoint={x:nest().x,y:nest().y,perchId:null};
     placeOwlAtWorldStart();owl.angle=0;owl.dive=false;owl.diveTime=0;owl.invuln=0;owl.carrying=null;owl.flightState='flying';owl.targetPerchId=null;owl.perchId=null;owl.stumbleTime=0;owl.facing=1;owl.turnTime=0;
-    initBonusGoal();setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();setupMeadow();setupFireflyQuest();
-    if(state.tutorial)spawnTutorialPackages();else if(!state.meadow&&!state.fireflyQuest)for(let i=0;i<currentPhase().startMice;i++) spawnMouse(i<2?'normal':undefined);
+    initBonusGoal();setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();setupMeadow();setupFireflyQuest();setupRace();setupBrook();
+    if(state.tutorial)spawnTutorialPackages();else if(!state.meadow&&!state.fireflyQuest&&!state.race&&!state.brook)for(let i=0;i<currentPhase().startMice;i++) spawnMouse(i<2?'normal':undefined);
     for(let i=0;i<3;i++) spawnFirefly();
     updateHud();
   }
@@ -668,7 +682,7 @@
       score:state.score,hearts:state.hearts,energy:state.energy,time:state.time,maxTime:state.maxTime,
       totalDelivered:state.totalDelivered,totalFood:state.totalFood,runXp:state.runXp,bestCombo:state.bestCombo,
       bonus:state.bonus,levelHits:state.levelHits,levelPreyCounts:state.levelPreyCounts,levelPreyTypes:[...state.levelPreyTypes],phaseElapsed:state.phaseElapsed,eliteSpawned:state.eliteSpawned,hootCharge:state.hootCharge,
-      shownStories:[...state.shownStories],selectedGift:state.selectedGift,storyBeatIndex:state.storyBeatIndex,landedPerches:[...state.landedPerches],hootContextIds:hootSystem.completedIds(state.hootContexts),storyEventIds:storySystem.completedIds(state.storyScene),companions:state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],tutorialStepIds:tutorialSystem.completedIds(state.tutorial),tutorialDeliveredIds:state.tutorial?[...state.tutorial.deliveredPackageIds]:[],meadow:meadowSystem.snapshot(state.meadow),fireflyQuest:fireflyQuestSystem.snapshot(state.fireflyQuest),lastSafePoint:state.lastSafePoint,owl:{x:owl.x,y:owl.y,flightState:owl.flightState,perchId:owl.perchId,carrying:owl.carrying?{...owl.carrying}:null}
+      shownStories:[...state.shownStories],selectedGift:state.selectedGift,storyBeatIndex:state.storyBeatIndex,landedPerches:[...state.landedPerches],hootContextIds:hootSystem.completedIds(state.hootContexts),storyEventIds:storySystem.completedIds(state.storyScene),companions:state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],tutorialStepIds:tutorialSystem.completedIds(state.tutorial),tutorialDeliveredIds:state.tutorial?[...state.tutorial.deliveredPackageIds]:[],meadow:meadowSystem.snapshot(state.meadow),fireflyQuest:fireflyQuestSystem.snapshot(state.fireflyQuest),race:raceSystem.snapshot(state.race),brook:brookSystem.snapshot(state.brook),lastSafePoint:state.lastSafePoint,owl:{x:owl.x,y:owl.y,flightState:owl.flightState,perchId:owl.perchId,carrying:owl.carrying?{...owl.carrying}:null}
     };
     try{localStorage.setItem(checkpointKey,JSON.stringify(payload));refreshContinueButton();return true}catch(_){return false}
   }
@@ -686,8 +700,8 @@
     state.totalDelivered=Math.max(0,saved.totalDelivered||0);state.totalFood=Math.max(0,saved.totalFood||0);state.runXp=Math.max(0,saved.runXp||0);state.bestCombo=Math.max(0,saved.bestCombo||0);
     if(saved.bonus)state.bonus={...state.bonus,...saved.bonus};state.levelHits=Math.max(0,saved.levelHits||0);state.levelPreyCounts=saved.levelPreyCounts||{};state.levelPreyTypes=new Set(saved.levelPreyTypes||[]);state.phaseElapsed=Math.max(0,saved.phaseElapsed||0);state.eliteSpawned=Boolean(saved.eliteSpawned);state.hootCharge=clamp(Number(saved.hootCharge??1),0,1);updateBonusHud();
     state.shownStories=new Set(saved.shownStories||[]);state.selectedGift=saved.selectedGift||null;state.storyBeatIndex=Math.max(0,saved.storyBeatIndex||0);state.landedPerches=new Set(saved.landedPerches||[]);
-    state.mice=[];state.bats=[];state.rivals=[];state.fireflies=[];state.hootEchoes=[];state.edgeSignals=[];state.leafMotions=[];owl.carrying=null;setupBranches();setupBushes();setupGroundDetails();setupHootContexts(saved.hootContextIds||[]);setupStoryScene(saved.storyEventIds||[],saved.companions||[]);setupTutorial(saved.tutorialStepIds||[],saved.tutorialDeliveredIds||[]);setupMeadow(saved.meadow||{});setupFireflyQuest(saved.fireflyQuest||{});
-    if(state.tutorial)spawnTutorialPackages();else if(!state.meadow&&!state.fireflyQuest)for(let i=0;i<currentPhase().startMice;i++)spawnMouse();for(let i=0;i<3;i++)spawnFirefly();
+    state.mice=[];state.bats=[];state.rivals=[];state.fireflies=[];state.hootEchoes=[];state.edgeSignals=[];state.leafMotions=[];owl.carrying=null;setupBranches();setupBushes();setupGroundDetails();setupHootContexts(saved.hootContextIds||[]);setupStoryScene(saved.storyEventIds||[],saved.companions||[]);setupTutorial(saved.tutorialStepIds||[],saved.tutorialDeliveredIds||[]);setupMeadow(saved.meadow||{});setupFireflyQuest(saved.fireflyQuest||{});setupRace(saved.race||{});setupBrook(saved.brook||{});
+    if(state.tutorial)spawnTutorialPackages();else if(!state.meadow&&!state.fireflyQuest&&!state.race&&!state.brook)for(let i=0;i<currentPhase().startMice;i++)spawnMouse();for(let i=0;i<3;i++)spawnFirefly();
     state.wave=1;state.waveRemaining=currentPhase().waveSize;state.mouseClock=.3;state.batClock=1.3;state.fireflyClock=.6;state.rivalClock=2.8;
     const n=nest(),savedOwl=saved.owl,savedPerch=perchById(savedOwl?.perchId);owl.x=clamp(Number(savedOwl?.x)||n.x,owl.r,state.world.width-owl.r);owl.y=clamp(Number(savedOwl?.y)||n.y,playTop(),state.groundY-20*state.gameScale);owl.vx=0;owl.vy=0;owl.flightState='flying';owl.perchId=null;owl.targetPerchId=null;owl.carrying=savedOwl?.carrying?{...savedOwl.carrying}:null;
     if(savedOwl?.flightState==='perched'&&savedPerch){const target=perches.target(savedPerch,owl.r);owl.x=target.x;owl.y=target.y;owl.flightState='perched';owl.perchId=savedPerch.id}state.lastSafePoint=saved.lastSafePoint||{x:n.x,y:n.y,perchId:null};camera.snap(owl);
@@ -781,11 +795,11 @@
     ui.score.textContent=state.score;
     ui.hearts.textContent='♥'.repeat(Math.max(0,state.hearts))+'♡'.repeat(Math.max(0,state.maxHearts-state.hearts));
     ui.hearts.style.color=state.hearts===1?'var(--red)':'#ff9b9b';
-    ui.combo.textContent=state.fireflyQuest?`${state.fireflyQuest.state==='arrived'?'Sicher angekommen':(state.fireflyQuest.state==='waiting'&&state.fireflyQuest.found?'Wartet auf Lumi':`Lichtspur ${state.fireflyQuest.revealedContextIds.size}/${state.fireflyQuest.points.length}`)}`:(state.meadow?(state.meadow.combo>0?`Route ${state.meadow.combo}× · ${state.meadow.comboClock.toFixed(1)} s`:`Route ${state.meadow.stage}/${state.meadow.source.requirements.routeStages}`):(state.combo>1?`${state.combo}× Kombo · ${state.comboClock.toFixed(1)} s`:'Keine Kombo'));
+    ui.combo.textContent=state.brook?`Bachtakt ${state.brook.crossedIds.size}/${state.brook.windows.length}${state.brook.lastSafe?' · sicher':''}`:(state.race?(state.race.mothCaught?'Nachtfalter erreicht':(state.race.draftActive?`Windschatten · ${state.race.draftTime.toFixed(1)} s`:`Rennen ${state.race.playerStage}/${state.race.gates.length}`)):(state.fireflyQuest?`${state.fireflyQuest.state==='arrived'?'Sicher angekommen':(state.fireflyQuest.state==='waiting'&&state.fireflyQuest.found?'Wartet auf Lumi':`Lichtspur ${state.fireflyQuest.revealedContextIds.size}/${state.fireflyQuest.points.length}`)}`:(state.meadow?(state.meadow.combo>0?`Route ${state.meadow.combo}× · ${state.meadow.comboClock.toFixed(1)} s`:`Route ${state.meadow.stage}/${state.meadow.source.requirements.routeStages}`):(state.combo>1?`${state.combo}× Kombo · ${state.comboClock.toFixed(1)} s`:'Keine Kombo'))));
     ui.phase.textContent=phase.name;
     ui.delivered.textContent=state.phaseDelivered;
     ui.target.textContent=phase.target;
-    ui.targetUnit.textContent=phase.objectiveType==='bundles'?'Päckchen':(phase.objectiveType==='natureFinds'?'Funde':(phase.objectiveType==='lightTrail'?'Spuren':'Futterpunkte'));
+    ui.targetUnit.textContent=phase.objectiveType==='bundles'?'Päckchen':(phase.objectiveType==='natureFinds'?'Funde':(phase.objectiveType==='lightTrail'?'Spuren':(phase.objectiveType==='raceGates'?'Tore':(phase.objectiveType==='brookSupplies'?'Vorräte':'Futterpunkte'))));
     ui.energy.style.width=clamp(state.energy/playerStats().maximumEnergy*100,0,100)+'%';
     ui.energy.style.background=state.energy<25?'linear-gradient(90deg,#ff6d68,#ff9a74)':'linear-gradient(90deg,#54c97b,#9ff0af)';
     const hootPercent=Math.round(state.hootCharge*100),hootReady=state.hootCharge>=.999,hootRadius=playerStats().hootRadius*state.gameScale;
@@ -811,6 +825,11 @@
     else if(state.meadow&&!meadowSystem.complete(state.meadow))setMobileMission(`${iconSvg('mouse')} !`,'Wer wartet dort im Gras?');
     else if(state.fireflyQuest&&!state.fireflyQuest.found)setMobileMission(`${iconSvg('hoot')} ${state.fireflyQuest.revealedContextIds.size}/${state.fireflyQuest.points.length}`,'Finde die nächste Spur und rufe Huuu.');
     else if(state.fireflyQuest&&!state.fireflyQuest.arrived)setMobileMission(`${iconSvg('sun')} → ${iconSvg('heart')}`,state.fireflyQuest.state==='waiting'?`${state.fireflyQuest.lost.name} wartet. Fliege wieder näher.`:`Bleib nah bei ${state.fireflyQuest.lost.name}.`);
+    else if(state.race&&state.race.playerStage<state.race.gates.length)setMobileMission(`${iconSvg('perch')} ${state.race.playerStage}/${state.race.gates.length}`,state.race.draftActive?'Windschatten aktiv. Kurs halten.':'Fliege durch das nächste Tor.');
+    else if(state.race&&!state.race.mothCaught)setMobileMission(`${iconSvg('feather')} → ${iconSvg('star')}`,'Erreiche den Nachtfalter.');
+    else if(state.brook&&state.brook.crossedIds.size<state.brook.windows.length)setMobileMission(`${iconSvg('hoot')} ${state.brook.crossedIds.size}/${state.brook.windows.length}`,'Warte auf den hellen Wassertakt und fliege durch das nächste Fenster.');
+    else if(state.brook&&state.brook.collectedIds.size<state.brook.supplies.length)setMobileMission(`${iconSvg('star')} ${state.brook.collectedIds.size}/${state.brook.supplies.length}`,'Sammle die schwebenden Vorräte zwischen den Steinen.');
+    else if(state.brook)setMobileMission(`${iconSvg('perch')} → ${iconSvg('star')}`,'Erreiche das andere Ufer.');
     else setMobileMission(phaseMissionIcons(phase),state.meadow?'Kehre zum Nest zurück.':phase.mission);
   }
 
@@ -963,6 +982,10 @@
 
   function resolveHootContext(context){
     context.revealed=true;context.visibleUntil=state.elapsed+10;context.completed=true;
+    if(state.brook&&context.type==='fogMarker'){
+      const next=state.brook.windows.find(window=>!window.crossed);
+      if(next){state.brook.time=((1-next.offset)%1)*state.brook.source.beatSeconds;state.brook.lastSafe=false;queueStoryBubble('fynn','Hör hin – jetzt trägt der Bach uns.',2200)}
+    }
     if(context.type==='hiddenObject'){
       spawnMouse(context.reward||'berry');const reward=state.mice[state.mice.length-1];reward.x=context.x;reward.y=state.groundY-22*state.gameScale;reward.dir=owl.x<context.x?1:-1;
       if(context.memory){const key=String(state.phaseIndex+1),record=progress.sceneRecords[key]||{};progress.sceneRecords[key]={...record,memory:true};saveProgress()}
@@ -1089,12 +1112,15 @@
     if(state.phaseIndex===0&&state.tutorial&&!state.tutorial.complete)return false;
     if(state.meadow&&(!meadowSystem.complete(state.meadow)||!owlInNest()))return false;
     if(state.fireflyQuest&&!fireflyQuestSystem.complete(state.fireflyQuest))return false;
+    if(state.race&&!raceSystem.complete(state.race))return false;
+    if(state.brook&&!brookSystem.complete(state.brook))return false;
     {
       if(!state.phaseRewarded){
         state.phaseRewarded=true;
         const bonusXp=evaluateBonusGoal(),xpGain=Math.round(30+state.phaseIndex*3+currentPhase().target*.18)+bonusXp;
         state.lastPhaseXp=xpGain;state.runXp+=xpGain;const levels=grantXp(xpGain);
         recordSceneCompletion();
+        if(state.race&&state.phaseIndex===11&&!progress.brunoAlly){progress.brunoAlly=true;saveProgress();queueStoryBubble('bruno','Ab jetzt fliege ich mit euch. Rein freundschaftlich natürlich.',3600)}
         if(levels)showToast(`LEVEL ${progress.level} · +${xpGain} XP`,'#82e7ff',1300);
       }
       if(state.phaseIndex===phases.length-1){finish(true);return}
@@ -1105,7 +1131,7 @@
 
   function showLevelComplete(){
     state.paused=true;setAudioFocus(false);ui.level.classList.remove('hidden');
-    ui.levelTitle.textContent=currentPhase().name;ui.levelFood.textContent=state.phaseDelivered;ui.levelUnit.textContent=currentPhase().objectiveType==='bundles'?'Päckchen':(currentPhase().objectiveType==='natureFinds'?'Funde':(currentPhase().objectiveType==='lightTrail'?'Spuren':'Futter'));ui.levelScore.textContent=state.score;
+    ui.levelTitle.textContent=currentPhase().name;ui.levelFood.textContent=state.phaseDelivered;ui.levelUnit.textContent=currentPhase().objectiveType==='bundles'?'Päckchen':(currentPhase().objectiveType==='natureFinds'?'Funde':(currentPhase().objectiveType==='lightTrail'?'Spuren':(currentPhase().objectiveType==='raceGates'?'Tore':(currentPhase().objectiveType==='brookSupplies'?'Vorräte':'Futter'))));ui.levelScore.textContent=state.score;
     ui.levelBonus.textContent=state.lastBonusAwarded?'✓ +30 XP':'Nicht geschafft';ui.levelBonus.style.color=state.lastBonusAwarded?'#7ee09b':'#ff9b9b';ui.levelXp.textContent='+'+state.lastPhaseXp;
     haptic([25,35,45]);
   }
@@ -1124,9 +1150,9 @@
     state.time=Math.min(state.maxTime+phases[state.phaseIndex].timeBonus,state.time+phases[state.phaseIndex].timeBonus);
     state.maxTime=Math.max(state.maxTime,state.time);
     state.mice=[];state.bats=[];state.rivals=[];state.fireflies=[];owl.carrying=null;
-    setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();setupMeadow();setupFireflyQuest();state.storyDialogueQueue=[];
-    if(!state.meadow&&!state.fireflyQuest)for(let i=0;i<currentPhase().startMice;i++) spawnMouse();
-    if(!state.meadow&&!state.fireflyQuest)for(let i=0;i<Math.min(2+state.phaseIndex,4);i++) spawnBat();
+    setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();setupMeadow();setupFireflyQuest();setupRace();setupBrook();state.storyDialogueQueue=[];
+    if(!state.meadow&&!state.fireflyQuest&&!state.race&&!state.brook)for(let i=0;i<currentPhase().startMice;i++) spawnMouse();
+    if(!state.meadow&&!state.fireflyQuest&&!state.race&&!state.brook)for(let i=0;i<Math.min(2+state.phaseIndex,4);i++) spawnBat();
     for(let i=0;i<Math.min(4+state.phaseIndex,6);i++) spawnFirefly();
     state.mouseClock=.25;state.batClock=1.1;state.fireflyClock=.5;state.rivalClock=2.8;state.wave=1;state.waveRemaining=currentPhase().waveSize;state.waveBreak=0;
     state.transitionQueued=false;
@@ -1228,9 +1254,17 @@
       if(questEvents.stopped){state.bonus.failed=true;updateBonusHud();queueStoryBubble('glow',`${state.fireflyQuest.lost.name} wartet. Es geht nichts verloren.`,3000);showToast('FLIEG WIEDER NÄHER','#9fe7b0',900);sfx('fireflyWait');saveCheckpoint()}
       if(questEvents.arrived){state.bonus.progress=1;if(!state.bonus.failed)state.bonus.complete=true;updateBonusHud();burst(state.fireflyQuest.field.x,state.fireflyQuest.field.y,'#dfff8d',48,220);queueStoryBubble('glow',`${state.fireflyQuest.lost.name} ist sicher. Das Kräuterfeld leuchtet wieder!`,3600);sfx('herbField');saveCheckpoint();tryCompleteLevel()}
     }
+    if(state.race){
+      const raceEvents=raceSystem.update(state.race,{owl,scale:state.gameScale},dt);state.phaseDelivered=state.race.playerStage;
+      if(state.race.draftActive){owl.vx+=state.race.source.direction*state.race.source.draft.force*state.gameScale*dt;state.bonus.progress=Math.min(state.bonus.target,state.race.draftBest);if(state.bonus.progress>=state.bonus.target)state.bonus.complete=true}
+      if(raceEvents.gate){burst(raceEvents.gate.x,raceEvents.gate.y,'#f2d58a',22,180);floater(raceEvents.gate.x,raceEvents.gate.y-34,`TOR ${raceEvents.gate.stage}`,'#f2d58a',19);sfx('raceGate');updateHud();saveCheckpoint()}
+      if(raceEvents.draftStarted){showToast('WINDSCHATTEN','#9fe7ff',650);sfx('draft')}
+      if(raceEvents.mothCaught){state.score+=120+state.race.gates.length*10;burst(state.race.moth.x,state.race.moth.y,'#f2d58a',42,240);queueStoryBubble('bruno','Gleichstand. Ich wollte ohnehin lieber gemeinsam fliegen.',3600);sfx('moth');saveCheckpoint();tryCompleteLevel()}
+    }
+    if(state.brook){const events=brookSystem.update(state.brook,{owl,goal:state.world.goal,scale:state.gameScale},dt);if(events.safeStart){spatialTone(392,.12,'sine',.014,0);showToast('SICHERES FENSTER','#82e7ff',520)}if(events.push&&state.bonus?.kind==='brookRhythm'&&!state.bonus.failed){state.bonus.failed=true;updateBonusHud();noiseBurst(.16,.012,430,'lowpass')}if(events.window){if(state.bonus?.kind==='brookRhythm'&&!state.bonus.failed){state.bonus.progress=state.brook.crossedIds.size;state.bonus.complete=state.bonus.progress>=state.bonus.target;updateBonusHud()}burst(events.window.x,events.window.y,'#82e7ff',18,150);floater(events.window.x,events.window.y-25,'TAKT','#82e7ff',17);spatialTone(523,.1,'triangle',.012,0);saveCheckpoint()}if(events.supply){state.phaseDelivered=state.brook.collectedIds.size;state.score+=30;burst(events.supply.x,events.supply.y,'#f2d58a',20,170);floater(events.supply.x,events.supply.y-24,'VORRAT','#f2d58a',18);sfx('find');saveCheckpoint()}if(events.complete){sfx('herbField');tryCompleteLevel()}}
 
     const slow=1;
-    if(!state.tutorial&&!state.meadow&&!state.fireflyQuest&&state.waveRemaining<=0){
+    if(!state.tutorial&&!state.meadow&&!state.fireflyQuest&&!state.race&&!state.brook&&state.waveRemaining<=0){
       state.waveBreak-=dt;
       if(state.waveBreak<=0){
         state.wave++;state.waveRemaining=phase.waveSize+Math.min(3,state.wave-1);
@@ -1239,12 +1273,12 @@
       }
     }
     state.mouseClock-=dt;
-    if(!state.tutorial&&!state.meadow&&!state.fireflyQuest&&state.mouseClock<=0&&state.waveRemaining>0&&state.mice.length<phase.mouseCap){
+    if(!state.tutorial&&!state.meadow&&!state.fireflyQuest&&!state.race&&!state.brook&&state.mouseClock<=0&&state.waveRemaining>0&&state.mice.length<phase.mouseCap){
       spawnMouse();state.waveRemaining--;state.mouseClock=rand(phase.mouseDelay[0],phase.mouseDelay[1]);
       if(state.waveRemaining===0)state.waveBreak=phase.waveBreak;
     }
     state.batClock-=dt;
-    if(!state.meadow&&!state.fireflyQuest&&state.batClock<=0&&state.bats.length<phase.batCap){
+    if(!state.meadow&&!state.fireflyQuest&&!state.race&&!state.brook&&state.batClock<=0&&state.bats.length<phase.batCap){
       spawnBat();state.batClock=rand(phase.batDelay[0],phase.batDelay[1]);
     }
     state.fireflyClock-=dt;
@@ -1252,10 +1286,10 @@
       spawnFirefly();state.fireflyClock=rand(phase.fireflyDelay[0],phase.fireflyDelay[1]);
     }
     state.rivalClock-=dt;
-    if(!state.meadow&&!state.fireflyQuest&&phase.rivalCap>0&&state.rivalClock<=0&&state.rivals.length<phase.rivalCap){
+    if(!state.meadow&&!state.fireflyQuest&&!state.race&&!state.brook&&phase.rivalCap>0&&state.rivalClock<=0&&state.rivals.length<phase.rivalCap){
       spawnRivalOwl();state.rivalClock=rand(phase.rivalDelay[0],phase.rivalDelay[1]);
     }
-    if(!state.meadow&&!state.fireflyQuest&&(state.phaseIndex+1)%5===0&&!state.eliteSpawned&&state.phaseElapsed>=5){state.eliteSpawned=true;spawnRivalOwl(true)}
+    if(!state.meadow&&!state.fireflyQuest&&!state.race&&!state.brook&&(state.phaseIndex+1)%5===0&&!state.eliteSpawned&&state.phaseElapsed>=5){state.eliteSpawned=true;spawnRivalOwl(true)}
 
     for(const m of state.mice){
       m.phase+=dt*(8+m.speed/45);m.glow+=dt*4;m.turn-=dt;m.behaviorClock=(m.behaviorClock||0)-dt;m.hidden=Math.max(0,(m.hidden||0)-dt);m.freeze=Math.max(0,(m.freeze||0)-dt);
@@ -1640,7 +1674,7 @@
 
   function drawDirectionGuide(){
     const meadowGate=meadowSystem.activeGates(state.meadow)[0],meadowFind=state.meadow?.finds.find(item=>!item.picked),meadowMouse=state.meadow?.mouse&&!state.meadow.mouse.encountered?state.meadow.mouse:null;
-    const meadowTarget=meadowGate||meadowFind||meadowMouse||nest(),fireflyPoint=state.fireflyQuest?.points.find(point=>!point.revealed),fireflyTarget=fireflyPoint||(state.fireflyQuest?.found&&!state.fireflyQuest.arrived?(state.fireflyQuest.state==='waiting'?state.fireflyQuest.lost:state.fireflyQuest.field):state.fireflyQuest?.field),bounds=camera.bounds(0),target=owl.carrying?nest():(state.meadow?meadowTarget:(state.fireflyQuest?fireflyTarget:state.world.goal));if(!target||target.x>=bounds.left&&target.x<=bounds.right)return;
+    const meadowTarget=meadowGate||meadowFind||meadowMouse||nest(),fireflyPoint=state.fireflyQuest?.points.find(point=>!point.revealed),fireflyTarget=fireflyPoint||(state.fireflyQuest?.found&&!state.fireflyQuest.arrived?(state.fireflyQuest.state==='waiting'?state.fireflyQuest.lost:state.fireflyQuest.field):state.fireflyQuest?.field),raceTarget=state.race?(raceSystem.nextGate(state.race,state.race.playerStage)||state.race.moth):null,brookTarget=state.brook?(state.brook.windows.find(item=>!item.crossed)||state.brook.supplies.find(item=>!item.collected)||state.world.goal):null,bounds=camera.bounds(0),target=owl.carrying?nest():(state.meadow?meadowTarget:(state.fireflyQuest?fireflyTarget:(state.race?raceTarget:(state.brook?brookTarget:state.world.goal))));if(!target||target.x>=bounds.left&&target.x<=bounds.right)return;
     const right=target.x>camera.centerX,x=right?state.w-20:20,y=state.h*.48;ctx.save();ctx.translate(x,y);ctx.scale(right?1:-1,1);ctx.fillStyle=owl.carrying?'rgba(169,215,176,.94)':(state.meadow||state.fireflyQuest?'rgba(223,255,141,.92)':'rgba(242,213,138,.9)');ctx.strokeStyle='#0a1020';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(12,0);ctx.lineTo(-8,-10);ctx.lineTo(-3,0);ctx.lineTo(-8,10);ctx.closePath();ctx.fill();ctx.stroke();if(owl.carrying){ctx.beginPath();ctx.arc(-4,0,5,0,Math.PI);ctx.stroke()}ctx.restore();
   }
 
@@ -1943,8 +1977,13 @@
   }
 
   function drawCompanions(){
-    if(!state.running||!state.storyScene)return;state.storyScene.companions.filter(item=>camera.isVisible(item,120)).forEach(drawCompanion);
+    if(!state.running||!state.storyScene)return;state.storyScene.companions.filter(item=>(!state.race||item.id!=='bruno')&&camera.isVisible(item,120)).forEach(drawCompanion);
   }
+
+  function drawRaceGate(gate){const s=state.gameScale,active=state.race&&gate.stage===state.race.playerStage+1,done=state.race&&gate.stage<=state.race.playerStage;ctx.save();ctx.translate(gate.x,gate.y);ctx.globalAlpha=done ? 0.18 : (active ? 0.95 : 0.34);ctx.strokeStyle=active?'#f2d58a':'#9f8664';ctx.lineWidth=(active?7:4)*s;ctx.shadowColor='#f2d58a';ctx.shadowBlur=active?16*s:0;ctx.beginPath();ctx.ellipse(0,0,gate.radius*.52*s,gate.radius*.72*s,0,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;ctx.fillStyle=active?'#ffe8a8':'#9f8664';for(let i=0;i<6;i++){const a=i/6*Math.PI*2;ctx.save();ctx.translate(Math.cos(a)*gate.radius*.52*s,Math.sin(a)*gate.radius*.72*s);ctx.rotate(a);ctx.beginPath();ctx.moveTo(-7*s,0);ctx.lineTo(0,-11*s);ctx.lineTo(7*s,0);ctx.lineTo(0,7*s);ctx.closePath();ctx.fill();ctx.restore()}if(active){ctx.font=`900 ${15*s}px system-ui`;ctx.textAlign='center';ctx.fillText(gate.stage,0,5*s)}ctx.restore()}
+  function drawNightMoth(moth){const s=state.gameScale,flap=Math.sin(moth.phase*5)*8*s;ctx.save();ctx.translate(moth.x,moth.y);ctx.fillStyle='#c9a5d8';ctx.strokeStyle='#2e2741';ctx.lineWidth=3*s;for(const side of [-1,1]){ctx.save();ctx.scale(side,1);ctx.beginPath();ctx.moveTo(2*s,0);ctx.quadraticCurveTo(22*s,-24*s-flap,31*s,-5*s);ctx.quadraticCurveTo(23*s,12*s,4*s,12*s);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore()}ctx.fillStyle='#6f587e';ctx.beginPath();ctx.ellipse(0,4*s,5*s,15*s,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#f2d58a';ctx.beginPath();ctx.arc(0,-7*s,3*s,0,Math.PI*2);ctx.fill();ctx.restore()}
+  function drawRaceLayer(){if(!state.race)return;state.race.gates.filter(gate=>camera.isVisible(gate,120)).forEach(drawRaceGate);if(!state.race.mothCaught&&camera.isVisible(state.race.moth,80))drawNightMoth(state.race.moth);if(state.race.draftActive){const b=state.race.bruno,d=state.race.source.direction,s=state.gameScale;ctx.save();ctx.strokeStyle='rgba(159,231,255,.48)';ctx.lineWidth=3*s;ctx.setLineDash([14*s,12*s]);for(const offset of [-28,0,28]){ctx.beginPath();ctx.moveTo(b.x-d*20*s,b.y+offset*s);ctx.quadraticCurveTo(b.x-d*115*s,b.y+offset*s+Math.sin(state.elapsed*4+offset)*8*s,owl.x,owl.y+offset*.25*s);ctx.stroke()}ctx.restore()}if(camera.isVisible(state.race.bruno,130))drawCompanion({...state.race.bruno,id:'bruno',phase:state.race.bruno.wing,balanceAmount:state.race.bruno.glasses*.09})}
+  function drawBrookLayer(){if(!state.brook)return;const b=state.brook,s=state.gameScale,bounds=camera.bounds(40);ctx.save();ctx.fillStyle='rgba(36,103,132,.48)';ctx.fillRect(bounds.left,state.groundY-22*s,bounds.right-bounds.left,70*s);ctx.strokeStyle='rgba(130,231,255,.55)';ctx.lineWidth=3*s;for(let y=0;y<3;y++){ctx.beginPath();for(let x=bounds.left;x<=bounds.right;x+=28*s){const yy=state.groundY-12*s+y*15*s+Math.sin(x*.012+b.time*3+y)*5*s;x===bounds.left?ctx.moveTo(x,yy):ctx.lineTo(x,yy)}ctx.stroke()}for(const w of b.windows.filter(w=>camera.isVisible(w,130))){ctx.globalAlpha=w.crossed?0.18:(w.safe?0.9:0.28);ctx.strokeStyle=w.safe?'#82e7ff':'#6b8091';ctx.lineWidth=(w.safe?7:4)*s;ctx.beginPath();ctx.arc(w.x,w.y,w.radius*.55*s,0,Math.PI*2);ctx.stroke();if(!w.crossed&&w.safe){ctx.globalAlpha=.18;ctx.fillStyle='#bdeeff';ctx.beginPath();ctx.arc(w.x,w.y,w.radius*.48*s,0,Math.PI*2);ctx.fill()}}for(const p of b.supplies.filter(p=>!p.collected&&camera.isVisible(p,90))){ctx.globalAlpha=.88;ctx.fillStyle='#53606a';ctx.beginPath();ctx.ellipse(p.x,p.y+27*s,35*s,11*s,-.08,0,Math.PI*2);ctx.fill();ctx.fillStyle='#7c8a8f';ctx.beginPath();ctx.ellipse(p.x-5*s,p.y+23*s,24*s,8*s,-.08,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#f2d58a';ctx.strokeStyle='#4d3a24';ctx.lineWidth=3*s;ctx.beginPath();ctx.roundRect(p.x-16*s,p.y-11*s+Math.sin(p.phase)*4*s,32*s,22*s,6*s);ctx.fill();ctx.stroke()}const fallTop=state.groundY-state.h*b.waterfall.height;ctx.globalAlpha=.65;ctx.fillStyle='#bdeeff';ctx.fillRect(b.waterfall.x-24*s,fallTop,48*s,state.groundY-fallTop);ctx.globalAlpha=.28;ctx.fillStyle='#fff';ctx.fillRect(b.waterfall.x-9*s,fallTop,8*s,state.groundY-fallTop);ctx.restore()}
 
   function drawHootContext(context){
     const s=state.gameScale,active=context.revealed||context.visibleUntil>state.elapsed;if(!active&&context.type!=='hiddenObject')return;
@@ -2034,6 +2073,8 @@
     state.groundDetails.filter(item=>camera.isVisible(item,40)).forEach(drawGroundDetail);
     if(state.meadow){state.meadow.gates.filter(item=>camera.isVisible(item,110)).forEach(drawMeadowGate);state.meadow.finds.filter(item=>!item.picked&&camera.isVisible(item,70)).forEach(drawGatherable);if(state.meadow.mouse&&camera.isVisible(state.meadow.mouse,100))drawMeadowMouse(state.meadow.mouse)}
     if(state.fireflyQuest){drawQuestGrass();drawFireflyTrail();if(camera.isVisible(state.fireflyQuest.field,180))drawHerbField(state.fireflyQuest.field)}
+    if(state.race)drawRaceLayer();
+    if(state.brook)drawBrookLayer();
     state.hootContexts.filter(item=>camera.isVisible(item,80)).forEach(drawHootContext);
     drawStoryDebug();
     if(camera.isVisible(nest(),180)){drawStoryGuests();drawNest()}

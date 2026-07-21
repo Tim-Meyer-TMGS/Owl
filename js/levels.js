@@ -653,12 +653,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-09-alte-eiche",
       "order": 9,
-      "name": "Alte Eiche",
+      "name": "Brunos große Herausforderung",
       "presentation": {
         "theme": "forest",
-        "intro": "Rund um die Alte Eiche wird der Luftraum immer enger.",
-        "mission": "Sammle 70 Futterpunkte im Nest.",
-        "shortMission": "70 Futterpunkte",
+        "intro": "Bruno richtet seine schiefe Brille und erklärt ein freundschaftliches Rennen.",
+        "mission": "Fliege durch sechs Tore und erreiche den Nachtfalter.",
+        "shortMission": "6 Tore · Falter",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -674,8 +674,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 70,
+        "type": "raceGates",
+        "target": 6,
         "requiredPrey": null
       },
       "timeBonusSeconds": 23,
@@ -705,13 +705,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.6
       },
       "hazards": {
-        "branches": 4,
-        "maximumBats": 6,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.27,
           "max": 3.54
         },
-        "maximumRivalOwls": 1,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 5.8,
           "max": 8
@@ -735,12 +735,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-10-goldene-spur",
       "order": 10,
-      "name": "Goldene Spur",
+      "name": "Durch die goldenen Wipfel",
       "presentation": {
         "theme": "gold",
-        "intro": "Eine seltene goldene Maus erscheint zwischen den Wurzeln.",
-        "mission": "Sammle 50 Futterpunkte mit goldener Beute.",
-        "shortMission": "Gold 50 Punkte",
+        "intro": "Die Torlinie führt zurück durch breite goldene Baumkronen.",
+        "mission": "Fliege durch sieben Tore und erreiche den Nachtfalter.",
+        "shortMission": "7 Tore · Falter",
         "scenery": {
           "terrain": "autumn-hills",
           "trees": [
@@ -755,9 +755,9 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 50,
-        "requiredPrey": "gold"
+        "type": "raceGates",
+        "target": 7,
+        "requiredPrey": null
       },
       "timeBonusSeconds": 24,
       "difficulty": {
@@ -786,13 +786,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.53
       },
       "hazards": {
-        "branches": 5,
-        "maximumBats": 7,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.19,
           "max": 3.42
         },
-        "maximumRivalOwls": 1,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 5.6,
           "max": 7.8
@@ -816,12 +816,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-11-sturmklippen",
       "order": 11,
-      "name": "Sturmklippen",
+      "name": "Windschatten über den Wipfeln",
       "presentation": {
         "theme": "storm",
-        "intro": "An den Sturmklippen jagen Schwärme durch peitschenden Wind.",
-        "mission": "Sammle 80 Futterpunkte im Nest.",
-        "shortMission": "80 Futterpunkte",
+        "intro": "Hinter Brunos breiten Flügeln wird die Luft ruhig und gut lesbar.",
+        "mission": "Fliege durch acht Tore und nutze Brunos Windschatten.",
+        "shortMission": "8 Tore · Windschatten",
         "scenery": {
           "terrain": "cliffs",
           "trees": [
@@ -836,8 +836,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 80,
+        "type": "raceGates",
+        "target": 8,
         "requiredPrey": null
       },
       "timeBonusSeconds": 25,
@@ -867,13 +867,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.45
       },
       "hazards": {
-        "branches": 5,
-        "maximumBats": 7,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.11,
           "max": 3.3
         },
-        "maximumRivalOwls": 2,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 5.4,
           "max": 7.6
@@ -897,12 +897,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-12-windschlucht",
       "order": 12,
-      "name": "Windschlucht",
+      "name": "Gemeinsam zum Nachtfalter",
       "presentation": {
         "theme": "storm",
-        "intro": "In der Windschlucht bleibt kaum Zeit für Kurskorrekturen.",
-        "mission": "Sammle 85 Futterpunkte im Nest.",
-        "shortMission": "85 Futterpunkte",
+        "intro": "Im letzten Lauf zählt nicht mehr, wer vorne liegt, sondern wer den Weg teilt.",
+        "mission": "Fliege durch neun Tore und erreiche den Nachtfalter gemeinsam mit Bruno.",
+        "shortMission": "9 Tore · Gemeinsam",
         "scenery": {
           "terrain": "cliffs",
           "trees": [
@@ -917,8 +917,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 85,
+        "type": "raceGates",
+        "target": 9,
         "requiredPrey": null
       },
       "timeBonusSeconds": 25,
@@ -948,13 +948,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.38
       },
       "hazards": {
-        "branches": 5,
-        "maximumBats": 7,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.04,
           "max": 3.18
         },
-        "maximumRivalOwls": 2,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 5.2,
           "max": 7.4
@@ -978,12 +978,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-13-dunkeltal",
       "order": 13,
-      "name": "Dunkeltal",
+      "name": "Der erste Bachtakt",
       "presentation": {
-        "theme": "forest",
-        "intro": "Das Dunkeltal ist voller schneller Beute und verborgener Äste.",
-        "mission": "Sammle 90 Futterpunkte im Nest.",
-        "shortMission": "90 Futterpunkte",
+        "theme": "brook",
+        "intro": "Der Bach wird ruhig, sobald sein heller Takt beginnt.",
+        "mission": "Folge vier sicheren Wassertakten und sammle drei Vorräte.",
+        "shortMission": "4 Takte · 3 Vorräte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -999,8 +999,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 90,
+        "type": "brookSupplies",
+        "target": 3,
         "requiredPrey": null
       },
       "timeBonusSeconds": 26,
@@ -1030,13 +1030,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.3
       },
       "hazards": {
-        "branches": 6,
-        "maximumBats": 8,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 1.96,
           "max": 3.06
         },
-        "maximumRivalOwls": 2,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 5,
           "max": 7.2
@@ -1060,12 +1060,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-14-fledermaushohle",
       "order": 14,
-      "name": "Fledermaushöhle",
+      "name": "Klang unter den Steinen",
       "presentation": {
-        "theme": "forest",
-        "intro": "Aus der Höhle brechen immer neue Fledermauswellen hervor.",
-        "mission": "Sammle 95 Futterpunkte im Nest.",
-        "shortMission": "95 Futterpunkte",
+        "theme": "brook",
+        "intro": "Zwischen den Felsen antwortet jedes Huuu mit einem sicheren Rhythmus.",
+        "mission": "Rufe den Bach, folge vier Wassertakten und sichere drei Vorräte.",
+        "shortMission": "Huuu · 4 Takte · 3 Vorräte",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -1081,8 +1081,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 95,
+        "type": "brookSupplies",
+        "target": 3,
         "requiredPrey": null
       },
       "timeBonusSeconds": 27,
@@ -1112,13 +1112,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.23
       },
       "hazards": {
-        "branches": 6,
-        "maximumBats": 8,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 1.88,
           "max": 2.94
         },
-        "maximumRivalOwls": 2,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 4.8,
           "max": 7
@@ -1142,12 +1142,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-15-geisterwald",
       "order": 15,
-      "name": "Geisterwald",
+      "name": "Nebel über dem Bach",
       "presentation": {
-        "theme": "mist",
-        "intro": "Blasser Dunst verschluckt jede sichere Fluglinie.",
-        "mission": "Sammle 100 Futterpunkte im Nest.",
-        "shortMission": "100 Futterpunkte",
+        "theme": "brook",
+        "intro": "Im Nebel sind die Wasserfenster kürzer – ihr Klang bleibt eindeutig.",
+        "mission": "Folge fünf schnellen Wassertakten und sammle drei Vorräte.",
+        "shortMission": "5 Takte · 3 Vorräte",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -1163,8 +1163,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 100,
+        "type": "brookSupplies",
+        "target": 3,
         "requiredPrey": null
       },
       "timeBonusSeconds": 27,
@@ -1194,13 +1194,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.15
       },
       "hazards": {
-        "branches": 6,
-        "maximumBats": 9,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 1.8,
           "max": 2.82
         },
-        "maximumRivalOwls": 2,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 4.6,
           "max": 6.8
@@ -1224,12 +1224,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-16-silbersee",
       "order": 16,
-      "name": "Silbersee",
+      "name": "Über die Silberschlucht",
       "presentation": {
-        "theme": "mist",
-        "intro": "Über dem Silbersee spiegeln sich Beute und Gefahren im Nebel.",
-        "mission": "Sammle 110 Futterpunkte im Nest.",
-        "shortMission": "110 Futterpunkte",
+        "theme": "brook",
+        "intro": "Am Wasserfall wechseln Wind und Wasser in einem engen gemeinsamen Takt.",
+        "mission": "Überquere fünf Wasserfenster, sichere drei Vorräte und erreiche Fynn.",
+        "shortMission": "5 Takte · 3 Vorräte",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -1245,8 +1245,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 110,
+        "type": "brookSupplies",
+        "target": 3,
         "requiredPrey": null
       },
       "timeBonusSeconds": 28,
@@ -1276,13 +1276,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.08
       },
       "hazards": {
-        "branches": 7,
-        "maximumBats": 9,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 1.73,
           "max": 2.7
         },
-        "maximumRivalOwls": 2,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 4.4,
           "max": 6.6

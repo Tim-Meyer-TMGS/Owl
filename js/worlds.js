@@ -523,7 +523,7 @@ window.OWL_WORLD_DATA = {
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "friendlyRace",
           "sourceLevelId": "level-09-alte-eiche"
         }
       ]
@@ -581,7 +581,7 @@ window.OWL_WORLD_DATA = {
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "friendlyRace",
           "sourceLevelId": "level-10-goldene-spur"
         }
       ]
@@ -639,7 +639,7 @@ window.OWL_WORLD_DATA = {
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "friendlyRace",
           "sourceLevelId": "level-11-sturmklippen"
         }
       ]
@@ -697,7 +697,7 @@ window.OWL_WORLD_DATA = {
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "friendlyRace",
           "sourceLevelId": "level-12-windschlucht"
         }
       ]
@@ -755,7 +755,7 @@ window.OWL_WORLD_DATA = {
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "brookCrossing",
           "sourceLevelId": "level-13-dunkeltal"
         }
       ]
@@ -813,7 +813,7 @@ window.OWL_WORLD_DATA = {
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "brookCrossing",
           "sourceLevelId": "level-14-fledermaushohle"
         }
       ]
@@ -871,7 +871,7 @@ window.OWL_WORLD_DATA = {
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "brookCrossing",
           "sourceLevelId": "level-15-geisterwald"
         }
       ]
@@ -929,7 +929,7 @@ window.OWL_WORLD_DATA = {
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "brookCrossing",
           "sourceLevelId": "level-16-silbersee"
         }
       ]

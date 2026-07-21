@@ -522,7 +522,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "friendlyRace",
           "sourceLevelId": "level-09-alte-eiche"
         }
       ]
@@ -580,7 +580,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "friendlyRace",
           "sourceLevelId": "level-10-goldene-spur"
         }
       ]
@@ -638,7 +638,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "friendlyRace",
           "sourceLevelId": "level-11-sturmklippen"
         }
       ]
@@ -696,7 +696,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "friendlyRace",
           "sourceLevelId": "level-12-windschlucht"
         }
       ]
@@ -754,7 +754,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "brookCrossing",
           "sourceLevelId": "level-13-dunkeltal"
         }
       ]
@@ -812,7 +812,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "brookCrossing",
           "sourceLevelId": "level-14-fledermaushohle"
         }
       ]
@@ -870,7 +870,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "brookCrossing",
           "sourceLevelId": "level-15-geisterwald"
         }
       ]
@@ -928,7 +928,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "brookCrossing",
           "sourceLevelId": "level-16-silbersee"
         }
       ]

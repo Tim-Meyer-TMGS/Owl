@@ -213,3 +213,26 @@ if (@($fireflyLostIds | Group-Object | Where-Object Count -gt 1).Count -gt 0) { 
 $fireflyRuntime = "/* Generated from data/firefly-quests.json. Run tools/build-levels.ps1 after editing the JSON source. */`nwindow.OWL_FIREFLY_QUEST_DATA = $fireflyJson;"
 Set-Content -LiteralPath $fireflyTarget -Value $fireflyRuntime -Encoding UTF8
 Write-Host "Generated js/firefly-quests.js with $($fireflyData.scenes.Count) quests and $(@($fireflyData.scenes.trailContextIds).Count) trail sections."
+
+$raceSource = Join-Path $ProjectRoot 'data\race-tracks.json'
+$raceTarget = Join-Path $ProjectRoot 'js\race-tracks.js'
+$raceJson = Get-Content -LiteralPath $raceSource -Raw -Encoding UTF8
+$raceData = $raceJson | ConvertFrom-Json
+if ($raceData.formatVersion -ne 1 -or $raceData.scenes.Count -ne 4) { throw 'race-tracks.json muss genau Level 9 bis 12 definieren.' }
+$raceGateIds = @()
+foreach ($scene in $raceData.scenes) {
+  if ($scene.levelOrder -notin @(9,10,11,12) -or $scene.levelId -notin $knownLevelIds) { throw "Rennszene $($scene.levelOrder): unbekanntes Level." }
+  $stages = @($scene.gates | ForEach-Object stage | Sort-Object -Unique)
+  if (($stages -join ',') -ne ((1..$scene.gates.Count) -join ',')) { throw "Rennszene $($scene.levelOrder): Torfolge ist nicht lückenlos." }
+  foreach ($gate in $scene.gates) { $raceGateIds += $gate.id; foreach ($field in @('id','stage','xRatio','yRatio','radius')) { if ($null -eq $gate.$field) { throw "Renntor: $field fehlt." } } }
+  if ($scene.direction -notin @(-1,1) -or $scene.draft.distance -le $scene.draft.height -or $scene.moth.radius -lt 40) { throw "Rennszene $($scene.levelOrder): ungültige Richtung, Windschatten- oder Falterwerte." }
+}
+if (@($raceGateIds | Group-Object | Where-Object Count -gt 1).Count -gt 0) { throw 'Renndaten enthalten doppelte Tor-IDs.' }
+$raceRuntime = "/* Generated from data/race-tracks.json. Run tools/build-levels.ps1 after editing the JSON source. */`nwindow.OWL_RACE_DATA = $raceJson;"
+Set-Content -LiteralPath $raceTarget -Value $raceRuntime -Encoding UTF8
+Write-Host "Generated js/race-tracks.js with $($raceData.scenes.Count) races and $($raceGateIds.Count) gates."
+
+$brookSource=Join-Path $ProjectRoot 'data\brook-crossings.json';$brookTarget=Join-Path $ProjectRoot 'js\brook-crossings.js';$brookJson=Get-Content -LiteralPath $brookSource -Raw -Encoding UTF8;$brookData=$brookJson|ConvertFrom-Json
+if($brookData.formatVersion -ne 1 -or $brookData.scenes.Count -ne 4){throw 'brook-crossings.json muss Level 13 bis 16 definieren.'};$brookIds=@()
+foreach($scene in $brookData.scenes){if($scene.levelOrder -notin @(13,14,15,16)-or $scene.levelId -notin $knownLevelIds){throw 'Ungültige Bachszene.'};if($scene.supplies.Count -ne 3 -or $scene.windows.Count -lt 4){throw 'Bachszene benötigt drei Vorräte und mindestens vier Fenster.'};$brookIds+=@($scene.windows|ForEach-Object id);if($scene.safeRatio -le 0 -or $scene.safeRatio -ge 1){throw 'Ungültiges sicheres Zeitfenster.'}}
+if(@($brookIds|Group-Object|Where-Object Count -gt 1).Count){throw 'Doppelte Bachfenster-IDs.'};$brookRuntime="/* Generated from data/brook-crossings.json. */`nwindow.OWL_BROOK_DATA = $brookJson;";Set-Content -LiteralPath $brookTarget -Value $brookRuntime -Encoding UTF8;Write-Host "Generated js/brook-crossings.js with $($brookData.scenes.Count) crossings and $($brookIds.Count) rhythm windows."

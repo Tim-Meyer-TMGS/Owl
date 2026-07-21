@@ -457,3 +457,52 @@ P1-Paket 8 baut Level 5 bis 8 als Glühwürmchen-Suche um: abschnittsweise Huuu-
 ### Nächstes Arbeitspaket
 
 P1-Paket 9 baut Level 9 bis 12 als freundschaftliches Bruno-Rennen mit handgesetzten Flugtoren, Windschatten und beweglichem Nachtfalter um.
+
+## 21. Juli 2026 – P1-Paket 9: Der große Konkurrent
+
+### Umgesetzt
+
+- Vier datengetriebene Rennstrecken mit 30 handgesetzten Toren.
+- Bruno-KI mit schwerem Flügelschlag und schiefer Brillenanimation.
+- Windschatten als sanfter Vorwärtsimpuls ohne Geschwindigkeitsmultiplikator.
+- Beweglicher Nachtfalter als Abschlussziel nach der vollständigen Torfolge.
+- Keine Zufallsbeute, Fledermäuse, Rivalen, Elitegegner, Schäden oder Diebstähle.
+- Checkpoint-Persistenz für beide Rennstände, Bruno, Windschatten und Falter.
+- Dauerhafte Verbündetenfreischaltung nach Level 12.
+
+### Prüfungen
+
+- Build: vier Rennen und 30 Tore.
+- Automatische Komplettläufe: 6/6, 7/7, 8/8 und 9/9 Tore.
+- Windschatten und Falter in allen vier Läufen bestätigt.
+- Bruno vor Level 12 gesperrt und danach als Verbündeter gespeichert.
+- In allen Läufen null Beute, Fledermäuse und Rivalen.
+- Testinstrumentierung, Profile und Prüfbilder entfernt.
+
+### Nächstes Arbeitspaket
+
+P1-Paket 10 baut Level 13 bis 16 als Bachkapitel mit rhythmischen Wasserwegen, Klangantworten, schwimmenden Blättern und sicherer Querung um.
+
+## 21. Juli 2026 – P1-Paket 10: Das Lied des Baches
+
+### Umgesetzt
+
+- Level 13 bis 16 auf eine datengetriebene Bachquerung mit 18 geordneten Rhythmusfenstern umgestellt.
+- Drei schwebende Vorräte je Szene zwischen gezeichneten Steinen platziert.
+- Sichere Fenster durch helle Wasserringe und Zweiton-Akzente angekündigt; falsches Timing erzeugt Gegenströmung ohne Lebensverlust.
+- Huuu richtet den nächsten Bachtakt aus und löst Fynns akustische Antwort aus.
+- Wasserband, rhythmische Wellen, vier Wasserfallvarianten und sichere Rastäste in die horizontale Welt integriert.
+- Eigenes Bonusziel „Ohne Gegenströmung“, mobiles Icon-HUD, Richtungsanzeige und Levelabschluss ergänzt.
+- Bachfortschritt vollständig in Checkpoints und bei Größenänderungen erhalten.
+
+### Verifiziert
+
+- Automatische Komplettläufe: 4/4, 4/4, 5/5 und 5/5 Rhythmusfenster sowie jeweils 3/3 Vorräte.
+- Levelabschluss und Belohnung in allen vier Szenen bestätigt.
+- Gegenströmung schiebt zurück, zieht aber kein Herz ab und lässt das aktuelle Fenster offen.
+- Checkpoint-Wiederherstellung nach dem ersten Fenster bestätigt.
+- In allen vier Szenen null Beute, Fledermäuse und Rivalen.
+
+### Nächstes Arbeitspaket
+
+P1-Paket 11 baut Level 17 bis 20 als ruhige Beobachtungs- und Geschenkaufgaben mit dem alten Kauz um.

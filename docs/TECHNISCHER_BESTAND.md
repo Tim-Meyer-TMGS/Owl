@@ -17,6 +17,8 @@ Dieses Dokument markiert den spielbaren Ausgangsstand für den schrittweisen Umb
 | `data/tutorial.json` | `js/tutorial.js` | sechs Prologschritte, drei feste Vorratspäckchen und Kamerazeiten | 1 |
 | `data/meadow-routes.json` | `js/meadow-routes.js` | Level 2 bis 4 mit 19 Routentoren, 10 Naturfunden und Marta-Begegnung | 1 |
 | `data/firefly-quests.json` | `js/firefly-quests.js` | Level 5 bis 8 mit 16 Lichtspuren, vier Begleitfiguren und Kräuterfeldern | 1 |
+| `data/race-tracks.json` | `js/race-tracks.js` | Level 9 bis 12 mit 30 Toren, Bruno, Windschatten und Nachtfaltern | 1 |
+| `data/brook-crossings.json` | `js/brook-crossings.js` | Level 13 bis 16 mit 18 Wassertakten, Vorräten und Wasserfällen | 1 |
 
 Die JavaScript-Spiegel werden ausschließlich mit `tools/build-levels.ps1` erzeugt. Die JSON-Dateien sind die Quellen.
 
@@ -51,6 +53,8 @@ Local-Storage-Schlüssel: `owl-flight-checkpoint-v1`
 - abgeschlossene Prologschritte und abgelieferte Vorratspäckchen
 - gewählte Wiesentore, Fundzustände, Routenserie, Marta-Begegnung und aktuell getragener Fund
 - enthüllte Lichtspuren, Glühwürmchenzustand, Position, Geschwindigkeit und Trennungszähler
+- Rennstände, Bruno-Position, Windschattenbestwert, Falterphase und Verbündetenfreischaltung
+- Bachzeit, überquerte Rhythmusfenster, gesammelte Vorräte und Kapitelabschluss
 
 Ältere Checkpoints ohne Weltposition laden weiterhin am Nest. Checkpoints ohne Astzustand starten normal im Flug.
 
@@ -98,6 +102,8 @@ Diese Teile werden erst entfernt, wenn ihr jeweiliger Ersatz in einer spielbaren
 - `js/systems/tutorial.js`: geordnete Prologschritte und feste Päckchenzustände
 - `js/systems/meadow.js`: Routenwahl, Serienfenster, feste Naturfunde, Mausbegegnung und Abschlussprüfung
 - `js/systems/firefly-quest.js`: sequenzielle Spurensuche, langsame Begleitung, verlustfreies Warten und Kräuterfeld-Ankunft
+- `js/systems/race.js`: Torfolge, Bruno-KI, Windschatten, beweglicher Nachtfalter und Rennabschluss
+- `js/systems/brook.js`: Wassertakt, sichere Querungsfenster, Gegenströmung, Vorräte und Abschlussprüfung
 - `js/render/parallax.js`: fünf visuelle Tiefenebenen und Landmarken
 - `js/ui/chapter-map.js`: horizontale Kapitelkarte
 - `js/game.js`: verbleibende Spiellogik und Übergangs-Renderer

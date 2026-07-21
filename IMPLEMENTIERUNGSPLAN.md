@@ -456,21 +456,21 @@ assets/
 
 ## 8.4 Kapitel 3: Der große Konkurrent – Level 9 bis 12
 
-- [ ] Bruno mit eigenem Intro und Brillenanimation einführen.
-- [ ] Horizontales Wettrennen durch handgesetzte Flugtore bauen.
-- [ ] Windschattenmechanik implementieren.
-- [ ] Nachtfalter als bewegliches Ziel inszenieren.
-- [ ] Wettkampf ohne Schaden oder Beutediebstahl gestalten.
-- [ ] Bruno anschließend als Verbündeten freischalten.
+- [x] Bruno mit eigenem Intro und Brillenanimation einführen.
+- [x] Horizontales Wettrennen durch handgesetzte Flugtore bauen.
+- [x] Windschattenmechanik implementieren.
+- [x] Nachtfalter als bewegliches Ziel inszenieren.
+- [x] Wettkampf ohne Schaden oder Beutediebstahl gestalten.
+- [x] Bruno anschließend als Verbündeten freischalten.
 
 ## 8.5 Kapitel 4: Das Lied des Baches – Level 13 bis 16
 
-- [ ] Bach, Wasserfall und Schlucht als zusammenhängende Welt bauen.
-- [ ] Wasser- und Windrhythmus synchronisieren.
-- [ ] Sichere Flugfenster visuell und akustisch ankündigen.
-- [ ] Schwebende Vorräte zwischen Steinen einsammeln.
-- [ ] Sichere Äste als kurze Rast- und Gesprächspunkte verwenden.
-- [ ] Lumis ehrliches Gespräch über Nervosität einbauen.
+- [x] Bach, Wasserfall und Schlucht als zusammenhängende Welt bauen.
+- [x] Wasser- und Windrhythmus synchronisieren.
+- [x] Sichere Flugfenster visuell und akustisch ankündigen.
+- [x] Schwebende Vorräte zwischen Steinen einsammeln.
+- [x] Sichere Äste als kurze Rast- und Gesprächspunkte verwenden.
+- [x] Lumis ehrliches Gespräch über Nervosität einbauen.
 
 ## 8.6 Kapitel 5: Das Geschenk des Waldes – Level 17 bis 20
 
@@ -714,8 +714,8 @@ Zielwerte:
 
 - [x] Mondwiese abschließen.
 - [x] Glühwürmchen-Kapitel abschließen.
-- [ ] Bruno-Rennen abschließen.
-- [ ] Bach-Kapitel abschließen.
+- [x] Bruno-Rennen abschließen.
+- [x] Bach-Kapitel abschließen.
 
 ## Meilenstein 4 – Finale Kapitel
 
