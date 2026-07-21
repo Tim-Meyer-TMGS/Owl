@@ -59,8 +59,8 @@ window.OWL_WORLD_DATA = {
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
-          "sourceLevelId": "level-01-wiesenrand"
+        "type": "bundles",
+        "sourceLevelId": "level-01-wiesenrand"
         }
       ]
     },

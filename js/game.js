@@ -11,7 +11,7 @@
     combo:document.getElementById('comboText'),
     phase:document.getElementById('phaseName'),
     delivered:document.getElementById('delivered'),
-    target:document.getElementById('target'),
+    target:document.getElementById('target'),targetUnit:document.getElementById('targetUnit'),
     energy:document.getElementById('energyFill'),
     time:document.getElementById('timeFill'),
     timeText:document.getElementById('timeText'),
@@ -31,7 +31,7 @@
     resultPrey:document.getElementById('resultPrey'),
     resultBest:document.getElementById('resultBest'),
     resultXp:document.getElementById('resultXp'),finalHoot:document.getElementById('finalHootBtn'),
-    levelTitle:document.getElementById('levelCompleteTitle'),levelFood:document.getElementById('levelFoodResult'),levelScore:document.getElementById('levelScoreResult'),levelBonus:document.getElementById('levelBonusResult'),levelXp:document.getElementById('levelXpResult'),
+    levelTitle:document.getElementById('levelCompleteTitle'),levelFood:document.getElementById('levelFoodResult'),levelUnit:document.getElementById('levelResultUnit'),levelScore:document.getElementById('levelScoreResult'),levelBonus:document.getElementById('levelBonusResult'),levelXp:document.getElementById('levelXpResult'),
     playerLevel:document.getElementById('playerLevel'),xpCurrent:document.getElementById('xpCurrent'),xpNext:document.getElementById('xpNext'),xpFill:document.getElementById('xpFill'),
     upgradePoints:document.getElementById('upgradePoints'),owlPicker:document.getElementById('owlPicker'),owlDetail:document.getElementById('owlDetail'),
     upgradeInfo:document.getElementById('upgradeInfo'),
@@ -54,8 +54,8 @@
   const owlRoster=rosterData.owls;
   const storyData=window.OWL_STORY_DATA;
   if(!storyData||storyData.formatVersion!==1||!Array.isArray(storyData.chapters)||!storyData.chapters.length){throw new Error('Keine gültigen Storydaten geladen.')}
-  const worldLoader=window.OWL?.worlds,camera=window.OWL?.camera?.create(),parallax=window.OWL?.parallax,perches=window.OWL?.perches,hootSystem=window.OWL?.hoot,storySystem=window.OWL?.story;
-  if(!worldLoader||worldLoader.count!==levelData.levels.length||!camera||!parallax||!perches||!hootSystem||hootSystem.sceneCount!==levelData.levels.length||!storySystem||storySystem.sceneCount!==levelData.levels.length){throw new Error('Welt-, Kamera-, Parallax-, Ast-, Huuu- oder Storymodul fehlt.')}
+  const worldLoader=window.OWL?.worlds,camera=window.OWL?.camera?.create(),parallax=window.OWL?.parallax,perches=window.OWL?.perches,hootSystem=window.OWL?.hoot,storySystem=window.OWL?.story,tutorialSystem=window.OWL?.tutorial;
+  if(!worldLoader||worldLoader.count!==levelData.levels.length||!camera||!parallax||!perches||!hootSystem||hootSystem.sceneCount!==levelData.levels.length||!storySystem||storySystem.sceneCount!==levelData.levels.length||!tutorialSystem){throw new Error('Welt-, Kamera-, Parallax-, Ast-, Huuu-, Story- oder Tutorialmodul fehlt.')}
   const progressKey='owl-flight-progress-v1';
   const checkpointKey='owl-flight-checkpoint-v1';
   const progress=(()=>{
@@ -89,11 +89,11 @@
   };
   const expandPreyWeights=weights=>Object.entries(weights).flatMap(([type,weight])=>Array(Math.max(0,Math.round(weight))).fill(type));
   const phases=[...levelData.levels].sort((a,b)=>a.order-b.order).map(level=>({
-    id:level.id,name:level.name,target:level.objective.target,requiredType:level.objective.requiredPrey,
+    id:level.id,name:level.name,target:level.objective.target,requiredType:level.objective.requiredPrey,objectiveType:level.objective.type,
     nestSlot:(level.order-1)%6,
     timeBonus:level.timeBonusSeconds,theme:level.presentation.theme,intro:level.presentation.intro,
     terrain:level.presentation.scenery.terrain,treeTypes:level.presentation.scenery.trees,obstacleTypes:level.presentation.scenery.obstacles,
-    introShort:level.name,mission:`Sammle ${level.objective.target} Futterpunkte im Nest.`,missionShort:`${level.objective.target} Futterpunkte`,
+    introShort:level.name,mission:level.presentation.mission||`Sammle ${level.objective.target} Futterpunkte im Nest.`,missionShort:level.presentation.shortMission||`${level.objective.target} Futterpunkte`,
     preyTypes:expandPreyWeights(level.population.prey),startMice:level.population.startingPrey,
     mouseCap:level.population.maximumPrey,mouseDelay:[level.population.spawnDelaySeconds.min,level.population.spawnDelaySeconds.max],
     waveSize:level.waves.size,waveBreak:level.waves.breakSeconds,branchCount:level.hazards.branches,
@@ -116,7 +116,7 @@
     hootCharge:1,shake:0,transition:0,transitionQueued:false,
     last:0,muted:false,elapsed:0,phaseElapsed:0,musicClock:.4,wildlifeClock:2,
     bonus:null,levelHits:0,levelPreyCounts:{},levelPreyTypes:new Set(),eliteSpawned:false,lastPhaseXp:0,lastBonusAwarded:false,
-    shownStories:new Set(),activeStory:null,storyLineIndex:0,storyBeatIndex:0,storyChoosingGift:false,selectedGift:null,landedPerches:new Set(),storyScene:null,storyDialogueQueue:[],storyDebug:false,lastSafePoint:null
+    shownStories:new Set(),activeStory:null,storyLineIndex:0,storyBeatIndex:0,storyChoosingGift:false,selectedGift:null,landedPerches:new Set(),storyScene:null,storyDialogueQueue:[],storyDebug:false,lastSafePoint:null,tutorial:null
   };
 
   const owl = {
@@ -204,7 +204,7 @@
     state.activeStory=chapter;state.storyLineIndex=0;state.storyChoosingGift=false;state.paused=true;camera.setMode('dialogue');setAudioFocus(false);ui.storyBubble.classList.add('hidden');ui.story.classList.remove('hidden');renderStoryLine();return true;
   }
   function finishStoryChapter(){
-    if(!state.activeStory)return;const completedChapter=state.activeStory.id;state.shownStories.add(completedChapter);if(!progress.seenChapters.includes(completedChapter)){progress.seenChapters.push(completedChapter);saveProgress()}state.activeStory=null;state.storyChoosingGift=false;camera.setMode(state.world.cameraMode);ui.story.classList.add('hidden');ui.giftChoices.classList.add('hidden');state.paused=false;setAudioFocus(true);saveCheckpoint();state.last=performance.now();requestAnimationFrame(loop);
+    if(!state.activeStory)return;const completedChapter=state.activeStory.id;state.shownStories.add(completedChapter);if(!progress.seenChapters.includes(completedChapter)){progress.seenChapters.push(completedChapter);saveProgress()}state.activeStory=null;state.storyChoosingGift=false;camera.setMode(state.world.cameraMode);ui.story.classList.add('hidden');ui.giftChoices.classList.add('hidden');state.paused=false;setAudioFocus(true);if(state.phaseIndex===0)startTutorialCinematic();saveCheckpoint();state.last=performance.now();requestAnimationFrame(loop);
   }
   function nextStoryLine(){
     if(state.storyChoosingGift){if(state.selectedGift)finishStoryChapter();return}
@@ -466,7 +466,7 @@
   function collide(a,b,pad=0){const rr=(a.r+b.r+pad*state.gameScale);return dist2(a,b)<rr*rr}
   function currentPhase(){return phases[state.phaseIndex]}
   function loadCurrentWorld(preservePositions=false){
-    const previousWidth=state.world?.width||0,completedHoot=state.hootContexts?.length?hootSystem.completedIds(state.hootContexts):[],completedStory=state.storyScene?storySystem.completedIds(state.storyScene):[],companionSnapshot=state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[];
+    const previousWidth=state.world?.width||0,completedHoot=state.hootContexts?.length?hootSystem.completedIds(state.hootContexts):[],completedStory=state.storyScene?storySystem.completedIds(state.storyScene):[],companionSnapshot=state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],completedTutorial=state.tutorial?tutorialSystem.completedIds(state.tutorial):[],deliveredTutorial=state.tutorial?[...state.tutorial.deliveredPackageIds]:[];
     state.world=worldLoader.load(state.phaseIndex+1,{width:state.w,height:state.h,groundY:state.groundY,playTop:playTop()});
     if(preservePositions&&previousWidth>0&&previousWidth!==state.world.width){
       const ratio=state.world.width/previousWidth;
@@ -476,7 +476,7 @@
     }
     camera.resize({width:state.w,height:state.h},state.world);camera.setMode(state.world.cameraMode);
     if(preservePositions)state.safePerches=state.world.safeBranches.map(branch=>({...branch,scale:state.gameScale,r:24*state.gameScale}));
-    if(preservePositions){setupHootContexts(completedHoot);setupStoryScene(completedStory,companionSnapshot)}
+    if(preservePositions){setupHootContexts(completedHoot);setupStoryScene(completedStory,companionSnapshot);setupTutorial(completedTutorial,deliveredTutorial)}
   }
   function setupHootContexts(completedIds=[]){
     state.hootContexts=hootSystem.createScene(state.phaseIndex+1,state.world,{height:state.h,groundY:state.groundY,playTop:playTop()},completedIds);
@@ -484,6 +484,26 @@
   function setupStoryScene(completedIds=[],companionSnapshot=[]){
     state.storyScene=storySystem.createScene(state.phaseIndex+1,state.world,{height:state.h,groundY:state.groundY,playTop:playTop()},completedIds);const byId=new Map(companionSnapshot.map(item=>[item.id,item]));
     state.storyScene.companions.forEach(companion=>{const saved=byId.get(companion.id);if(!saved)return;companion.state=saved.state||companion.state;companion.x=Number(saved.x)||companion.x;companion.y=Number(saved.y)||companion.y;companion.courage=Number(saved.courage??companion.courage)});
+  }
+  function setupTutorial(completedIds=[],deliveredPackageIds=[]){
+    state.tutorial=state.phaseIndex===0?tutorialSystem.create(state.world,{height:state.h,groundY:state.groundY},completedIds,deliveredPackageIds):null;
+  }
+  function startTutorialCinematic(){
+    if(!state.tutorial||tutorialSystem.completedIds(state.tutorial).length||state.tutorial.cinematic.active)return;state.tutorial.cinematic={active:true,time:0,windReleased:false};camera.setMode('cinematic');state.keys.clear();state.pointer.active=false;
+  }
+  function updateTutorialCinematic(dt){
+    const cinematic=state.tutorial?.cinematic;if(!cinematic?.active)return false;cinematic.time+=dt;const config=tutorialSystem.source.cinematic,progress=clamp(cinematic.time/config.duration,0,1),fynn=state.storyScene?.companions.find(item=>item.id==='fynn');
+    if(fynn){fynn.balanceAmount=cinematic.time<1.5?Math.sin(cinematic.time*12)*Math.min(1,cinematic.time*2):0;fynn.x=nest().x+72*state.gameScale;fynn.y=nest().y-15*state.gameScale-Math.sin(cinematic.time*7)*3*state.gameScale}
+    if(cinematic.time>=config.windAt&&!cinematic.windReleased){cinematic.windReleased=true;state.shake=.22;noiseBurst(.8,.026,780,'bandpass');for(const packageItem of state.tutorial.packages){for(let i=0;i<7;i++)state.leafMotions.push({x:nest().x+i*5,y:nest().y+20,vx:(95+i*16)*state.gameScale,vy:(-125+i*13)*state.gameScale,rotation:i*.7,spin:i%2?3:-3,life:2.2,max:2.2,color:i%2?'#d7e9bd':'#e7c778'})}}
+    let focusX=nest().x;if(cinematic.time>=config.windAt&&cinematic.time<config.returnAt){const travel=clamp((cinematic.time-config.windAt)/(config.returnAt-config.windAt),0,1),far=state.tutorial.packages[state.tutorial.packages.length-1];focusX=nest().x+(far.x-nest().x)*travel}else if(cinematic.time>=config.returnAt){const back=clamp((cinematic.time-config.returnAt)/(config.duration-config.returnAt),0,1),far=state.tutorial.packages[state.tutorial.packages.length-1];focusX=far.x+(owl.x-far.x)*back}
+    camera.update({x:focusX,y:state.h*.4,vx:0},dt,{});state.shake=Math.max(0,state.shake-dt);updateHootResponses(dt);
+    if(progress>=1){cinematic.active=false;if(fynn){fynn.balanceAmount=0;fynn.state='wait';fynn.anchorX=fynn.x;fynn.anchorY=fynn.y}camera.setMode(state.world.cameraMode);camera.snap(owl);queueStoryBubble('ava','Erst fliegen. Dann landen. Eins nach dem anderen.',3300)}
+    updateHud();return true;
+  }
+
+  function updateTutorialProgress(){
+    if(!state.tutorial||state.tutorial.cinematic.active||state.paused)return;if(state.tutorial.complete){tryCompleteLevel();return}const step=tutorialSystem.evaluate(state.tutorial,{owl,delivered:state.tutorial.deliveredPackageIds.size,hootContextIds:new Set(hootSystem.completedIds(state.hootContexts)),scale:state.gameScale});if(!step)return;
+    storySystem.applyAction(state.storyScene,step.action);floater(owl.x,owl.y-48,'GESCHAFFT','#9fe7ff',17);showToast(`${step.label} · ✓`,'#9fe7ff',850);spatialTone(520,.12,'triangle',.022,0);spatialTone(760,.2,'sine',.016,0,.08);saveCheckpoint();if(state.tutorial.complete)tryCompleteLevel();
   }
   function placeOwlAtWorldStart(){
     owl.x=state.world.start.x;owl.y=state.world.start.y;owl.vx=0;owl.vy=0;camera.snap(owl);
@@ -522,7 +542,7 @@
   }
   function dropCarriedAtPerch(){
     const perch=perchById(owl.perchId);if(!perch||!owl.carrying)return false;const item=owl.carrying;owl.carrying=null;
-    state.mice.push({type:item.type,x:perch.x,y:perch.y-18*state.gameScale,dir:owl.facing,speed:0,r:(item.baseR||16)*state.gameScale,value:item.value,food:item.food,color:item.color,phase:0,turn:2,dash:0,glow:0,hidden:0,behaviorClock:2,perched:true,perchId:perch.id});
+    state.mice.push({type:item.type,packageId:item.packageId,x:perch.x,y:perch.y-18*state.gameScale,dir:owl.facing,speed:0,r:(item.baseR||16)*state.gameScale,value:item.value,food:item.food,color:item.color,phase:0,turn:2,dash:0,glow:0,hidden:0,behaviorClock:2,perched:true,perchId:perch.id});
     showToast('AUF DEM AST ABGELEGT','#a9d7b0',720);floater(perch.x,perch.y-42,'ABGELEGT','#a9d7b0',15);haptic(14);updateHud();return true;
   }
   function beginStumble(source=null){
@@ -546,11 +566,11 @@
     state.mice=[];state.bats=[];state.rivals=[];state.branches=[];state.safePerches=[];state.bushes=[];state.groundDetails=[];state.fireflies=[];state.particles=[];state.floaters=[];state.rings=[];state.hootContexts=[];state.hootEchoes=[];state.edgeSignals=[];state.leafMotions=[];
     state.pointer.active=false;state.pointer.id=null;state.pointer.landingTap=false;
     state.hootCharge=1;state.cameraPulse=0;state.shake=0;state.transition=0;state.transitionQueued=false;state.elapsed=0;state.phaseElapsed=0;state.eliteSpawned=false;state.musicClock=.35;state.wildlifeClock=2;
-    state.shownStories=new Set();state.activeStory=null;state.storyLineIndex=0;state.storyBeatIndex=0;state.storyChoosingGift=false;state.selectedGift=null;state.landedPerches=new Set();state.storyScene=null;state.storyDialogueQueue=[];clearTimeout(storyBubbleTimer);storyBubbleTimer=null;
+    state.shownStories=new Set();state.activeStory=null;state.storyLineIndex=0;state.storyBeatIndex=0;state.storyChoosingGift=false;state.selectedGift=null;state.landedPerches=new Set();state.storyScene=null;state.storyDialogueQueue=[];state.tutorial=null;clearTimeout(storyBubbleTimer);storyBubbleTimer=null;
     owl.r=35*state.gameScale*stats.size;state.lastSafePoint={x:nest().x,y:nest().y,perchId:null};
     placeOwlAtWorldStart();owl.angle=0;owl.dive=false;owl.diveTime=0;owl.invuln=0;owl.carrying=null;owl.flightState='flying';owl.targetPerchId=null;owl.perchId=null;owl.stumbleTime=0;owl.facing=1;owl.turnTime=0;
-    initBonusGoal();setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();
-    for(let i=0;i<currentPhase().startMice;i++) spawnMouse(i<2?'normal':undefined);
+    initBonusGoal();setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();
+    if(state.tutorial)spawnTutorialPackages();else for(let i=0;i<currentPhase().startMice;i++) spawnMouse(i<2?'normal':undefined);
     for(let i=0;i<3;i++) spawnFirefly();
     updateHud();
   }
@@ -625,7 +645,7 @@
       score:state.score,hearts:state.hearts,energy:state.energy,time:state.time,maxTime:state.maxTime,
       totalDelivered:state.totalDelivered,totalFood:state.totalFood,runXp:state.runXp,bestCombo:state.bestCombo,
       bonus:state.bonus,levelHits:state.levelHits,levelPreyCounts:state.levelPreyCounts,levelPreyTypes:[...state.levelPreyTypes],phaseElapsed:state.phaseElapsed,eliteSpawned:state.eliteSpawned,hootCharge:state.hootCharge,
-      shownStories:[...state.shownStories],selectedGift:state.selectedGift,storyBeatIndex:state.storyBeatIndex,landedPerches:[...state.landedPerches],hootContextIds:hootSystem.completedIds(state.hootContexts),storyEventIds:storySystem.completedIds(state.storyScene),companions:state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],lastSafePoint:state.lastSafePoint,owl:{x:owl.x,y:owl.y,flightState:owl.flightState,perchId:owl.perchId}
+      shownStories:[...state.shownStories],selectedGift:state.selectedGift,storyBeatIndex:state.storyBeatIndex,landedPerches:[...state.landedPerches],hootContextIds:hootSystem.completedIds(state.hootContexts),storyEventIds:storySystem.completedIds(state.storyScene),companions:state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],tutorialStepIds:tutorialSystem.completedIds(state.tutorial),tutorialDeliveredIds:state.tutorial?[...state.tutorial.deliveredPackageIds]:[],lastSafePoint:state.lastSafePoint,owl:{x:owl.x,y:owl.y,flightState:owl.flightState,perchId:owl.perchId}
     };
     try{localStorage.setItem(checkpointKey,JSON.stringify(payload));refreshContinueButton();return true}catch(_){return false}
   }
@@ -643,8 +663,8 @@
     state.totalDelivered=Math.max(0,saved.totalDelivered||0);state.totalFood=Math.max(0,saved.totalFood||0);state.runXp=Math.max(0,saved.runXp||0);state.bestCombo=Math.max(0,saved.bestCombo||0);
     if(saved.bonus)state.bonus={...state.bonus,...saved.bonus};state.levelHits=Math.max(0,saved.levelHits||0);state.levelPreyCounts=saved.levelPreyCounts||{};state.levelPreyTypes=new Set(saved.levelPreyTypes||[]);state.phaseElapsed=Math.max(0,saved.phaseElapsed||0);state.eliteSpawned=Boolean(saved.eliteSpawned);state.hootCharge=clamp(Number(saved.hootCharge??1),0,1);updateBonusHud();
     state.shownStories=new Set(saved.shownStories||[]);state.selectedGift=saved.selectedGift||null;state.storyBeatIndex=Math.max(0,saved.storyBeatIndex||0);state.landedPerches=new Set(saved.landedPerches||[]);
-    state.mice=[];state.bats=[];state.rivals=[];state.fireflies=[];state.hootEchoes=[];state.edgeSignals=[];state.leafMotions=[];owl.carrying=null;setupBranches();setupBushes();setupGroundDetails();setupHootContexts(saved.hootContextIds||[]);setupStoryScene(saved.storyEventIds||[],saved.companions||[]);
-    for(let i=0;i<currentPhase().startMice;i++)spawnMouse();for(let i=0;i<3;i++)spawnFirefly();
+    state.mice=[];state.bats=[];state.rivals=[];state.fireflies=[];state.hootEchoes=[];state.edgeSignals=[];state.leafMotions=[];owl.carrying=null;setupBranches();setupBushes();setupGroundDetails();setupHootContexts(saved.hootContextIds||[]);setupStoryScene(saved.storyEventIds||[],saved.companions||[]);setupTutorial(saved.tutorialStepIds||[],saved.tutorialDeliveredIds||[]);
+    if(state.tutorial)spawnTutorialPackages();else for(let i=0;i<currentPhase().startMice;i++)spawnMouse();for(let i=0;i<3;i++)spawnFirefly();
     state.wave=1;state.waveRemaining=currentPhase().waveSize;state.mouseClock=.3;state.batClock=1.3;state.fireflyClock=.6;state.rivalClock=2.8;
     const n=nest(),savedOwl=saved.owl,savedPerch=perchById(savedOwl?.perchId);owl.x=clamp(Number(savedOwl?.x)||n.x,owl.r,state.world.width-owl.r);owl.y=clamp(Number(savedOwl?.y)||n.y,playTop(),state.groundY-20*state.gameScale);owl.vx=0;owl.vy=0;owl.flightState='flying';owl.perchId=null;owl.targetPerchId=null;
     if(savedOwl?.flightState==='perched'&&savedPerch){const target=perches.target(savedPerch,owl.r);owl.x=target.x;owl.y=target.y;owl.flightState='perched';owl.perchId=savedPerch.id}state.lastSafePoint=saved.lastSafePoint||{x:n.x,y:n.y,perchId:null};camera.snap(owl);
@@ -666,7 +686,7 @@
     ui.start.classList.add('hidden');ui.end.classList.add('hidden');ui.pause.classList.add('hidden');ui.level.classList.add('hidden');ui.story.classList.add('hidden');ui.finalHoot.classList.add('hidden');
     showToast('Lumis Reise beginnt', '#ffd469', 900);
     state.last=performance.now();
-    if(!showStoryForCurrentLevel())requestAnimationFrame(loop);
+    if(!showStoryForCurrentLevel()){if(state.phaseIndex===0)startTutorialCinematic();requestAnimationFrame(loop)}
   }
 
   function startGameAtScene(scene){
@@ -676,7 +696,7 @@
     ui.start.classList.add('hidden');ui.end.classList.add('hidden');ui.pause.classList.add('hidden');ui.level.classList.add('hidden');ui.story.classList.add('hidden');ui.finalHoot.classList.add('hidden');
     setMobileMission(phaseMissionIcons(currentPhase()),currentPhase().intro);
     showToast(currentPhase().name,'#ffd469',900);state.last=performance.now();
-    if(!showStoryForCurrentLevel())requestAnimationFrame(loop);
+    if(!showStoryForCurrentLevel()){if(state.phaseIndex===0)startTutorialCinematic();requestAnimationFrame(loop)}
   }
 
   function pauseGame(force){
@@ -742,6 +762,7 @@
     ui.phase.textContent=phase.name;
     ui.delivered.textContent=state.phaseDelivered;
     ui.target.textContent=phase.target;
+    ui.targetUnit.textContent=phase.objectiveType==='bundles'?'Päckchen':'Futterpunkte';
     ui.energy.style.width=clamp(state.energy/playerStats().maximumEnergy*100,0,100)+'%';
     ui.energy.style.background=state.energy<25?'linear-gradient(90deg,#ff6d68,#ff9a74)':'linear-gradient(90deg,#54c97b,#9ff0af)';
     const hootPercent=Math.round(state.hootCharge*100),hootReady=state.hootCharge>=.999,hootRadius=playerStats().hootRadius*state.gameScale;
@@ -755,7 +776,10 @@
     if(ui.diveButton.dataset.mode!==diveMode){ui.diveButton.dataset.mode=diveMode;ui.diveButton.innerHTML=iconSvg(dropMode?'drop':'bolt');ui.diveButton.setAttribute('aria-label',dropMode?'Getragenes Objekt auf dem Ast ablegen':'Sturzflug')}
     ui.time.style.width=clamp(state.time/state.maxTime*100,0,100)+'%';
     ui.timeText.textContent=state.time>0?Math.ceil(state.time):'bereit';
-    if(dropMode)setMobileMission(`${iconSvg('drop')} · ${iconSvg('perch')}`,'Hier ablegen oder weiterfliegen.');
+    const tutorialStep=tutorialSystem.current(state.tutorial);
+    shell.dataset.tutorial=tutorialStep?.type||'';
+    if(tutorialStep){const index=state.tutorial.steps.indexOf(tutorialStep)+1;ui.bonus.textContent=`✦ Lernen ${index}/${state.tutorial.steps.length} · ${tutorialStep.label}`;ui.bonus.style.color='#9fe7ff';setMobileMission(iconSvg(tutorialStep.icon),tutorialStep.text)}
+    else if(dropMode)setMobileMission(`${iconSvg('drop')} · ${iconSvg('perch')}`,'Hier ablegen oder weiterfliegen.');
     else if(owl.carrying) setMobileMission(`${iconSvg('mouse')} → ${iconSvg('nest')}`,'Beute im Fang. Bring sie zum Nest.');
     else if(owl.flightState==='perched')setMobileMission(`${iconSvg('perch')} · ${Math.round(state.energy/playerStats().maximumEnergy*100)}%`,'Sicherer Ast. Lenken zum Abflug.');
     else if(owlInNest())setMobileMission(`${iconSvg('nest')} · ${iconSvg('heart')}`,'Nestschutz aktiv. Hier bist du sicher.');
@@ -809,12 +833,20 @@
       beetle:{speed:rand(48,72),r:12,value:160,food:18,color:'#70a6c7'},
       berry:{speed:0,r:13,value:130,food:12,color:'#d85f6b'},
       herb:{speed:0,r:14,value:180,food:16,color:'#8fcf83'}
+      ,bundle:{speed:0,r:17,value:100,food:1,color:'#e2b56f'}
     }[type];
     state.mice.push({
       type,x:spawnX,y:state.groundY-rand(17,25)*s,
       dir:fromRight?-1:1,speed:config.speed*s*phase.speedMultiplier,r:config.r*s,value:config.value,food:config.food,color:config.color,
       phase:rand(0,6),turn:rand(1.8,4.5),dash:0,glow:rand(0,6),hidden:0,behaviorClock:rand(1.5,4)
     });
+  }
+
+  function spawnTutorialPackages(){
+    if(!state.tutorial)return;
+    for(const item of state.tutorial.packages.filter(packageItem=>!packageItem.delivered)){
+      spawnMouse('bundle');const bundle=state.mice[state.mice.length-1];bundle.x=item.x;bundle.y=state.groundY-22*state.gameScale;bundle.color=item.color;bundle.packageId=item.id;bundle.speed=0;bundle.dir=1;
+    }
   }
 
   function spawnBat(){
@@ -902,7 +934,7 @@
   }
 
   function resolveHootContext(context){
-    context.revealed=true;context.visibleUntil=state.elapsed+10;if(context.oneShot)context.completed=true;
+    context.revealed=true;context.visibleUntil=state.elapsed+10;context.completed=true;
     if(context.type==='hiddenObject'){
       spawnMouse(context.reward||'berry');const reward=state.mice[state.mice.length-1];reward.x=context.x;reward.y=state.groundY-22*state.gameScale;reward.dir=owl.x<context.x?1:-1;
       if(context.memory){const key=String(state.phaseIndex+1),record=progress.sceneRecords[key]||{};progress.sceneRecords[key]={...record,memory:true};saveProgress()}
@@ -940,6 +972,7 @@
     const stats=playerStats();
     if(!state.running||state.paused)return;
     if(state.hootCharge<.999){showToast(`HUU LÄDT · ${Math.round(state.hootCharge*100)}%`,'#82e7ff',520);return}
+    const tutorialStep=tutorialSystem.current(state.tutorial);if(tutorialStep&&tutorialStep.type!=='hoot'){showToast('HUUU KOMMT GLEICH','#b9dfe8',650);return}
     const radius=stats.hootRadius*state.gameScale,contexts=hootSystem.candidates(state.hootContexts,owl,radius);
     const batsInRange=state.bats.filter(enemy=>Math.hypot(enemy.x-owl.x,enemy.y-owl.y)<=radius+enemy.r),rivalsInRange=state.rivals.filter(enemy=>Math.hypot(enemy.x-owl.x,enemy.y-owl.y)<=radius+enemy.r);
     if(state.phaseIndex===0&&!contexts.length&&!batsInRange.length&&!rivalsInRange.length){
@@ -967,7 +1000,7 @@
     if(!owl.carrying) return;
     const p=owl.carrying;
     state.mice.push({
-      type:p.type,x:owl.x,y:state.groundY-22*state.gameScale,dir:Math.random()>.5?1:-1,
+      type:p.type,packageId:p.packageId,x:owl.x,y:state.groundY-22*state.gameScale,dir:Math.random()>.5?1:-1,
       speed:(p.baseSpeed||95)*state.gameScale,r:(p.baseR||16)*state.gameScale,value:p.value,food:p.food,
       color:p.color,phase:0,turn:2,dash:.45,glow:0,hidden:0,behaviorClock:2
     });
@@ -978,13 +1011,13 @@
   function catchMouse(index){
     const m=state.mice[index];
     state.mice.splice(index,1);
-    owl.carrying={type:m.type,value:m.value,food:m.food,color:m.color,baseSpeed:m.speed/state.gameScale,baseR:m.r/state.gameScale};
+    owl.carrying={type:m.type,packageId:m.packageId,value:m.value,food:m.food,color:m.color,baseSpeed:m.speed/state.gameScale,baseR:m.r/state.gameScale};
     state.score+=Math.round(m.value*.35);
     state.combo++;state.bestCombo=Math.max(state.bestCombo,state.combo);state.comboClock=7;
     if(state.bonus?.kind==='combo'){state.bonus.progress=Math.max(state.bonus.progress,state.combo);if(state.bonus.progress>=state.bonus.target)state.bonus.complete=true;updateBonusHud()}
     burst(m.x,m.y,m.color,26,230);state.shake=.13;
     floater(m.x,m.y-25,'GEFANGEN!',m.color,22);
-    const preyName={gold:'Goldene Maus',rabbit:'Kaninchen',frog:'Frosch',beetle:'Käfer',berry:'Beeren',herb:'Duftkräuter'}[m.type]||'Beute';
+    const preyName={gold:'Goldene Maus',rabbit:'Kaninchen',frog:'Frosch',beetle:'Käfer',berry:'Beeren',herb:'Duftkräuter',bundle:'Vorratspäckchen'}[m.type]||'Beute';
     showToast(preyName+' gefangen',m.color,750);
     haptic([18,25,28]);
     sfx('catch');if(['frog','rabbit','beetle'].includes(m.type))sfx(m.type);
@@ -1007,12 +1040,19 @@
       progress.goldPoints++;saveProgress();renderProgressHub();
       floater(n.x,n.y-82,'+1 UPGRADE','#ffd469',20);showToast('Goldtier · +1 Upgrade','#ffd469',1050);
     }
+    if(p.type==='bundle'&&state.tutorial&&p.packageId){state.tutorial.deliveredPackageIds.add(p.packageId);const source=state.tutorial.packages.find(item=>item.id===p.packageId);if(source)source.delivered=true}
     owl.carrying=null;
     if(p.type!=='gold')showToast(valid?'Im Nest abgeliefert':'Zusätzliche Beute',valid?'#7ee09b':'#ffd469',750);
     haptic([22,35,22,35,35]);
     sfx('deliver');
 
-    if(state.phaseDelivered>=currentPhase().target){
+    tryCompleteLevel();
+  }
+
+  function tryCompleteLevel(){
+    if(state.phaseDelivered<currentPhase().target||state.phaseRewarded)return false;
+    if(state.phaseIndex===0&&state.tutorial&&!state.tutorial.complete)return false;
+    {
       if(!state.phaseRewarded){
         state.phaseRewarded=true;
         const bonusXp=evaluateBonusGoal(),xpGain=Math.round(30+state.phaseIndex*3+currentPhase().target*.18)+bonusXp;
@@ -1023,11 +1063,12 @@
       if(state.phaseIndex===phases.length-1){finish(true);return}
       showLevelComplete();sfx('phase');
     }
+    return true;
   }
 
   function showLevelComplete(){
     state.paused=true;setAudioFocus(false);ui.level.classList.remove('hidden');
-    ui.levelTitle.textContent=currentPhase().name;ui.levelFood.textContent=state.phaseDelivered;ui.levelScore.textContent=state.score;
+    ui.levelTitle.textContent=currentPhase().name;ui.levelFood.textContent=state.phaseDelivered;ui.levelUnit.textContent=currentPhase().objectiveType==='bundles'?'Päckchen':'Futter';ui.levelScore.textContent=state.score;
     ui.levelBonus.textContent=state.lastBonusAwarded?'✓ +30 XP':'Nicht geschafft';ui.levelBonus.style.color=state.lastBonusAwarded?'#7ee09b':'#ff9b9b';ui.levelXp.textContent='+'+state.lastPhaseXp;
     haptic([25,35,45]);
   }
@@ -1046,7 +1087,7 @@
     state.time=Math.min(state.maxTime+phases[state.phaseIndex].timeBonus,state.time+phases[state.phaseIndex].timeBonus);
     state.maxTime=Math.max(state.maxTime,state.time);
     state.mice=[];state.bats=[];state.rivals=[];state.fireflies=[];owl.carrying=null;
-    setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();state.storyDialogueQueue=[];
+    setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();state.storyDialogueQueue=[];
     for(let i=0;i<currentPhase().startMice;i++) spawnMouse();
     for(let i=0;i<Math.min(2+state.phaseIndex,4);i++) spawnBat();
     for(let i=0;i<Math.min(4+state.phaseIndex,6);i++) spawnFirefly();
@@ -1068,6 +1109,7 @@
   function update(dt){
     const phase=currentPhase(),stats=playerStats();
     state.elapsed+=dt;state.phaseElapsed+=dt;updateAudio(dt);
+    if(updateTutorialCinematic(dt))return;
     state.time=Math.max(0,state.time-dt*phase.timeDrainMultiplier);
     state.hootCharge=Math.min(1,state.hootCharge+stats.hootRechargeRate*dt);
     state.shake=Math.max(0,state.shake-dt);
@@ -1133,7 +1175,7 @@
     const n=nest(),atNest=owlInNest();
 
     const slow=1;
-    if(state.waveRemaining<=0){
+    if(!state.tutorial&&state.waveRemaining<=0){
       state.waveBreak-=dt;
       if(state.waveBreak<=0){
         state.wave++;state.waveRemaining=phase.waveSize+Math.min(3,state.wave-1);
@@ -1142,7 +1184,7 @@
       }
     }
     state.mouseClock-=dt;
-    if(state.mouseClock<=0&&state.waveRemaining>0&&state.mice.length<phase.mouseCap){
+    if(!state.tutorial&&state.mouseClock<=0&&state.waveRemaining>0&&state.mice.length<phase.mouseCap){
       spawnMouse();state.waveRemaining--;state.mouseClock=rand(phase.mouseDelay[0],phase.mouseDelay[1]);
       if(state.waveRemaining===0)state.waveBreak=phase.waveBreak;
     }
@@ -1164,7 +1206,7 @@
       m.phase+=dt*(8+m.speed/45);m.glow+=dt*4;m.turn-=dt;m.behaviorClock=(m.behaviorClock||0)-dt;m.hidden=Math.max(0,(m.hidden||0)-dt);m.freeze=Math.max(0,(m.freeze||0)-dt);
       if(m.perched){const perch=perchById(m.perchId);if(perch){m.x=perch.x;m.y=perch.y-18*state.gameScale;continue}m.perched=false;m.perchId=null;m.y=state.groundY-22*state.gameScale;m.speed=70*state.gameScale}
       if(m.hidden>0)continue;
-      if(m.type==='berry'||m.type==='herb')continue;
+      if(m.type==='berry'||m.type==='herb'||m.type==='bundle')continue;
       const owlDistance=Math.hypot(m.x-owl.x,m.y-owl.y),nearBush=state.bushes.find(bush=>Math.abs(bush.x-m.x)<bush.size*.75);
       if(m.behaviorClock<=0){
         m.behaviorClock=rand(2,4.5);
@@ -1288,6 +1330,7 @@
     }
 
     updateHootResponses(dt);
+    updateTutorialProgress();
 
     updateHud();
   }
@@ -1433,10 +1476,10 @@
   }
 
   function drawStoryGuests(){
-    if(chapterForLevel().id!=='epilogue')return;
+    const chapter=chapterForLevel().id;if(chapter!=='epilogue'&&chapter!=='prologue')return;
     const n=nest(),s=state.gameScale,side=n.x<state.world.width*.5?1:-1,perchY=n.y+28*s;
     ctx.save();ctx.strokeStyle='#2a1b12';ctx.lineWidth=12*s;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(n.x+side*72*s,perchY);ctx.lineTo(n.x+side*230*s,perchY+5*s);ctx.stroke();ctx.strokeStyle='#795034';ctx.lineWidth=7*s;ctx.stroke();
-    const guests=[{offset:104,size:.46,body:'#d0b18c',face:'#ead8b8'},{offset:154,size:.58,body:'#745239',face:'#b8875c'},{offset:208,size:.42,body:'#83906b',face:'#bdc59b'}];
+    const guests=chapter==='prologue'?[{offset:112,size:.54,body:'#716454',face:'#d9c7a4'}]:[{offset:104,size:.46,body:'#d0b18c',face:'#ead8b8'},{offset:154,size:.58,body:'#745239',face:'#b8875c'},{offset:208,size:.42,body:'#83906b',face:'#bdc59b'}];
     for(const [index,guest] of guests.entries()){
       const x=n.x+side*guest.offset*s,y=perchY-18*s+Math.sin(state.elapsed*3+index)*1.5*s,scale=s*guest.size;ctx.save();ctx.translate(x,y);ctx.scale(side*scale,scale);ctx.strokeStyle='#191713';ctx.lineWidth=5;ctx.fillStyle=guest.body;ctx.beginPath();ctx.ellipse(0,7,21,28,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle=guest.face;ctx.beginPath();ctx.ellipse(0,-13,24,20,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#f8edcd';for(const ex of [-8,8]){ctx.beginPath();ctx.arc(ex,-14,7,0,Math.PI*2);ctx.fill();ctx.stroke()}ctx.fillStyle='#17202a';for(const ex of [-8,8]){ctx.beginPath();ctx.arc(ex,-14,2.5,0,Math.PI*2);ctx.fill()}ctx.fillStyle='#dfaa3b';ctx.beginPath();ctx.moveTo(0,-7);ctx.lineTo(-5,1);ctx.lineTo(6,1);ctx.closePath();ctx.fill();ctx.restore();
     }
@@ -1659,12 +1702,17 @@
     ctx.restore();
   }
 
+  function drawBundle(item){
+    const s=state.gameScale,bob=Math.sin(item.phase*.35)*1.5*s;ctx.save();ctx.translate(item.x,item.y+bob);ctx.scale(s,s);ctx.fillStyle='rgba(3,8,7,.25)';ctx.beginPath();ctx.ellipse(0,12,22,6,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=item.color;ctx.strokeStyle='#3f2b1d';ctx.lineWidth=3;ctx.beginPath();ctx.roundRect(-19,-13,38,27,7);ctx.fill();ctx.stroke();ctx.strokeStyle='#f0d49a';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,-13);ctx.lineTo(0,14);ctx.moveTo(-19,0);ctx.lineTo(19,0);ctx.stroke();ctx.fillStyle='#f0d49a';ctx.beginPath();ctx.moveTo(0,-1);ctx.quadraticCurveTo(-13,-17,-15,-5);ctx.quadraticCurveTo(-10,2,0,3);ctx.quadraticCurveTo(13,-17,15,-5);ctx.quadraticCurveTo(10,2,0,3);ctx.fill();ctx.strokeStyle='rgba(255,245,205,.45)';ctx.lineWidth=2;ctx.stroke();ctx.restore();
+  }
+
   function drawPrey(prey){
     ctx.save();if(prey.hidden>0)ctx.globalAlpha=.22;drawGroundShadow(prey.x,prey.y,prey.type==='rabbit'?28:19,prey.hidden>0?.08:.22);
     if(prey.type==='rabbit')drawRabbit(prey);
     else if(prey.type==='frog')drawFrog(prey);
     else if(prey.type==='beetle')drawBeetle(prey);
     else if(prey.type==='berry'||prey.type==='herb')drawGatherable(prey);
+    else if(prey.type==='bundle')drawBundle(prey);
     else drawMouse(prey);
     ctx.restore();
   }
@@ -1773,7 +1821,8 @@
 
     if(owl.carrying){
       const c=owl.carrying;ctx.save();ctx.translate(0,66);ctx.scale(.82,.82);ctx.fillStyle=c.color;ctx.strokeStyle='#151517';ctx.lineWidth=4;
-      if(c.type==='berry'){for(const [x,y] of [[-8,0],[2,-5],[10,2],[-1,7]]){ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fill();ctx.stroke()}}
+      if(c.type==='bundle'){ctx.beginPath();ctx.roundRect(-18,-10,36,24,6);ctx.fill();ctx.stroke();ctx.strokeStyle='#f0d49a';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,-10);ctx.lineTo(0,14);ctx.moveTo(-18,1);ctx.lineTo(18,1);ctx.stroke()}
+      else if(c.type==='berry'){for(const [x,y] of [[-8,0],[2,-5],[10,2],[-1,7]]){ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fill();ctx.stroke()}}
       else if(c.type==='herb'){ctx.strokeStyle='#3e7544';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,12);ctx.lineTo(0,-16);ctx.moveTo(0,-5);ctx.lineTo(-13,-13);ctx.moveTo(0,1);ctx.lineTo(14,-8);ctx.stroke();ctx.fillStyle=c.color;for(const [x,y,a] of [[-14,-14,-.5],[15,-9,.45],[-7,-2,-.35]]){ctx.beginPath();ctx.ellipse(x,y,9,4,a,0,Math.PI*2);ctx.fill()}}
       else if(c.type==='rabbit'){ctx.beginPath();ctx.ellipse(0,0,23,13,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.ellipse(-13,-15,4,13,-.25,0,Math.PI*2);ctx.ellipse(-4,-16,4,13,.1,0,Math.PI*2);ctx.fill();ctx.stroke()}
       else if(c.type==='frog'){ctx.beginPath();ctx.ellipse(0,1,20,12,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.arc(-9,-8,6,0,Math.PI*2);ctx.arc(9,-8,6,0,Math.PI*2);ctx.fill();ctx.stroke()}
@@ -1789,7 +1838,7 @@
       const s=state.gameScale,pulse=1+Math.sin(companion.phase)*.12;ctx.save();ctx.translate(companion.x,companion.y);ctx.globalAlpha=.92;const halo=ctx.createRadialGradient(0,0,2*s,0,0,30*s);halo.addColorStop(0,'rgba(239,255,159,.7)');halo.addColorStop(1,'rgba(223,255,141,0)');ctx.fillStyle=halo;ctx.beginPath();ctx.arc(0,0,30*s*pulse,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f5ffb4';ctx.beginPath();ctx.ellipse(0,0,5*s,7*s,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#88a968';ctx.lineWidth=2*s;for(const side of [-1,1]){ctx.beginPath();ctx.ellipse(side*7*s,-1*s,7*s,3.5*s,side*.35,0,Math.PI*2);ctx.stroke()}ctx.restore();return;
     }
     const isBruno=companion.id==='bruno',s=state.gameScale*(isBruno ? .76 : .58),dir=companion.vx<0?-1:1,flap=Math.sin(companion.phase)*10,body=isBruno?'#6d4934':'#80664d',face=isBruno?'#c59a70':'#b99469';
-    ctx.save();ctx.translate(companion.x,companion.y);ctx.scale(dir*s,s);ctx.globalAlpha=companion.recovering ? .72 : .94;ctx.strokeStyle='#17202a';ctx.lineWidth=5;ctx.lineJoin='round';ctx.fillStyle=body;
+    ctx.save();ctx.translate(companion.x,companion.y);ctx.rotate(companion.balanceAmount||0);ctx.scale(dir*s,s);ctx.globalAlpha=companion.recovering ? .72 : .94;ctx.strokeStyle='#17202a';ctx.lineWidth=5;ctx.lineJoin='round';ctx.fillStyle=body;
     for(const side of [-1,1]){ctx.save();ctx.scale(side,1);ctx.beginPath();ctx.moveTo(9,0);ctx.quadraticCurveTo(33,-28-flap,52,-5);ctx.quadraticCurveTo(34,-4,20,20);ctx.lineTo(7,13);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore()}
     ctx.beginPath();ctx.ellipse(0,8,isBruno?27:22,isBruno?34:29,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle=face;ctx.beginPath();ctx.ellipse(0,-15,isBruno?30:25,isBruno?25:21,0,0,Math.PI*2);ctx.fill();ctx.stroke();
     ctx.fillStyle='#edf4df';for(const ex of [-9,9]){ctx.beginPath();ctx.arc(ex,-16,isBruno?8:7,0,Math.PI*2);ctx.fill();ctx.stroke()}ctx.fillStyle='#223044';for(const ex of [-9,9]){ctx.beginPath();ctx.arc(ex,-16,2.6,0,Math.PI*2);ctx.fill()}
@@ -1987,10 +2036,4 @@
 
   // statische Startszene
   renderProgressHub();refreshContinueButton();reset();draw();
-  if(new URLSearchParams(location.search).has('story-visual')){
-    state.running=true;state.paused=false;ui.start.classList.add('hidden');state.phaseIndex=20;loadCurrentWorld(false);placeOwlAtWorldStart();setupHootContexts();setupStoryScene();owl.x=state.world.width*.36;owl.y=state.h*.38;camera.snap(owl);
-    for(let i=0;i<20;i++)storySystem.updateCompanions(state.storyScene,{owl,goal:state.world.goal,lastSafe:state.lastSafePoint,worldWidth:state.world.width,groundY:state.groundY,playTop:playTop(),scale:state.gameScale},.05);
-    state.storyScene.companions.forEach(companion=>{companion.x=owl.x+(companion.id==='bruno'?-125:115)*state.gameScale;companion.y=owl.y+(companion.id==='glow'?48:-34)*state.gameScale});
-    updateHud();showStoryBubble('bruno','Bleib hinter mir. Hier ist der Wind ruhiger.',8000);draw();const preview=new Image();preview.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:2;object-fit:fill;pointer-events:none';document.getElementById('shell').appendChild(preview);preview.src=canvas.toDataURL();
-  }
 })();

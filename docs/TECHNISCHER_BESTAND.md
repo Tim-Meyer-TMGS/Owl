@@ -1,6 +1,6 @@
 # EULENFLUG – technischer Bestand und Migrationsgrenzen
 
-Stand: 20. Juli 2026
+Stand: 21. Juli 2026
 
 Dieses Dokument markiert den spielbaren Ausgangsstand für den schrittweisen Umbau. Es verhindert, dass funktionierende Kernsysteme versehentlich zusammen mit der alten Arenaarchitektur entfernt werden.
 
@@ -13,6 +13,8 @@ Dieses Dokument markiert den spielbaren Ausgangsstand für den schrittweisen Umb
 | `data/story.json` | `js/story.js` | Prolog, sieben Kapitel, Epilog, Dialoge und Geschenke | 1 |
 | `data/worlds/scenes.json` | `js/worlds.js` | 30 horizontale Welten, Kamera, Start/Ziel, Nest, Äste und Landmarken | 1 |
 | `data/hoot-contexts.json` | `js/hoot-contexts.js` | 30 Szenen mit 71 handgesetzten Rufkontexten und Audioantworten | 1 |
+| `data/story-events.json` | `js/story-events.js` | 30 Szenen mit 61 Storytriggern und Begleiterdefinitionen | 1 |
+| `data/tutorial.json` | `js/tutorial.js` | sechs Prologschritte, drei feste Vorratspäckchen und Kamerazeiten | 1 |
 
 Die JavaScript-Spiegel werden ausschließlich mit `tools/build-levels.ps1` erzeugt. Die JSON-Dateien sind die Quellen.
 
@@ -28,6 +30,7 @@ Local-Storage-Schlüssel: `owl-flight-progress-v1`
 - höchste freigeschaltete Szene
 - abgeschlossene Szenen
 - Szenenrekorde mit Bestwert, Bonus, Erinnerungsstatus, Eule und Abschlusszeit
+- gesehene Kapitelintros und Wiederholungseinstellung
 
 Neue Felder besitzen Fallbacks; vorhandene V1-Spielstände bleiben lesbar.
 
@@ -42,6 +45,8 @@ Local-Storage-Schlüssel: `owl-flight-checkpoint-v1`
 - aktuelle Weltposition, Flugzustand und sichere Ast-ID der Eule
 - bereits besuchte sichere Äste
 - bereits abgeschlossene einmalige Huuu-Kontexte
+- abgeschlossene Storytrigger, Begleiterzustände, Mutwerte und letzter sicherer Punkt
+- abgeschlossene Prologschritte und abgelieferte Vorratspäckchen
 
 Ältere Checkpoints ohne Weltposition laden weiterhin am Nest. Checkpoints ohne Astzustand starten normal im Flug.
 
@@ -85,6 +90,8 @@ Diese Teile werden erst entfernt, wenn ihr jeweiliger Ersatz in einer spielbaren
 - `js/world/world-loader.js`: Validierung und Skalierung der Weltdaten
 - `js/world/perches.js`: Touch-Landezonen, Astsuche und Landeanflug
 - `js/systems/hoot.js`: Kontextvalidierung, Priorisierung, Sequenzen und Funktionsstile des Huuu-Rufs
+- `js/systems/story.js`: fünf Triggerarten, Ereignisabhängigkeiten und gemeinsame Begleiterbewegung
+- `js/systems/tutorial.js`: geordnete Prologschritte und feste Päckchenzustände
 - `js/render/parallax.js`: fünf visuelle Tiefenebenen und Landmarken
 - `js/ui/chapter-map.js`: horizontale Kapitelkarte
 - `js/game.js`: verbleibende Spiellogik und Übergangs-Renderer

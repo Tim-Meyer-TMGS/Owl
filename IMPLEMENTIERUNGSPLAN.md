@@ -392,32 +392,32 @@ assets/
 
 ## 7.1 Dialogdarstellung
 
-- [ ] Kapitelintro mit maximal vier kurzen Dialogkarten.
-- [ ] Gespräche während des Flugs als kompakte Sprechblasen anzeigen.
-- [ ] Sprechblasen dürfen Steuerung und Missionsobjekte nicht verdecken.
-- [ ] Sprecher über Farbe, Portrait und individuelles Klangmotiv kennzeichnen.
-- [ ] Dialoge überspringbar machen.
-- [ ] Bereits gesehene Kapitelintros im Wiederholungsmodus optional ausblenden.
+- [x] Kapitelintro mit maximal vier kurzen Dialogkarten.
+- [x] Gespräche während des Flugs als kompakte Sprechblasen anzeigen.
+- [x] Sprechblasen dürfen Steuerung und Missionsobjekte nicht verdecken.
+- [x] Sprecher über Farbe, Portrait und individuelles Klangmotiv kennzeichnen.
+- [x] Dialoge überspringbar machen.
+- [x] Bereits gesehene Kapitelintros im Wiederholungsmodus optional ausblenden.
 
 ## 7.2 Storytrigger
 
-- [ ] Trigger nach Weltposition, Zielstatus, Landung, Huuu und Begleiterabstand unterstützen.
-- [ ] Trigger nur einmal oder bewusst wiederholbar konfigurieren.
-- [ ] Storytrigger im Checkpoint speichern.
-- [ ] Entwickleranzeige für Triggerflächen bauen.
+- [x] Trigger nach Weltposition, Zielstatus, Landung, Huuu und Begleiterabstand unterstützen.
+- [x] Trigger nur einmal oder bewusst wiederholbar konfigurieren.
+- [x] Storytrigger im Checkpoint speichern.
+- [x] Entwickleranzeige für Triggerflächen bauen.
 
 ## 7.3 Begleiter
 
-- [ ] Gemeinsame Begleiterbasis für Fynn, Bruno und Glühwürmchen bauen.
-- [ ] Zustände unterstützen:
+- [x] Gemeinsame Begleiterbasis für Fynn, Bruno und Glühwürmchen bauen.
+- [x] Zustände unterstützen:
   - folgen
   - warten
   - vorausfliegen
   - helfen
   - unsicher
   - Ziel erreicht
-- [ ] Begleiter dürfen nicht an Weltgeometrie hängen bleiben.
-- [ ] Begleiter bei großem Abstand sanft an den letzten sicheren Punkt zurücksetzen.
+- [x] Begleiter dürfen nicht an Weltgeometrie hängen bleiben.
+- [x] Begleiter bei großem Abstand sanft an den letzten sicheren Punkt zurücksetzen.
 
 ### Abnahmekriterien für Punkt 7
 
@@ -431,11 +431,11 @@ assets/
 
 ## 8.1 Prolog – Level 1
 
-- [ ] Ruhige Nestszene mit Ava, Lumi und Fynn bauen.
-- [ ] Fynns missglückte Balanceanimation umsetzen.
-- [ ] Windstoß und verstreute Vorräte als Kamerafahrt zeigen.
-- [ ] Fliegen, Landen, Tragen und Huuu einzeln erklären.
-- [ ] Drei einfache Vorratspäckchen sammeln lassen.
+- [x] Ruhige Nestszene mit Ava, Lumi und Fynn bauen.
+- [x] Fynns missglückte Balanceanimation umsetzen.
+- [x] Windstoß und verstreute Vorräte als Kamerafahrt zeigen.
+- [x] Fliegen, Landen, Tragen und Huuu einzeln erklären.
+- [x] Drei einfache Vorratspäckchen sammeln lassen.
 
 ## 8.2 Kapitel 1: Die Wiesenprüfung – Level 2 bis 4
 
@@ -705,8 +705,8 @@ Zielwerte:
 ## Meilenstein 2 – Kernsysteme
 
 - [x] Kontextabhängigen Huuu-Ruf fertigstellen.
-- [ ] Dialog- und Triggersystem fertigstellen.
-- [ ] Begleitersystem fertigstellen.
+- [x] Dialog- und Triggersystem fertigstellen.
+- [x] Begleitersystem fertigstellen.
 - [x] Horizontale Kapitelkarte bauen.
 - [ ] Speicherformat Version 2 einführen.
 

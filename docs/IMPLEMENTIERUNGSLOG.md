@@ -260,3 +260,102 @@ P0-Paket 4 überarbeitet Huuu zu einer vollständig kontextuellen Storyfähigkei
 ### Nächstes Arbeitspaket
 
 P0-Paket 5 baut das Story-, Dialog- und Begleitersystem datengetrieben aus und bindet Dialoge an Weltposition, Landung, Huuu und Begleiterabstand.
+
+## 21. Juli 2026 – P0-Paket 5: Story, Dialoge und Begleiter
+
+### Umgesetzt
+
+1. Datengetriebene Storyereignisse
+   - `data/story-events.json` beschreibt 61 Ereignisse in allen 30 Szenen.
+   - Position, Zielstatus, Landung, Huuu und Begleiterabstand sind generische Triggerarten.
+   - Ereignisse können einmalig, wiederholbar, verzögert wiederholbar oder von früheren Ereignissen abhängig sein.
+   - Eine Position gilt auch bei schnellem Überschreiten als erreicht.
+
+2. Dialogdarstellung
+   - Kapitelintros sind auf vier Karten begrenzt und weiterhin überspringbar.
+   - Gesehene Intros werden kampagnenweit gespeichert und können über eine Startmenüoption erneut aktiviert werden.
+   - Flugdialoge verwenden eine Warteschlange und kompakte Sprechblasen.
+   - Lumi, Fynn, Ava, Bruno, der Kauz und die Glühwürmchen besitzen eigene Farben, gezeichnete Portraits und Zweitonmotive.
+
+3. Gemeinsame Begleiterbasis
+   - Fynn, Bruno und Glühwürmchen verwenden dasselbe Zustands- und Bewegungssystem.
+   - Folgen, Warten, Vorausfliegen, Helfen, Unsicherheit und Zielerreichen sind datengetrieben.
+   - Begleiter bleiben innerhalb des Flugraums und kollidieren nicht mit Hindernissen.
+   - Bei zu großem Abstand kehren sie weich zum letzten sicheren Punkt zurück.
+   - Fynns Mut reagiert bereits auf Nähe, Abstand, Rast und Storyaktionen.
+
+4. Speichern und Entwicklung
+   - Checkpoints enthalten abgeschlossene Trigger, Begleiterzustände, Positionen, Mut und letzten sicheren Punkt.
+   - Alte V1-Checkpoints bleiben über Fallbacks lesbar.
+   - Taste `T` blendet Triggerlinien, Rufradien, Astzonen und Begleiterabstände ein.
+
+### Prüfungen
+
+- Build erfolgreich: neun Kapitel, 30 Ereignisszenen und 61 Storyereignisse.
+- Alle fünf Triggerarten im Browser ausgelöst.
+- Trigger- und Begleiterpersistenz im gespeicherten Checkpoint nachgewiesen.
+- Entfernten Begleiter erfolgreich und weich zum sicheren Punkt zurückgeführt.
+- Sechs Begleiterzustände und maximale Introlänge vier validiert.
+- Figurenportrait in der Flugsprechblase nachgewiesen.
+- Handy-Querformat 740 × 400 und Tablet-Querformat 1366 × 900 visuell geprüft.
+- Sprechblasen lassen Mission, Pause, Ton und Touchaktionen frei.
+- Temporäre Testinstrumentierung und Bilddateien vollständig entfernt.
+
+### Bewusst noch offen
+
+- Der Prolog benötigt noch seine eigene gestufte Lernsequenz statt des normalen Sammelablaufs.
+- Bruno-Rennen, Windschatten und Fynns Astsprünge benötigen kapiteleigene Zielmechaniken.
+- Das Speicherformat bleibt bis zur geplanten V2-Migration kompatibel auf Version 1.
+
+### Nächstes Arbeitspaket
+
+P1-Paket 6 baut den Prolog als vollständigen Vertical Slice neu: ruhige Nestszene, Fynns Balancefehler, Windkamerafahrt und gestuftes Lernen von Fliegen, Landen, Tragen und Huuu.
+
+## 21. Juli 2026 – P1-Paket 6: Prolog als Vertical Slice
+
+### Umgesetzt
+
+1. Eigenständige Prologregeln
+   - Level 1 verwendet drei Vorratspäckchen statt 30 generischer Futterpunkte.
+   - Zeitverbrauch, Fledermäuse, Rivalen, Zufallshindernisse und Beutespawner sind deaktiviert.
+   - Päckchen besitzen feste Weltpositionen, eigene handgezeichnete Grafik und bleiben beim Tragen unterscheidbar.
+
+2. Nestszene und Windinszenierung
+   - Ava, Lumi, Fynn und drei hungrige Eulenkinder sind gemeinsam am Nest sichtbar.
+   - Fynn erhält eine schwankende Balanceanimation.
+   - Eine 4,6-sekündige Kamerafahrt zeigt Böe, bewegte Blätter und die verstreuten Vorräte.
+   - Anschließend kehrt die Kamera automatisch zur steuerbaren Lumi zurück.
+
+3. Gestuftes Lernen
+   - Sechs Datenstufen erklären nacheinander Fliegen, Landen, Aufheben, Abliefern, Huuu und die restlichen Vorräte.
+   - HUD und mobiles Missionssymbol zeigen ausschließlich die aktuelle Aktion.
+   - Sturzflug und Huuu pulsieren nur im passenden Schritt.
+   - Ein zu frühes Huuu verbraucht keine Ladung.
+   - Der Levelabschluss wartet sowohl auf alle Schritte als auch auf alle drei Päckchen.
+
+4. Persistenz
+   - Checkpoints speichern erledigte Schritte und abgelieferte Päckchen-IDs.
+   - Offene Päckchen erscheinen nach dem Laden erneut an ihrer festen Position.
+   - Wiederholbare Huuu-Kontexte speichern nun getrennt, dass sie mindestens einmal ausgelöst wurden.
+
+### Prüfungen
+
+- Build erfolgreich: sechs Schritte und drei Päckchen.
+- Automatischer Gesamtablauf mit allen sechs Lernschritten bestanden.
+- Anfangszustand: drei Päckchen, null Fledermäuse, null Zufallshindernisse und Zeitfaktor null.
+- Windkamerafahrt vollständig beendet und Steuerung anschließend freigegeben.
+- Vorzeitiger Ruf behielt 100 Prozent Ladung.
+- Levelabschluss erst nach vollständiger Lernfolge und drei Lieferungen.
+- Checkpoint enthielt sechs Schritt-IDs und drei Päckchen-IDs.
+- Nestszene und Aufheben-Schritt bei 740 × 400 und 1366 × 900 visuell geprüft.
+- Temporäre Testinstrumentierung und Testbilder entfernt.
+
+### Bewusst noch offen
+
+- Die Wiesenprüfung in Level 2 bis 4 benötigt eigene Routen- und Fundmechaniken.
+- Die Windkamerafahrt verwendet weiterhin die allgemeine Canvas-Grafik statt finaler SVG-Charakterassets.
+- Ein separates Zugänglichkeitsmenü für Tutorialtempo und Kamerabewegung ist noch nicht umgesetzt.
+
+### Nächstes Arbeitspaket
+
+P1-Paket 7 baut die Wiesenprüfung in Level 2 bis 4 als sichere Routensuche mit Beeren, Samen, Käferfunden, Kräutern und einer humorvollen Mausbegegnung um.

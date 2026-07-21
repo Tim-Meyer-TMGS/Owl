@@ -12,12 +12,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-01-wiesenrand",
       "order": 1,
-      "name": "Wiesenrand",
+      "name": "Die verlorenen Vorräte",
       "presentation": {
         "theme": "meadow",
-        "intro": "Die erste Jagd beginnt am ruhigen Wiesenrand.",
-        "mission": "Sammle 30 Futterpunkte im Nest.",
-        "shortMission": "30 Futterpunkte",
+        "intro": "Der Wind hat drei Vorratspäckchen über die ruhige Wiese verteilt.",
+        "mission": "Bring drei Vorratspäckchen zurück ins Nest.",
+        "shortMission": "3 Päckchen",
         "scenery": {
           "terrain": "rolling-hills",
           "trees": [
@@ -31,37 +31,32 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 30,
-        "requiredPrey": null
+        "type": "bundles",
+        "target": 3,
+        "requiredPrey": "bundle"
       },
       "timeBonusSeconds": 0,
       "difficulty": {
         "speedMultiplier": 1,
-        "timeDrainMultiplier": 1,
+        "timeDrainMultiplier": 0,
         "hitPenaltySeconds": 3
       },
       "population": {
-        "prey": {
-          "normal": 5,
-          "beetle": 1,
-          "rabbit": 1,
-          "gold": 1
-        },
-        "startingPrey": 4,
-        "maximumPrey": 10,
+        "prey": {"bundle": 1},
+        "startingPrey": 0,
+        "maximumPrey": 3,
         "spawnDelaySeconds": {
           "min": 0.5,
           "max": 0.8
         }
       },
       "waves": {
-        "size": 5,
+        "size": 0,
         "breakSeconds": 4.2
       },
       "hazards": {
-        "branches": 2,
-        "maximumBats": 4,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.88,
           "max": 4.5

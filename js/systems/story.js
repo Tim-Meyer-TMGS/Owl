@@ -10,9 +10,11 @@
   data.scenes.forEach(scene=>{
     if(!Number.isInteger(scene.levelOrder)||!scene.levelId||!scene.chapter||!Array.isArray(scene.events)||!Array.isArray(scene.companions))throw new Error('Story-Szene besitzt unvollständige Pflichtfelder.');
     if(sceneOrders.has(scene.levelOrder))throw new Error(`Doppelte Story-Levelnummer: ${scene.levelOrder}`);sceneOrders.add(scene.levelOrder);
-    scene.companions.forEach(companion=>{if(!companion.id||!companionStates.has(companion.state))throw new Error(`Ungültiger Begleiter in Level ${scene.levelOrder}.`)});
+    const companionIds=new Set(scene.companions.map(companion=>companion.id));scene.companions.forEach(companion=>{if(!companion.id||!companionStates.has(companion.state))throw new Error(`Ungültiger Begleiter in Level ${scene.levelOrder}.`)});
     scene.events.forEach(event=>{
       if(!event.id||eventIds.has(event.id)||!event.speaker||!event.text||!triggerTypes.has(event.trigger?.type))throw new Error(`Ungültiges Story-Ereignis: ${event.id||'ohne ID'}.`);
+      if(event.action?.companion&&!companionIds.has(event.action.companion))throw new Error(`${event.id}: unbekannter Aktionsbegleiter.`);
+      if(event.action?.state&&!companionStates.has(event.action.state))throw new Error(`${event.id}: unbekannter Begleiterzustand.`);
       eventIds.add(event.id);
     });
   });

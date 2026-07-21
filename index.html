@@ -38,7 +38,7 @@
     <div class="card">
       <div class="label"><svg class="uiIcon hudIcon" aria-hidden="true"><use href="#i-nest"/></svg><span class="labelText">Nestauftrag</span></div>
       <div class="value" id="phaseName">Wiesenrand</div>
-      <div class="subvalue"><span id="delivered">0</span> / <span id="target">30</span> Futterpunkte</div>
+      <div class="subvalue"><span id="delivered">0</span> / <span id="target">30</span> <span id="targetUnit">Futterpunkte</span></div>
     </div>
     <div class="card">
       <div class="label"><svg class="uiIcon hudIcon" aria-hidden="true"><use href="#i-bolt"/></svg><span class="labelText">Ausdauer</span></div>
@@ -145,7 +145,7 @@
       <div class="eyebrow">Level geschafft</div>
       <h1 id="levelCompleteTitle">Geschafft!</h1>
       <div class="resultGrid levelResults">
-        <div class="resultCell"><strong id="levelFoodResult">0</strong><span>Futter</span></div>
+        <div class="resultCell"><strong id="levelFoodResult">0</strong><span id="levelResultUnit">Futter</span></div>
         <div class="resultCell"><strong id="levelScoreResult">0</strong><span>Punkte</span></div>
         <div class="resultCell"><strong id="levelBonusResult">—</strong><span>Bonus</span></div>
         <div class="resultCell"><strong id="levelXpResult">+0</strong><span>XP</span></div>
@@ -182,6 +182,7 @@
 <script src="js/owls.js" defer></script>
 <script src="js/story.js" defer></script>
 <script src="js/story-events.js" defer></script>
+<script src="js/tutorial.js" defer></script>
 <script src="js/worlds.js" defer></script>
 <script src="js/hoot-contexts.js" defer></script>
 <script src="js/core/namespace.js" defer></script>
@@ -190,6 +191,7 @@
 <script src="js/world/perches.js" defer></script>
 <script src="js/systems/hoot.js" defer></script>
 <script src="js/systems/story.js" defer></script>
+<script src="js/systems/tutorial.js" defer></script>
 <script src="js/render/parallax.js" defer></script>
 <script src="js/ui/chapter-map.js" defer></script>
 <script src="js/game.js" defer></script>
