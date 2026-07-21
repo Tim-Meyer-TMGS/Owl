@@ -116,7 +116,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "meadowRoute",
           "sourceLevelId": "level-02-heckenpfad"
         }
       ]
@@ -174,7 +174,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "meadowRoute",
           "sourceLevelId": "level-03-bachufer"
         }
       ]
@@ -232,7 +232,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "meadowRoute",
           "sourceLevelId": "level-04-mondwald"
         }
       ]
@@ -290,7 +290,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "fireflyGuide",
           "sourceLevelId": "level-05-dornenhain"
         }
       ]
@@ -348,7 +348,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "fireflyGuide",
           "sourceLevelId": "level-06-nebelmoor"
         }
       ]
@@ -406,7 +406,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "fireflyGuide",
           "sourceLevelId": "level-07-froschsumpf"
         }
       ]
@@ -464,7 +464,7 @@
       "storyTriggers": [],
       "objectives": [
         {
-          "type": "foodPoints",
+          "type": "fireflyGuide",
           "sourceLevelId": "level-08-kaferlichtung"
         }
       ]

@@ -166,3 +166,50 @@ if (@($allowedTutorialTypes | Where-Object { $_ -notin @($tutorialData.steps | F
 $tutorialRuntime = "/* Generated from data/tutorial.json. Run tools/build-levels.ps1 after editing the JSON source. */`nwindow.OWL_TUTORIAL_DATA = $tutorialJson;"
 Set-Content -LiteralPath $tutorialTarget -Value $tutorialRuntime -Encoding UTF8
 Write-Host "Generated js/tutorial.js with $($tutorialData.steps.Count) steps and $($tutorialData.packages.Count) supply packages."
+
+$meadowSource = Join-Path $ProjectRoot 'data\meadow-routes.json'
+$meadowTarget = Join-Path $ProjectRoot 'js\meadow-routes.js'
+$meadowJson = Get-Content -LiteralPath $meadowSource -Raw -Encoding UTF8
+$meadowData = $meadowJson | ConvertFrom-Json
+if ($meadowData.formatVersion -ne 1 -or $meadowData.scenes.Count -ne 3) { throw 'meadow-routes.json muss genau Level 2 bis 4 definieren.' }
+$meadowGateIds = @()
+$meadowFindIds = @()
+$meadowTypes = @()
+foreach ($scene in $meadowData.scenes) {
+  if ($scene.levelOrder -notin @(2,3,4) -or $scene.levelId -notin $knownLevelIds) { throw "Wiesenszene $($scene.levelOrder): unbekanntes Level." }
+  if ($scene.requirements.routeStages -lt 1 -or $scene.requirements.finds -lt 1) { throw "Wiesenszene $($scene.levelOrder): Abschlussanforderungen fehlen." }
+  $stages = @($scene.gates | ForEach-Object stage | Sort-Object -Unique)
+  if ($stages.Count -ne $scene.requirements.routeStages -or $stages[0] -ne 1 -or $stages[-1] -ne $scene.requirements.routeStages) { throw "Wiesenszene $($scene.levelOrder): Routenstufen sind nicht lückenlos." }
+  foreach ($gate in $scene.gates) { $meadowGateIds += $gate.id; foreach ($field in @('id','stage','xRatio','yRatio','radius')) { if ($null -eq $gate.$field) { throw "Wiesentor: $field fehlt." } } }
+  foreach ($find in $scene.finds) { $meadowFindIds += $find.id; $meadowTypes += $find.type; foreach ($field in @('id','type','label','xRatio','yRatio','value','food')) { if ($null -eq $find.$field) { throw "Wiesenfund: $field fehlt." } } }
+  if ($scene.finds.Count -lt $scene.requirements.finds) { throw "Wiesenszene $($scene.levelOrder): zu wenige Funde." }
+  if ($scene.requirements.mouseEncounter -and $null -eq $scene.mouse) { throw "Wiesenszene $($scene.levelOrder): Mausbegegnung fehlt." }
+}
+if (@($meadowGateIds | Group-Object | Where-Object Count -gt 1).Count -gt 0 -or @($meadowFindIds | Group-Object | Where-Object Count -gt 1).Count -gt 0) { throw 'Wiesendaten enthalten doppelte IDs.' }
+if (@('berry','seed','beetleFind','herb' | Where-Object { $_ -notin $meadowTypes }).Count -gt 0) { throw 'Wiesendaten müssen Beeren, Samen, Käferfunde und Kräuter enthalten.' }
+$meadowRuntime = "/* Generated from data/meadow-routes.json. Run tools/build-levels.ps1 after editing the JSON source. */`nwindow.OWL_MEADOW_DATA = $meadowJson;"
+Set-Content -LiteralPath $meadowTarget -Value $meadowRuntime -Encoding UTF8
+Write-Host "Generated js/meadow-routes.js with $($meadowData.scenes.Count) meadow scenes, $($meadowGateIds.Count) gates and $($meadowFindIds.Count) finds."
+
+$fireflySource = Join-Path $ProjectRoot 'data\firefly-quests.json'
+$fireflyTarget = Join-Path $ProjectRoot 'js\firefly-quests.js'
+$fireflyJson = Get-Content -LiteralPath $fireflySource -Raw -Encoding UTF8
+$fireflyData = $fireflyJson | ConvertFrom-Json
+if ($fireflyData.formatVersion -ne 1 -or $fireflyData.scenes.Count -ne 4) { throw 'firefly-quests.json muss genau Level 5 bis 8 definieren.' }
+$fireflyLostIds = @()
+foreach ($scene in $fireflyData.scenes) {
+  if ($scene.levelOrder -notin @(5,6,7,8) -or $scene.levelId -notin $knownLevelIds) { throw "Glühwürmchenszene $($scene.levelOrder): unbekanntes Level." }
+  $hootScene = $hootData.scenes | Where-Object levelOrder -eq $scene.levelOrder | Select-Object -First 1
+  if ($scene.trailContextIds.Count -lt 2 -or @($scene.trailContextIds | Where-Object { $_ -notin @($hootScene.contexts | ForEach-Object id) }).Count -gt 0) { throw "Glühwürmchenszene $($scene.levelOrder): ungültige Lichtspur." }
+  $sequences = @($scene.trailContextIds | ForEach-Object { ($hootScene.contexts | Where-Object id -eq $_ | Select-Object -First 1).sequence })
+  $actualSequence = @($sequences | Sort-Object) -join ','
+  $expectedSequence = @(1..$scene.trailContextIds.Count) -join ','
+  if ($actualSequence -ne $expectedSequence) { throw "Glühwürmchenszene $($scene.levelOrder): Lichtspur ist nicht lückenlos." }
+  $fireflyLostIds += $scene.lost.id
+  foreach ($field in @('speed','startDistance','followDistance','stopDistance','resumeDistance')) { if ($null -eq $scene.escort.$field) { throw "Glühwürmchenszene $($scene.levelOrder): Begleitwert $field fehlt." } }
+  if ($scene.escort.stopDistance -le $scene.escort.resumeDistance -or $scene.field.radius -lt 60) { throw "Glühwürmchenszene $($scene.levelOrder): ungültige Abstands- oder Feldwerte." }
+}
+if (@($fireflyLostIds | Group-Object | Where-Object Count -gt 1).Count -gt 0) { throw 'Glühwürmchendaten enthalten doppelte Figuren-IDs.' }
+$fireflyRuntime = "/* Generated from data/firefly-quests.json. Run tools/build-levels.ps1 after editing the JSON source. */`nwindow.OWL_FIREFLY_QUEST_DATA = $fireflyJson;"
+Set-Content -LiteralPath $fireflyTarget -Value $fireflyRuntime -Encoding UTF8
+Write-Host "Generated js/firefly-quests.js with $($fireflyData.scenes.Count) quests and $(@($fireflyData.scenes.trailContextIds).Count) trail sections."

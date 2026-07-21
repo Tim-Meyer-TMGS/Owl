@@ -1,0 +1,42 @@
+{
+  "formatVersion": 1,
+  "chapter": "firefly",
+  "scenes": [
+    {
+      "levelOrder": 5,
+      "levelId": "level-05-dornenhain",
+      "title": "Das erste Blinken",
+      "trailContextIds": ["hoot-05-trail-1", "hoot-05-trail-2", "hoot-05-trail-3", "hoot-05-trail-4"],
+      "lost": { "id": "funke", "name": "Funke", "xRatio": 0.76, "yRatio": 0.46, "pattern": "double" },
+      "field": { "xRatio": 0.88, "yRatio": 0.68, "radius": 115, "herb": "Mondthymian" },
+      "escort": { "speed": 82, "startDistance": 145, "followDistance": 115, "stopDistance": 260, "resumeDistance": 175 }
+    },
+    {
+      "levelOrder": 6,
+      "levelId": "level-06-nebelmoor",
+      "title": "Licht im Birkennebel",
+      "trailContextIds": ["hoot-06-trail-1", "hoot-06-trail-2", "hoot-06-trail-3", "hoot-06-trail-4"],
+      "lost": { "id": "flimmer", "name": "Flimmer", "xRatio": 0.22, "yRatio": 0.40, "pattern": "slow" },
+      "field": { "xRatio": 0.10, "yRatio": 0.68, "radius": 110, "herb": "Nebelmelisse" },
+      "escort": { "speed": 78, "startDistance": 150, "followDistance": 120, "stopDistance": 250, "resumeDistance": 170 }
+    },
+    {
+      "levelOrder": 7,
+      "levelId": "level-07-froschsumpf",
+      "title": "Blinken im hohen Gras",
+      "trailContextIds": ["hoot-07-trail-1", "hoot-07-trail-2", "hoot-07-trail-3", "hoot-07-trail-4"],
+      "lost": { "id": "tupf", "name": "Tupf", "xRatio": 0.78, "yRatio": 0.52, "pattern": "triple" },
+      "field": { "xRatio": 0.90, "yRatio": 0.68, "radius": 115, "herb": "Sumpfminze" },
+      "escort": { "speed": 74, "startDistance": 150, "followDistance": 125, "stopDistance": 245, "resumeDistance": 165 }
+    },
+    {
+      "levelOrder": 8,
+      "levelId": "level-08-kaferlichtung",
+      "title": "Zurück zur Lichterfamilie",
+      "trailContextIds": ["hoot-08-trail-1", "hoot-08-trail-2", "hoot-08-trail-3", "hoot-08-trail-4"],
+      "lost": { "id": "mini", "name": "Mini", "xRatio": 0.22, "yRatio": 0.42, "pattern": "heartbeat" },
+      "field": { "xRatio": 0.10, "yRatio": 0.68, "radius": 125, "herb": "Sternlavendel" },
+      "escort": { "speed": 70, "startDistance": 155, "followDistance": 130, "stopDistance": 235, "resumeDistance": 160 }
+    }
+  ]
+}

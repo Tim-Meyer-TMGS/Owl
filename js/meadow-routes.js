@@ -1,0 +1,81 @@
+﻿/* Generated from data/meadow-routes.json. Run tools/build-levels.ps1 after editing the JSON source. */
+window.OWL_MEADOW_DATA = {
+  "formatVersion": 1,
+  "chapter": "meadow",
+  "scenes": [
+    {
+      "levelOrder": 2,
+      "levelId": "level-02-heckenpfad",
+      "title": "Der breite Mondpfad",
+      "routeSeconds": 11,
+      "requirements": { "routeStages": 4, "finds": 3, "mouseEncounter": false },
+      "gates": [
+        { "id": "meadow-02-1", "stage": 1, "xRatio": 0.72, "yRatio": 0.36, "radius": 78 },
+        { "id": "meadow-02-2a", "stage": 2, "xRatio": 0.54, "yRatio": 0.28, "radius": 82 },
+        { "id": "meadow-02-2b", "stage": 2, "xRatio": 0.54, "yRatio": 0.53, "radius": 88 },
+        { "id": "meadow-02-3", "stage": 3, "xRatio": 0.36, "yRatio": 0.43, "radius": 82 },
+        { "id": "meadow-02-4", "stage": 4, "xRatio": 0.18, "yRatio": 0.31, "radius": 90 }
+      ],
+      "finds": [
+        { "id": "find-02-berry", "type": "berry", "label": "Mondbeeren", "xRatio": 0.66, "yRatio": 0.65, "value": 8, "food": 1 },
+        { "id": "find-02-seed", "type": "seed", "label": "Grashalmsamen", "xRatio": 0.43, "yRatio": 0.69, "value": 9, "food": 1 },
+        { "id": "find-02-herb", "type": "herb", "label": "Duftkraut", "xRatio": 0.22, "yRatio": 0.65, "value": 10, "food": 1 }
+      ]
+    },
+    {
+      "levelOrder": 3,
+      "levelId": "level-03-bachufer",
+      "title": "Zwei Wege im Tau",
+      "routeSeconds": 10,
+      "requirements": { "routeStages": 5, "finds": 3, "mouseEncounter": false },
+      "gates": [
+        { "id": "meadow-03-1", "stage": 1, "xRatio": 0.22, "yRatio": 0.39, "radius": 76 },
+        { "id": "meadow-03-2a", "stage": 2, "xRatio": 0.38, "yRatio": 0.25, "radius": 78 },
+        { "id": "meadow-03-2b", "stage": 2, "xRatio": 0.38, "yRatio": 0.56, "radius": 86 },
+        { "id": "meadow-03-3", "stage": 3, "xRatio": 0.54, "yRatio": 0.40, "radius": 78 },
+        { "id": "meadow-03-4a", "stage": 4, "xRatio": 0.69, "yRatio": 0.27, "radius": 78 },
+        { "id": "meadow-03-4b", "stage": 4, "xRatio": 0.69, "yRatio": 0.57, "radius": 86 },
+        { "id": "meadow-03-5", "stage": 5, "xRatio": 0.84, "yRatio": 0.38, "radius": 86 }
+      ],
+      "finds": [
+        { "id": "find-03-beetle", "type": "beetleFind", "label": "Glänzender Käferflügel", "xRatio": 0.30, "yRatio": 0.67, "value": 11, "food": 1 },
+        { "id": "find-03-berry", "type": "berry", "label": "Taubeeren", "xRatio": 0.57, "yRatio": 0.66, "value": 9, "food": 1 },
+        { "id": "find-03-seed", "type": "seed", "label": "Birkenkätzchen", "xRatio": 0.77, "yRatio": 0.68, "value": 10, "food": 1 }
+      ]
+    },
+    {
+      "levelOrder": 4,
+      "levelId": "level-04-mondwald",
+      "title": "Prüfung unter dem Vollmond",
+      "routeSeconds": 9,
+      "requirements": { "routeStages": 6, "finds": 4, "mouseEncounter": true },
+      "gates": [
+        { "id": "meadow-04-1", "stage": 1, "xRatio": 0.76, "yRatio": 0.31, "radius": 74 },
+        { "id": "meadow-04-2", "stage": 2, "xRatio": 0.63, "yRatio": 0.49, "radius": 76 },
+        { "id": "meadow-04-3a", "stage": 3, "xRatio": 0.50, "yRatio": 0.25, "radius": 75 },
+        { "id": "meadow-04-3b", "stage": 3, "xRatio": 0.50, "yRatio": 0.58, "radius": 82 },
+        { "id": "meadow-04-4", "stage": 4, "xRatio": 0.38, "yRatio": 0.40, "radius": 76 },
+        { "id": "meadow-04-5", "stage": 5, "xRatio": 0.25, "yRatio": 0.28, "radius": 76 },
+        { "id": "meadow-04-6", "stage": 6, "xRatio": 0.13, "yRatio": 0.48, "radius": 84 }
+      ],
+      "finds": [
+        { "id": "find-04-herb", "type": "herb", "label": "Mondminze", "xRatio": 0.70, "yRatio": 0.67, "value": 12, "food": 1 },
+        { "id": "find-04-beetle", "type": "beetleFind", "label": "Irisierender Käferflügel", "xRatio": 0.53, "yRatio": 0.67, "value": 13, "food": 1 },
+        { "id": "find-04-seed", "type": "seed", "label": "Mohnsamen", "xRatio": 0.34, "yRatio": 0.69, "value": 11, "food": 1 },
+        { "id": "find-04-berry", "type": "berry", "label": "Silberbeeren", "xRatio": 0.17, "yRatio": 0.66, "value": 12, "food": 1 }
+      ],
+      "mouse": {
+        "id": "marta",
+        "name": "Marta Maus",
+        "xRatio": 0.46,
+        "yRatio": 0.68,
+        "radius": 150,
+        "lines": [
+          "Eine Flugprüfung? Ich prüfe höchstens, ob der Käse noch da ist.",
+          "Ihr Eulen schaut immer nach oben. Die besten Wege sind aber hier unten!"
+        ]
+      }
+    }
+  ]
+}
+;

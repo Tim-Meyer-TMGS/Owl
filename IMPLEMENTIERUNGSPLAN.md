@@ -439,20 +439,20 @@ assets/
 
 ## 8.2 Kapitel 1: Die Wiesenprüfung – Level 2 bis 4
 
-- [ ] Mondwiese mit breiten, sicheren Flugräumen erstellen.
-- [ ] Beeren, Samen, Käferfunde und Kräuter verteilen.
-- [ ] Routen-Komبو statt Jagd-Komبو umsetzen.
-- [ ] Große sprechende Maus als humorvolle Begegnung inszenieren.
-- [ ] Kapitel mit Rückkehr zum Nest abschließen.
+- [x] Mondwiese mit breiten, sicheren Flugräumen erstellen.
+- [x] Beeren, Samen, Käferfunde und Kräuter verteilen.
+- [x] Routen-Kombo statt Jagd-Kombo umsetzen.
+- [x] Große sprechende Maus als humorvolle Begegnung inszenieren.
+- [x] Kapitel mit Rückkehr zum Nest abschließen.
 
 ## 8.3 Kapitel 2: Das verschwundene Glühwürmchen – Level 5 bis 8
 
-- [ ] Birkenhain und hohes Gras erstellen.
-- [ ] Lichtspur-System implementieren.
-- [ ] Huuu deckt jeweils nur den nächsten Spurabschnitt auf.
-- [ ] Verlorenes Glühwürmchen suchen und langsam begleiten.
-- [ ] Zu großer Abstand stoppt das Glühwürmchen, verursacht aber keinen Verlust.
-- [ ] Duftkräuterfeld als Belohnungsort gestalten.
+- [x] Birkenhain und hohes Gras erstellen.
+- [x] Lichtspur-System implementieren.
+- [x] Huuu deckt jeweils nur den nächsten Spurabschnitt auf.
+- [x] Verlorenes Glühwürmchen suchen und langsam begleiten.
+- [x] Zu großer Abstand stoppt das Glühwürmchen, verursacht aber keinen Verlust.
+- [x] Duftkräuterfeld als Belohnungsort gestalten.
 
 ## 8.4 Kapitel 3: Der große Konkurrent – Level 9 bis 12
 
@@ -697,8 +697,8 @@ Zielwerte:
 - [ ] Lumi, Fynn und Ava als finale SVG-Charaktere zeichnen.
 - [x] Horizontale Kamera und Parallax-System bauen.
 - [x] Landemechanik und sichere Äste implementieren.
-- [ ] Prolog und erstes Wiesenlevel vollständig neu bauen.
-- [ ] Auf Handy und Tablet testen.
+- [x] Prolog und erstes Wiesenlevel vollständig neu bauen.
+- [x] Auf Handy und Tablet testen.
 
 **Entscheidungspunkt:** Erst fortfahren, wenn Grafikstil, Fluggefühl, Kamera und Lesbarkeit gemeinsam überzeugen.
 
@@ -712,8 +712,8 @@ Zielwerte:
 
 ## Meilenstein 3 – Mittlere Kapitel
 
-- [ ] Mondwiese abschließen.
-- [ ] Glühwürmchen-Kapitel abschließen.
+- [x] Mondwiese abschließen.
+- [x] Glühwürmchen-Kapitel abschließen.
 - [ ] Bruno-Rennen abschließen.
 - [ ] Bach-Kapitel abschließen.
 

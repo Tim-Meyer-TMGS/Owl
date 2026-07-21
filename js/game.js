@@ -54,8 +54,8 @@
   const owlRoster=rosterData.owls;
   const storyData=window.OWL_STORY_DATA;
   if(!storyData||storyData.formatVersion!==1||!Array.isArray(storyData.chapters)||!storyData.chapters.length){throw new Error('Keine gültigen Storydaten geladen.')}
-  const worldLoader=window.OWL?.worlds,camera=window.OWL?.camera?.create(),parallax=window.OWL?.parallax,perches=window.OWL?.perches,hootSystem=window.OWL?.hoot,storySystem=window.OWL?.story,tutorialSystem=window.OWL?.tutorial;
-  if(!worldLoader||worldLoader.count!==levelData.levels.length||!camera||!parallax||!perches||!hootSystem||hootSystem.sceneCount!==levelData.levels.length||!storySystem||storySystem.sceneCount!==levelData.levels.length||!tutorialSystem){throw new Error('Welt-, Kamera-, Parallax-, Ast-, Huuu-, Story- oder Tutorialmodul fehlt.')}
+  const worldLoader=window.OWL?.worlds,camera=window.OWL?.camera?.create(),parallax=window.OWL?.parallax,perches=window.OWL?.perches,hootSystem=window.OWL?.hoot,storySystem=window.OWL?.story,tutorialSystem=window.OWL?.tutorial,meadowSystem=window.OWL?.meadow,fireflyQuestSystem=window.OWL?.fireflyQuest;
+  if(!worldLoader||worldLoader.count!==levelData.levels.length||!camera||!parallax||!perches||!hootSystem||hootSystem.sceneCount!==levelData.levels.length||!storySystem||storySystem.sceneCount!==levelData.levels.length||!tutorialSystem||!meadowSystem||!fireflyQuestSystem){throw new Error('Ein erforderliches Welt-, Kamera-, Story- oder Kapitelsystem fehlt.')}
   const progressKey='owl-flight-progress-v1';
   const checkpointKey='owl-flight-checkpoint-v1';
   const progress=(()=>{
@@ -103,6 +103,8 @@
     speedMultiplier:level.difficulty.speedMultiplier,timeDrainMultiplier:level.difficulty.timeDrainMultiplier,
     hitPenaltySeconds:level.difficulty.hitPenaltySeconds,audioChord:level.audio.chordHz
   }));
+  for(const scene of meadowSystem.source.scenes){const phase=phases[scene.levelOrder-1];if(!phase)continue;phase.target=scene.requirements.finds;phase.objectiveType='natureFinds';phase.requiredType=null;phase.mission=`Folge der Mondroute, sammle ${scene.requirements.finds} Naturfunde und kehre zum Nest zurück.`;phase.missionShort=`${scene.requirements.finds} Funde · Route`;phase.startMice=0;phase.mouseCap=0;phase.batCap=0;phase.rivalCap=0;phase.branchCount=0}
+  for(const scene of fireflyQuestSystem.source.scenes){const phase=phases[scene.levelOrder-1];if(!phase)continue;phase.target=scene.trailContextIds.length;phase.objectiveType='lightTrail';phase.requiredType=null;phase.mission=`Enthülle ${phase.target} Lichtspuren mit Huuu und begleite ${scene.lost.name} zum Kräuterfeld.`;phase.missionShort=`${phase.target} Spuren · ${scene.lost.name}`;phase.startMice=0;phase.mouseCap=0;phase.batCap=0;phase.rivalCap=0;phase.branchCount=0}
 
   const state = {
     w:0,h:0,dpr:1,groundY:0,gameScale:1,touchMode:false,tabletMode:false,tabletLandscapeMode:false,landscapePhoneMode:false,world:null,cameraPulse:0,
@@ -116,7 +118,7 @@
     hootCharge:1,shake:0,transition:0,transitionQueued:false,
     last:0,muted:false,elapsed:0,phaseElapsed:0,musicClock:.4,wildlifeClock:2,
     bonus:null,levelHits:0,levelPreyCounts:{},levelPreyTypes:new Set(),eliteSpawned:false,lastPhaseXp:0,lastBonusAwarded:false,
-    shownStories:new Set(),activeStory:null,storyLineIndex:0,storyBeatIndex:0,storyChoosingGift:false,selectedGift:null,landedPerches:new Set(),storyScene:null,storyDialogueQueue:[],storyDebug:false,lastSafePoint:null,tutorial:null
+    shownStories:new Set(),activeStory:null,storyLineIndex:0,storyBeatIndex:0,storyChoosingGift:false,selectedGift:null,landedPerches:new Set(),storyScene:null,storyDialogueQueue:[],storyDebug:false,lastSafePoint:null,tutorial:null,meadow:null,fireflyQuest:null
   };
 
   const owl = {
@@ -136,11 +138,17 @@
     else ui.mission.textContent=desktopText;
   }
   function phaseMissionIcons(phase){
+    if(phase.objectiveType==='natureFinds')return `${iconSvg('star')} ${phase.target} · ${iconSvg('perch')} → ${iconSvg('nest')}`;
+    if(phase.objectiveType==='lightTrail')return `${iconSvg('hoot')} ${phase.target} · ${iconSvg('sun')} → ${iconSvg('heart')}`;
     const gold=phase.requiredType==='gold'?`${iconSvg('star')} `:'';
     const danger=phase.batCap>=8?` · ${iconSvg('bat')} !`:'';
     return `${gold}${iconSvg('star')} ${phase.target} → ${iconSvg('nest')}${danger}`;
   }
   function initBonusGoal(){
+    const meadowDefinition=meadowSystem.source.scenes.find(scene=>scene.levelOrder===state.phaseIndex+1);
+    if(meadowDefinition){state.bonus={kind:'route',label:`Mondroute ${meadowDefinition.requirements.routeStages}/${meadowDefinition.requirements.routeStages}`,target:meadowDefinition.requirements.routeStages,progress:0,complete:false,failed:false,awarded:false};state.levelHits=0;state.levelPreyCounts={};state.levelPreyTypes=new Set();state.lastBonusAwarded=false;updateBonusHud();return}
+    const fireflyDefinition=fireflyQuestSystem.source.scenes.find(scene=>scene.levelOrder===state.phaseIndex+1);
+    if(fireflyDefinition){state.bonus={kind:'guide',label:'Behutsam begleiten',target:1,progress:0,complete:false,failed:false,awarded:false};state.levelHits=0;state.levelPreyCounts={};state.levelPreyTypes=new Set();state.lastBonusAwarded=false;updateBonusHud();return}
     const tier=Math.floor(state.phaseIndex/8),kind=['untouched','combo','rabbit','variety','gold'][state.phaseIndex%5];
     const definitions={
       untouched:{label:'Ohne Treffer',target:1},combo:{label:`Kombo ×${2+Math.min(2,tier)}`,target:2+Math.min(2,tier)},
@@ -173,6 +181,7 @@
   const storyCharacter=id=>storyData.characters[id]||storyData.characters.lumi;
   function storyPortrait(id){
     if(id==='glow')return '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="7" fill="#f5ffb4"/><path d="M20 22C9 12 8 28 20 26M28 22c11-10 12 6 0 4" fill="none" stroke="#334a45" stroke-width="3"/><circle cx="24" cy="24" r="16" fill="none" stroke="#dfff8d" stroke-width="2" opacity=".55"/></svg>';
+    if(id==='marta')return '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="13" cy="14" r="9" fill="#d99a7e" stroke="#3b2928" stroke-width="3"/><circle cx="35" cy="14" r="9" fill="#d99a7e" stroke="#3b2928" stroke-width="3"/><ellipse cx="24" cy="27" rx="17" ry="16" fill="#a96f5d" stroke="#3b2928" stroke-width="3"/><circle cx="18" cy="24" r="3" fill="#fff2dc"/><circle cx="30" cy="24" r="3" fill="#fff2dc"/><circle cx="18" cy="24" r="1.4"/><circle cx="30" cy="24" r="1.4"/><path d="m24 28-4 3 4 3 4-3Z" fill="#e9a3a7"/><path d="M10 33h10M28 33h10" stroke="#f3d4ba" stroke-width="2"/></svg>';
     const colors={lumi:['#9b693f','#f0c889'],fynn:['#80664d','#b99469'],ava:['#716454','#d9c7a4'],bruno:['#6d4934','#c59a70'],kauz:['#596348','#b9c990']}[id]||['#80664d','#d2b07e'];
     return `<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 19 15 7l7 9h4l7-9 6 12v14c-4 7-10 11-15 11S9 40 9 33Z" fill="${colors[0]}" stroke="#17202a" stroke-width="3"/><path d="M13 21c3-7 9-7 11 0 2-7 8-7 11 0-2 11-7 15-11 15s-9-4-11-15Z" fill="${colors[1]}"/><circle cx="18" cy="23" r="4" fill="#f6efdc"/><circle cx="30" cy="23" r="4" fill="#f6efdc"/><circle cx="18" cy="23" r="1.7"/><circle cx="30" cy="23" r="1.7"/><path d="m24 26-4 5h8Z" fill="#e6aa36"/></svg>`;
   }
@@ -408,6 +417,13 @@
     if(name==='rival'){noiseBurst(.28,.014,560,'bandpass');tone(238,.3,'triangle',.019,-60);tone(181,.36,'sine',.014,-38,.25)}
     if(name==='steal'){noiseBurst(.18,.022,980,'bandpass');tone(440,.1,'sawtooth',.019,-175);tone(270,.15,'triangle',.014,-95,.075)}
     if(name==='scare'){noiseBurst(.2,.025,1050,'highpass');tone(255,.13,'sawtooth',.023,200);tone(540,.18,'triangle',.019,230,.085)}
+    if(name==='route'){tone(392,.11,'triangle',.022,80);tone(587,.16,'sine',.017,120,.07);noiseBurst(.09,.006,1450,'highpass')}
+    if(name==='find'){tone(660,.09,'sine',.024,170);tone(990,.16,'triangle',.015,90,.07)}
+    if(name==='mouseTalk'){tone(245,.08,'square',.009,45);tone(294,.1,'triangle',.008,-25,.1);tone(220,.08,'square',.006,30,.22)}
+    if(name==='trailReveal'){tone(740,.16,'sine',.022,90);tone(990,.24,'triangle',.014,-40,.1);tone(1320,.18,'sine',.008,-120,.24)}
+    if(name==='fireflyFound'){tone(523,.18,'sine',.022,70);tone(659,.22,'triangle',.018,80,.14);tone(880,.3,'sine',.012,-40,.3)}
+    if(name==='fireflyWait'){tone(330,.16,'triangle',.014,-70);tone(262,.22,'sine',.011,-35,.12)}
+    if(name==='herbField'){[392,523,659,784].forEach((frequency,index)=>tone(frequency,.3,'sine',.019,25,index*.11));noiseBurst(.4,.008,1250,'bandpass')}
     if(name==='win'){[523,659,784,1047].forEach((f,i)=>tone(f,.28,'sine',.032,60,i*.12))}
     if(name==='lose'){tone(330,.28,'triangle',.035,-80);tone(220,.35,'triangle',.03,-90,.18)}
   }
@@ -466,7 +482,7 @@
   function collide(a,b,pad=0){const rr=(a.r+b.r+pad*state.gameScale);return dist2(a,b)<rr*rr}
   function currentPhase(){return phases[state.phaseIndex]}
   function loadCurrentWorld(preservePositions=false){
-    const previousWidth=state.world?.width||0,completedHoot=state.hootContexts?.length?hootSystem.completedIds(state.hootContexts):[],completedStory=state.storyScene?storySystem.completedIds(state.storyScene):[],companionSnapshot=state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],completedTutorial=state.tutorial?tutorialSystem.completedIds(state.tutorial):[],deliveredTutorial=state.tutorial?[...state.tutorial.deliveredPackageIds]:[];
+    const previousWidth=state.world?.width||0,completedHoot=state.hootContexts?.length?hootSystem.completedIds(state.hootContexts):[],completedStory=state.storyScene?storySystem.completedIds(state.storyScene):[],companionSnapshot=state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],completedTutorial=state.tutorial?tutorialSystem.completedIds(state.tutorial):[],deliveredTutorial=state.tutorial?[...state.tutorial.deliveredPackageIds]:[],meadowSnapshot=meadowSystem.snapshot(state.meadow),fireflySnapshot=fireflyQuestSystem.snapshot(state.fireflyQuest);
     state.world=worldLoader.load(state.phaseIndex+1,{width:state.w,height:state.h,groundY:state.groundY,playTop:playTop()});
     if(preservePositions&&previousWidth>0&&previousWidth!==state.world.width){
       const ratio=state.world.width/previousWidth;
@@ -476,7 +492,7 @@
     }
     camera.resize({width:state.w,height:state.h},state.world);camera.setMode(state.world.cameraMode);
     if(preservePositions)state.safePerches=state.world.safeBranches.map(branch=>({...branch,scale:state.gameScale,r:24*state.gameScale}));
-    if(preservePositions){setupHootContexts(completedHoot);setupStoryScene(completedStory,companionSnapshot);setupTutorial(completedTutorial,deliveredTutorial)}
+    if(preservePositions){setupHootContexts(completedHoot);setupStoryScene(completedStory,companionSnapshot);setupTutorial(completedTutorial,deliveredTutorial);setupMeadow(meadowSnapshot);setupFireflyQuest(fireflySnapshot)}
   }
   function setupHootContexts(completedIds=[]){
     state.hootContexts=hootSystem.createScene(state.phaseIndex+1,state.world,{height:state.h,groundY:state.groundY,playTop:playTop()},completedIds);
@@ -487,6 +503,12 @@
   }
   function setupTutorial(completedIds=[],deliveredPackageIds=[]){
     state.tutorial=state.phaseIndex===0?tutorialSystem.create(state.world,{height:state.h,groundY:state.groundY},completedIds,deliveredPackageIds):null;
+  }
+  function setupMeadow(saved={}){
+    state.meadow=meadowSystem.create(state.phaseIndex+1,state.world,{height:state.h,groundY:state.groundY},saved||{});
+  }
+  function setupFireflyQuest(saved={}){
+    state.fireflyQuest=fireflyQuestSystem.create(state.phaseIndex+1,state.world,{height:state.h,groundY:state.groundY},state.hootContexts,saved||{});
   }
   function startTutorialCinematic(){
     if(!state.tutorial||tutorialSystem.completedIds(state.tutorial).length||state.tutorial.cinematic.active)return;state.tutorial.cinematic={active:true,time:0,windReleased:false};camera.setMode('cinematic');state.keys.clear();state.pointer.active=false;
@@ -542,7 +564,8 @@
   }
   function dropCarriedAtPerch(){
     const perch=perchById(owl.perchId);if(!perch||!owl.carrying)return false;const item=owl.carrying;owl.carrying=null;
-    state.mice.push({type:item.type,packageId:item.packageId,x:perch.x,y:perch.y-18*state.gameScale,dir:owl.facing,speed:0,r:(item.baseR||16)*state.gameScale,value:item.value,food:item.food,color:item.color,phase:0,turn:2,dash:0,glow:0,hidden:0,behaviorClock:2,perched:true,perchId:perch.id});
+    if(state.meadow&&item.meadowFindId){owl.carrying=item;showToast('DIESER FUND MUSS INS NEST','#dfff8d',720);return false}
+    state.mice.push({type:item.type,packageId:item.packageId,meadowFindId:item.meadowFindId,label:item.label,x:perch.x,y:perch.y-18*state.gameScale,dir:owl.facing,speed:0,r:(item.baseR||16)*state.gameScale,value:item.value,food:item.food,color:item.color,phase:0,turn:2,dash:0,glow:0,hidden:0,behaviorClock:2,perched:true,perchId:perch.id});
     showToast('AUF DEM AST ABGELEGT','#a9d7b0',720);floater(perch.x,perch.y-42,'ABGELEGT','#a9d7b0',15);haptic(14);updateHud();return true;
   }
   function beginStumble(source=null){
@@ -566,11 +589,11 @@
     state.mice=[];state.bats=[];state.rivals=[];state.branches=[];state.safePerches=[];state.bushes=[];state.groundDetails=[];state.fireflies=[];state.particles=[];state.floaters=[];state.rings=[];state.hootContexts=[];state.hootEchoes=[];state.edgeSignals=[];state.leafMotions=[];
     state.pointer.active=false;state.pointer.id=null;state.pointer.landingTap=false;
     state.hootCharge=1;state.cameraPulse=0;state.shake=0;state.transition=0;state.transitionQueued=false;state.elapsed=0;state.phaseElapsed=0;state.eliteSpawned=false;state.musicClock=.35;state.wildlifeClock=2;
-    state.shownStories=new Set();state.activeStory=null;state.storyLineIndex=0;state.storyBeatIndex=0;state.storyChoosingGift=false;state.selectedGift=null;state.landedPerches=new Set();state.storyScene=null;state.storyDialogueQueue=[];state.tutorial=null;clearTimeout(storyBubbleTimer);storyBubbleTimer=null;
+    state.shownStories=new Set();state.activeStory=null;state.storyLineIndex=0;state.storyBeatIndex=0;state.storyChoosingGift=false;state.selectedGift=null;state.landedPerches=new Set();state.storyScene=null;state.storyDialogueQueue=[];state.tutorial=null;state.meadow=null;state.fireflyQuest=null;clearTimeout(storyBubbleTimer);storyBubbleTimer=null;
     owl.r=35*state.gameScale*stats.size;state.lastSafePoint={x:nest().x,y:nest().y,perchId:null};
     placeOwlAtWorldStart();owl.angle=0;owl.dive=false;owl.diveTime=0;owl.invuln=0;owl.carrying=null;owl.flightState='flying';owl.targetPerchId=null;owl.perchId=null;owl.stumbleTime=0;owl.facing=1;owl.turnTime=0;
-    initBonusGoal();setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();
-    if(state.tutorial)spawnTutorialPackages();else for(let i=0;i<currentPhase().startMice;i++) spawnMouse(i<2?'normal':undefined);
+    initBonusGoal();setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();setupMeadow();setupFireflyQuest();
+    if(state.tutorial)spawnTutorialPackages();else if(!state.meadow&&!state.fireflyQuest)for(let i=0;i<currentPhase().startMice;i++) spawnMouse(i<2?'normal':undefined);
     for(let i=0;i<3;i++) spawnFirefly();
     updateHud();
   }
@@ -645,7 +668,7 @@
       score:state.score,hearts:state.hearts,energy:state.energy,time:state.time,maxTime:state.maxTime,
       totalDelivered:state.totalDelivered,totalFood:state.totalFood,runXp:state.runXp,bestCombo:state.bestCombo,
       bonus:state.bonus,levelHits:state.levelHits,levelPreyCounts:state.levelPreyCounts,levelPreyTypes:[...state.levelPreyTypes],phaseElapsed:state.phaseElapsed,eliteSpawned:state.eliteSpawned,hootCharge:state.hootCharge,
-      shownStories:[...state.shownStories],selectedGift:state.selectedGift,storyBeatIndex:state.storyBeatIndex,landedPerches:[...state.landedPerches],hootContextIds:hootSystem.completedIds(state.hootContexts),storyEventIds:storySystem.completedIds(state.storyScene),companions:state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],tutorialStepIds:tutorialSystem.completedIds(state.tutorial),tutorialDeliveredIds:state.tutorial?[...state.tutorial.deliveredPackageIds]:[],lastSafePoint:state.lastSafePoint,owl:{x:owl.x,y:owl.y,flightState:owl.flightState,perchId:owl.perchId}
+      shownStories:[...state.shownStories],selectedGift:state.selectedGift,storyBeatIndex:state.storyBeatIndex,landedPerches:[...state.landedPerches],hootContextIds:hootSystem.completedIds(state.hootContexts),storyEventIds:storySystem.completedIds(state.storyScene),companions:state.storyScene?.companions.map(item=>({id:item.id,state:item.state,x:item.x,y:item.y,courage:item.courage}))||[],tutorialStepIds:tutorialSystem.completedIds(state.tutorial),tutorialDeliveredIds:state.tutorial?[...state.tutorial.deliveredPackageIds]:[],meadow:meadowSystem.snapshot(state.meadow),fireflyQuest:fireflyQuestSystem.snapshot(state.fireflyQuest),lastSafePoint:state.lastSafePoint,owl:{x:owl.x,y:owl.y,flightState:owl.flightState,perchId:owl.perchId,carrying:owl.carrying?{...owl.carrying}:null}
     };
     try{localStorage.setItem(checkpointKey,JSON.stringify(payload));refreshContinueButton();return true}catch(_){return false}
   }
@@ -663,10 +686,10 @@
     state.totalDelivered=Math.max(0,saved.totalDelivered||0);state.totalFood=Math.max(0,saved.totalFood||0);state.runXp=Math.max(0,saved.runXp||0);state.bestCombo=Math.max(0,saved.bestCombo||0);
     if(saved.bonus)state.bonus={...state.bonus,...saved.bonus};state.levelHits=Math.max(0,saved.levelHits||0);state.levelPreyCounts=saved.levelPreyCounts||{};state.levelPreyTypes=new Set(saved.levelPreyTypes||[]);state.phaseElapsed=Math.max(0,saved.phaseElapsed||0);state.eliteSpawned=Boolean(saved.eliteSpawned);state.hootCharge=clamp(Number(saved.hootCharge??1),0,1);updateBonusHud();
     state.shownStories=new Set(saved.shownStories||[]);state.selectedGift=saved.selectedGift||null;state.storyBeatIndex=Math.max(0,saved.storyBeatIndex||0);state.landedPerches=new Set(saved.landedPerches||[]);
-    state.mice=[];state.bats=[];state.rivals=[];state.fireflies=[];state.hootEchoes=[];state.edgeSignals=[];state.leafMotions=[];owl.carrying=null;setupBranches();setupBushes();setupGroundDetails();setupHootContexts(saved.hootContextIds||[]);setupStoryScene(saved.storyEventIds||[],saved.companions||[]);setupTutorial(saved.tutorialStepIds||[],saved.tutorialDeliveredIds||[]);
-    if(state.tutorial)spawnTutorialPackages();else for(let i=0;i<currentPhase().startMice;i++)spawnMouse();for(let i=0;i<3;i++)spawnFirefly();
+    state.mice=[];state.bats=[];state.rivals=[];state.fireflies=[];state.hootEchoes=[];state.edgeSignals=[];state.leafMotions=[];owl.carrying=null;setupBranches();setupBushes();setupGroundDetails();setupHootContexts(saved.hootContextIds||[]);setupStoryScene(saved.storyEventIds||[],saved.companions||[]);setupTutorial(saved.tutorialStepIds||[],saved.tutorialDeliveredIds||[]);setupMeadow(saved.meadow||{});setupFireflyQuest(saved.fireflyQuest||{});
+    if(state.tutorial)spawnTutorialPackages();else if(!state.meadow&&!state.fireflyQuest)for(let i=0;i<currentPhase().startMice;i++)spawnMouse();for(let i=0;i<3;i++)spawnFirefly();
     state.wave=1;state.waveRemaining=currentPhase().waveSize;state.mouseClock=.3;state.batClock=1.3;state.fireflyClock=.6;state.rivalClock=2.8;
-    const n=nest(),savedOwl=saved.owl,savedPerch=perchById(savedOwl?.perchId);owl.x=clamp(Number(savedOwl?.x)||n.x,owl.r,state.world.width-owl.r);owl.y=clamp(Number(savedOwl?.y)||n.y,playTop(),state.groundY-20*state.gameScale);owl.vx=0;owl.vy=0;owl.flightState='flying';owl.perchId=null;owl.targetPerchId=null;
+    const n=nest(),savedOwl=saved.owl,savedPerch=perchById(savedOwl?.perchId);owl.x=clamp(Number(savedOwl?.x)||n.x,owl.r,state.world.width-owl.r);owl.y=clamp(Number(savedOwl?.y)||n.y,playTop(),state.groundY-20*state.gameScale);owl.vx=0;owl.vy=0;owl.flightState='flying';owl.perchId=null;owl.targetPerchId=null;owl.carrying=savedOwl?.carrying?{...savedOwl.carrying}:null;
     if(savedOwl?.flightState==='perched'&&savedPerch){const target=perches.target(savedPerch,owl.r);owl.x=target.x;owl.y=target.y;owl.flightState='perched';owl.perchId=savedPerch.id}state.lastSafePoint=saved.lastSafePoint||{x:n.x,y:n.y,perchId:null};camera.snap(owl);
     state.running=true;state.paused=false;state.ended=false;ui.start.classList.add('hidden');ui.end.classList.add('hidden');ui.pause.classList.add('hidden');ui.level.classList.add('hidden');ui.story.classList.add('hidden');
     updateHud();showToast('Spielstand geladen','#82e7ff',900);state.last=performance.now();if(!showStoryForCurrentLevel())requestAnimationFrame(loop);
@@ -758,11 +781,11 @@
     ui.score.textContent=state.score;
     ui.hearts.textContent='♥'.repeat(Math.max(0,state.hearts))+'♡'.repeat(Math.max(0,state.maxHearts-state.hearts));
     ui.hearts.style.color=state.hearts===1?'var(--red)':'#ff9b9b';
-    ui.combo.textContent=state.combo>1?`${state.combo}× Kombo · ${state.comboClock.toFixed(1)} s`:'Keine Kombo';
+    ui.combo.textContent=state.fireflyQuest?`${state.fireflyQuest.state==='arrived'?'Sicher angekommen':(state.fireflyQuest.state==='waiting'&&state.fireflyQuest.found?'Wartet auf Lumi':`Lichtspur ${state.fireflyQuest.revealedContextIds.size}/${state.fireflyQuest.points.length}`)}`:(state.meadow?(state.meadow.combo>0?`Route ${state.meadow.combo}× · ${state.meadow.comboClock.toFixed(1)} s`:`Route ${state.meadow.stage}/${state.meadow.source.requirements.routeStages}`):(state.combo>1?`${state.combo}× Kombo · ${state.comboClock.toFixed(1)} s`:'Keine Kombo'));
     ui.phase.textContent=phase.name;
     ui.delivered.textContent=state.phaseDelivered;
     ui.target.textContent=phase.target;
-    ui.targetUnit.textContent=phase.objectiveType==='bundles'?'Päckchen':'Futterpunkte';
+    ui.targetUnit.textContent=phase.objectiveType==='bundles'?'Päckchen':(phase.objectiveType==='natureFinds'?'Funde':(phase.objectiveType==='lightTrail'?'Spuren':'Futterpunkte'));
     ui.energy.style.width=clamp(state.energy/playerStats().maximumEnergy*100,0,100)+'%';
     ui.energy.style.background=state.energy<25?'linear-gradient(90deg,#ff6d68,#ff9a74)':'linear-gradient(90deg,#54c97b,#9ff0af)';
     const hootPercent=Math.round(state.hootCharge*100),hootReady=state.hootCharge>=.999,hootRadius=playerStats().hootRadius*state.gameScale;
@@ -780,10 +803,15 @@
     shell.dataset.tutorial=tutorialStep?.type||'';
     if(tutorialStep){const index=state.tutorial.steps.indexOf(tutorialStep)+1;ui.bonus.textContent=`✦ Lernen ${index}/${state.tutorial.steps.length} · ${tutorialStep.label}`;ui.bonus.style.color='#9fe7ff';setMobileMission(iconSvg(tutorialStep.icon),tutorialStep.text)}
     else if(dropMode)setMobileMission(`${iconSvg('drop')} · ${iconSvg('perch')}`,'Hier ablegen oder weiterfliegen.');
-    else if(owl.carrying) setMobileMission(`${iconSvg('mouse')} → ${iconSvg('nest')}`,'Beute im Fang. Bring sie zum Nest.');
+    else if(owl.carrying) setMobileMission(`${iconSvg('star')} → ${iconSvg('nest')}`,state.meadow?'Naturfund im Fang. Bring ihn zum Nest.':'Beute im Fang. Bring sie zum Nest.');
     else if(owl.flightState==='perched')setMobileMission(`${iconSvg('perch')} · ${Math.round(state.energy/playerStats().maximumEnergy*100)}%`,'Sicherer Ast. Lenken zum Abflug.');
     else if(owlInNest())setMobileMission(`${iconSvg('nest')} · ${iconSvg('heart')}`,'Nestschutz aktiv. Hier bist du sicher.');
-    else setMobileMission(phaseMissionIcons(phase),phase.mission);
+    else if(state.meadow&&state.meadow.stage<state.meadow.source.requirements.routeStages)setMobileMission(`${iconSvg('perch')} ${state.meadow.stage}/${state.meadow.source.requirements.routeStages}`,'Fliege durch das nächste leuchtende Wiesentor.');
+    else if(state.meadow&&state.meadow.deliveredFindIds.size<state.meadow.source.requirements.finds)setMobileMission(`${iconSvg('star')} ${state.meadow.deliveredFindIds.size}/${state.meadow.source.requirements.finds}`,'Sammle die markierten Naturfunde.');
+    else if(state.meadow&&!meadowSystem.complete(state.meadow))setMobileMission(`${iconSvg('mouse')} !`,'Wer wartet dort im Gras?');
+    else if(state.fireflyQuest&&!state.fireflyQuest.found)setMobileMission(`${iconSvg('hoot')} ${state.fireflyQuest.revealedContextIds.size}/${state.fireflyQuest.points.length}`,'Finde die nächste Spur und rufe Huuu.');
+    else if(state.fireflyQuest&&!state.fireflyQuest.arrived)setMobileMission(`${iconSvg('sun')} → ${iconSvg('heart')}`,state.fireflyQuest.state==='waiting'?`${state.fireflyQuest.lost.name} wartet. Fliege wieder näher.`:`Bleib nah bei ${state.fireflyQuest.lost.name}.`);
+    else setMobileMission(phaseMissionIcons(phase),state.meadow?'Kehre zum Nest zurück.':phase.mission);
   }
 
   function showToast(text,color='#fff',duration=900){
@@ -973,7 +1001,7 @@
     if(!state.running||state.paused)return;
     if(state.hootCharge<.999){showToast(`HUU LÄDT · ${Math.round(state.hootCharge*100)}%`,'#82e7ff',520);return}
     const tutorialStep=tutorialSystem.current(state.tutorial);if(tutorialStep&&tutorialStep.type!=='hoot'){showToast('HUUU KOMMT GLEICH','#b9dfe8',650);return}
-    const radius=stats.hootRadius*state.gameScale,contexts=hootSystem.candidates(state.hootContexts,owl,radius);
+    const radius=stats.hootRadius*state.gameScale;let contexts=hootSystem.candidates(state.hootContexts,owl,radius);if(state.fireflyQuest&&!state.fireflyQuest.arrived)contexts=contexts.filter(context=>context.type!=='calmFireflies');
     const batsInRange=state.bats.filter(enemy=>Math.hypot(enemy.x-owl.x,enemy.y-owl.y)<=radius+enemy.r),rivalsInRange=state.rivals.filter(enemy=>Math.hypot(enemy.x-owl.x,enemy.y-owl.y)<=radius+enemy.r);
     if(state.phaseIndex===0&&!contexts.length&&!batsInRange.length&&!rivalsInRange.length){
       state.rings.push({x:owl.x,y:owl.y,r:18*state.gameScale,life:.45,max:.45,color:'rgba(130,231,255,.45)',hoot:true,targetRadius:radius*.42,seed:1});
@@ -1011,7 +1039,7 @@
   function catchMouse(index){
     const m=state.mice[index];
     state.mice.splice(index,1);
-    owl.carrying={type:m.type,packageId:m.packageId,value:m.value,food:m.food,color:m.color,baseSpeed:m.speed/state.gameScale,baseR:m.r/state.gameScale};
+    owl.carrying={type:m.type,packageId:m.packageId,meadowFindId:m.meadowFindId,label:m.label,value:m.value,food:m.food,color:m.color,baseSpeed:m.speed/state.gameScale,baseR:m.r/state.gameScale};
     state.score+=Math.round(m.value*.35);
     state.combo++;state.bestCombo=Math.max(state.bestCombo,state.combo);state.comboClock=7;
     if(state.bonus?.kind==='combo'){state.bonus.progress=Math.max(state.bonus.progress,state.combo);if(state.bonus.progress>=state.bonus.target)state.bonus.complete=true;updateBonusHud()}
@@ -1023,11 +1051,17 @@
     sfx('catch');if(['frog','rabbit','beetle'].includes(m.type))sfx(m.type);
   }
 
+  function pickMeadowFind(find){
+    const picked=meadowSystem.pickFind(state.meadow,find.id);if(!picked)return false;
+    owl.carrying={type:picked.type,meadowFindId:picked.id,label:picked.label,value:picked.value,food:picked.food,color:{berry:'#d85f6b',seed:'#e6c982',beetleFind:'#73c6bd',herb:'#8fcf83'}[picked.type]||'#dfff8d',baseSpeed:0,baseR:15};
+    state.score+=Math.round(picked.value*.35);burst(picked.x,picked.y,owl.carrying.color,20,170);floater(picked.x,picked.y-28,'GEFUNDEN',owl.carrying.color,19);showToast(picked.label,owl.carrying.color,820);sfx('find');haptic([12,20,18]);updateHud();saveCheckpoint();return true;
+  }
+
   function deliverPrey(){
     if(!owl.carrying) return;
     const p=owl.carrying;
     const valid=!currentPhase().requiredType||p.type===currentPhase().requiredType;
-    const comboMult=1+Math.min(4,Math.max(0,state.combo-1))*.2;
+    const activeCombo=state.meadow?state.meadow.combo:state.combo,comboMult=1+Math.min(4,Math.max(0,activeCombo-1))*.2;
     const gain=Math.round(p.value*comboMult);
     const foodGain=Math.max(1,Math.round(p.food*(1+progress.nestUpgrade*.06)));
     updateBonusProgress(p.type);
@@ -1041,6 +1075,7 @@
       floater(n.x,n.y-82,'+1 UPGRADE','#ffd469',20);showToast('Goldtier · +1 Upgrade','#ffd469',1050);
     }
     if(p.type==='bundle'&&state.tutorial&&p.packageId){state.tutorial.deliveredPackageIds.add(p.packageId);const source=state.tutorial.packages.find(item=>item.id===p.packageId);if(source)source.delivered=true}
+    if(p.meadowFindId&&state.meadow)meadowSystem.deliverFind(state.meadow,p.meadowFindId);
     owl.carrying=null;
     if(p.type!=='gold')showToast(valid?'Im Nest abgeliefert':'Zusätzliche Beute',valid?'#7ee09b':'#ffd469',750);
     haptic([22,35,22,35,35]);
@@ -1052,6 +1087,8 @@
   function tryCompleteLevel(){
     if(state.phaseDelivered<currentPhase().target||state.phaseRewarded)return false;
     if(state.phaseIndex===0&&state.tutorial&&!state.tutorial.complete)return false;
+    if(state.meadow&&(!meadowSystem.complete(state.meadow)||!owlInNest()))return false;
+    if(state.fireflyQuest&&!fireflyQuestSystem.complete(state.fireflyQuest))return false;
     {
       if(!state.phaseRewarded){
         state.phaseRewarded=true;
@@ -1068,7 +1105,7 @@
 
   function showLevelComplete(){
     state.paused=true;setAudioFocus(false);ui.level.classList.remove('hidden');
-    ui.levelTitle.textContent=currentPhase().name;ui.levelFood.textContent=state.phaseDelivered;ui.levelUnit.textContent=currentPhase().objectiveType==='bundles'?'Päckchen':'Futter';ui.levelScore.textContent=state.score;
+    ui.levelTitle.textContent=currentPhase().name;ui.levelFood.textContent=state.phaseDelivered;ui.levelUnit.textContent=currentPhase().objectiveType==='bundles'?'Päckchen':(currentPhase().objectiveType==='natureFinds'?'Funde':(currentPhase().objectiveType==='lightTrail'?'Spuren':'Futter'));ui.levelScore.textContent=state.score;
     ui.levelBonus.textContent=state.lastBonusAwarded?'✓ +30 XP':'Nicht geschafft';ui.levelBonus.style.color=state.lastBonusAwarded?'#7ee09b':'#ff9b9b';ui.levelXp.textContent='+'+state.lastPhaseXp;
     haptic([25,35,45]);
   }
@@ -1087,9 +1124,9 @@
     state.time=Math.min(state.maxTime+phases[state.phaseIndex].timeBonus,state.time+phases[state.phaseIndex].timeBonus);
     state.maxTime=Math.max(state.maxTime,state.time);
     state.mice=[];state.bats=[];state.rivals=[];state.fireflies=[];owl.carrying=null;
-    setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();state.storyDialogueQueue=[];
-    for(let i=0;i<currentPhase().startMice;i++) spawnMouse();
-    for(let i=0;i<Math.min(2+state.phaseIndex,4);i++) spawnBat();
+    setupBranches();setupBushes();setupGroundDetails();setupHootContexts();setupStoryScene();setupTutorial();setupMeadow();setupFireflyQuest();state.storyDialogueQueue=[];
+    if(!state.meadow&&!state.fireflyQuest)for(let i=0;i<currentPhase().startMice;i++) spawnMouse();
+    if(!state.meadow&&!state.fireflyQuest)for(let i=0;i<Math.min(2+state.phaseIndex,4);i++) spawnBat();
     for(let i=0;i<Math.min(4+state.phaseIndex,6);i++) spawnFirefly();
     state.mouseClock=.25;state.batClock=1.1;state.fireflyClock=.5;state.rivalClock=2.8;state.wave=1;state.waveRemaining=currentPhase().waveSize;state.waveBreak=0;
     state.transitionQueued=false;
@@ -1109,6 +1146,7 @@
   function update(dt){
     const phase=currentPhase(),stats=playerStats();
     state.elapsed+=dt;state.phaseElapsed+=dt;updateAudio(dt);
+    meadowSystem.tick(state.meadow,dt);
     if(updateTutorialCinematic(dt))return;
     state.time=Math.max(0,state.time-dt*phase.timeDrainMultiplier);
     state.hootCharge=Math.min(1,state.hootCharge+stats.hootRechargeRate*dt);
@@ -1174,8 +1212,25 @@
     camera.update(owl,dt,{dive:owl.dive,companion:companionFocus});
     const n=nest(),atNest=owlInNest();
 
+    if(state.meadow){
+      const gate=meadowSystem.passGate(state.meadow,owl,state.gameScale);
+      if(gate){state.combo=state.meadow.combo;state.bestCombo=Math.max(state.bestCombo,state.meadow.combo);state.bonus.progress=Math.max(state.bonus.progress,state.meadow.stage);if(state.bonus.progress>=state.bonus.target)state.bonus.complete=true;updateBonusHud();burst(gate.x,gate.y,'#dfff8d',28,210);floater(gate.x,gate.y-34,`ROUTE ${gate.stage}`,'#dfff8d',20);sfx('route');saveCheckpoint()}
+      if(!owl.carrying){const find=meadowSystem.nearbyFind(state.meadow,owl,state.gameScale);if(find)pickMeadowFind(find)}
+      const mouse=meadowSystem.encounterMouse(state.meadow,owl,state.gameScale);
+      if(mouse){mouse.lines.forEach(line=>queueStoryBubble('marta',line,3600));queueStoryBubble('lumi','Dann zeigst du nach unten – und ich passe oben auf.',3200);sfx('mouseTalk');showToast(mouse.name,'#e6b58a',900);saveCheckpoint()}
+      if(atNest&&meadowSystem.complete(state.meadow))tryCompleteLevel();
+    }
+    if(state.fireflyQuest){
+      const questEvents=fireflyQuestSystem.update(state.fireflyQuest,{owl,completedHootIds:new Set(hootSystem.completedIds(state.hootContexts)),scale:state.gameScale},dt);
+      if(questEvents.revealed.length){state.phaseDelivered=state.fireflyQuest.revealedContextIds.size;state.hootCharge=Math.min(1,state.hootCharge+.48);questEvents.revealed.forEach(point=>{burst(point.x,point.y,'#dfff8d',18,145);floater(point.x,point.y-25,`SPUR ${state.phaseDelivered}`,'#dfff8d',18)});sfx('trailReveal');updateHud();saveCheckpoint()}
+      if(questEvents.found){queueStoryBubble('glow',`${state.fireflyQuest.lost.name} antwortet! Ganz langsam zu ihm.`,3400);showToast(`${state.fireflyQuest.lost.name} gefunden`,'#dfff8d',1000);sfx('fireflyFound');saveCheckpoint()}
+      if(questEvents.started||questEvents.resumed){showToast(questEvents.resumed?'Wieder zusammen':'Bleib in der Nähe','#9fe7b0',780);spatialTone(720,.14,'sine',.016,0)}
+      if(questEvents.stopped){state.bonus.failed=true;updateBonusHud();queueStoryBubble('glow',`${state.fireflyQuest.lost.name} wartet. Es geht nichts verloren.`,3000);showToast('FLIEG WIEDER NÄHER','#9fe7b0',900);sfx('fireflyWait');saveCheckpoint()}
+      if(questEvents.arrived){state.bonus.progress=1;if(!state.bonus.failed)state.bonus.complete=true;updateBonusHud();burst(state.fireflyQuest.field.x,state.fireflyQuest.field.y,'#dfff8d',48,220);queueStoryBubble('glow',`${state.fireflyQuest.lost.name} ist sicher. Das Kräuterfeld leuchtet wieder!`,3600);sfx('herbField');saveCheckpoint();tryCompleteLevel()}
+    }
+
     const slow=1;
-    if(!state.tutorial&&state.waveRemaining<=0){
+    if(!state.tutorial&&!state.meadow&&!state.fireflyQuest&&state.waveRemaining<=0){
       state.waveBreak-=dt;
       if(state.waveBreak<=0){
         state.wave++;state.waveRemaining=phase.waveSize+Math.min(3,state.wave-1);
@@ -1184,12 +1239,12 @@
       }
     }
     state.mouseClock-=dt;
-    if(!state.tutorial&&state.mouseClock<=0&&state.waveRemaining>0&&state.mice.length<phase.mouseCap){
+    if(!state.tutorial&&!state.meadow&&!state.fireflyQuest&&state.mouseClock<=0&&state.waveRemaining>0&&state.mice.length<phase.mouseCap){
       spawnMouse();state.waveRemaining--;state.mouseClock=rand(phase.mouseDelay[0],phase.mouseDelay[1]);
       if(state.waveRemaining===0)state.waveBreak=phase.waveBreak;
     }
     state.batClock-=dt;
-    if(state.batClock<=0&&state.bats.length<phase.batCap){
+    if(!state.meadow&&!state.fireflyQuest&&state.batClock<=0&&state.bats.length<phase.batCap){
       spawnBat();state.batClock=rand(phase.batDelay[0],phase.batDelay[1]);
     }
     state.fireflyClock-=dt;
@@ -1197,16 +1252,16 @@
       spawnFirefly();state.fireflyClock=rand(phase.fireflyDelay[0],phase.fireflyDelay[1]);
     }
     state.rivalClock-=dt;
-    if(phase.rivalCap>0&&state.rivalClock<=0&&state.rivals.length<phase.rivalCap){
+    if(!state.meadow&&!state.fireflyQuest&&phase.rivalCap>0&&state.rivalClock<=0&&state.rivals.length<phase.rivalCap){
       spawnRivalOwl();state.rivalClock=rand(phase.rivalDelay[0],phase.rivalDelay[1]);
     }
-    if((state.phaseIndex+1)%5===0&&!state.eliteSpawned&&state.phaseElapsed>=5){state.eliteSpawned=true;spawnRivalOwl(true)}
+    if(!state.meadow&&!state.fireflyQuest&&(state.phaseIndex+1)%5===0&&!state.eliteSpawned&&state.phaseElapsed>=5){state.eliteSpawned=true;spawnRivalOwl(true)}
 
     for(const m of state.mice){
       m.phase+=dt*(8+m.speed/45);m.glow+=dt*4;m.turn-=dt;m.behaviorClock=(m.behaviorClock||0)-dt;m.hidden=Math.max(0,(m.hidden||0)-dt);m.freeze=Math.max(0,(m.freeze||0)-dt);
       if(m.perched){const perch=perchById(m.perchId);if(perch){m.x=perch.x;m.y=perch.y-18*state.gameScale;continue}m.perched=false;m.perchId=null;m.y=state.groundY-22*state.gameScale;m.speed=70*state.gameScale}
       if(m.hidden>0)continue;
-      if(m.type==='berry'||m.type==='herb'||m.type==='bundle')continue;
+      if(m.type==='berry'||m.type==='herb'||m.type==='seed'||m.type==='beetleFind'||m.type==='bundle')continue;
       const owlDistance=Math.hypot(m.x-owl.x,m.y-owl.y),nearBush=state.bushes.find(bush=>Math.abs(bush.x-m.x)<bush.size*.75);
       if(m.behaviorClock<=0){
         m.behaviorClock=rand(2,4.5);
@@ -1584,8 +1639,9 @@
   }
 
   function drawDirectionGuide(){
-    const bounds=camera.bounds(0),target=owl.carrying?nest():state.world.goal;if(target.x>=bounds.left&&target.x<=bounds.right)return;
-    const right=target.x>camera.centerX,x=right?state.w-20:20,y=state.h*.48;ctx.save();ctx.translate(x,y);ctx.scale(right?1:-1,1);ctx.fillStyle=owl.carrying?'rgba(169,215,176,.94)':'rgba(242,213,138,.9)';ctx.strokeStyle='#0a1020';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(12,0);ctx.lineTo(-8,-10);ctx.lineTo(-3,0);ctx.lineTo(-8,10);ctx.closePath();ctx.fill();ctx.stroke();if(owl.carrying){ctx.beginPath();ctx.arc(-4,0,5,0,Math.PI);ctx.stroke()}ctx.restore();
+    const meadowGate=meadowSystem.activeGates(state.meadow)[0],meadowFind=state.meadow?.finds.find(item=>!item.picked),meadowMouse=state.meadow?.mouse&&!state.meadow.mouse.encountered?state.meadow.mouse:null;
+    const meadowTarget=meadowGate||meadowFind||meadowMouse||nest(),fireflyPoint=state.fireflyQuest?.points.find(point=>!point.revealed),fireflyTarget=fireflyPoint||(state.fireflyQuest?.found&&!state.fireflyQuest.arrived?(state.fireflyQuest.state==='waiting'?state.fireflyQuest.lost:state.fireflyQuest.field):state.fireflyQuest?.field),bounds=camera.bounds(0),target=owl.carrying?nest():(state.meadow?meadowTarget:(state.fireflyQuest?fireflyTarget:state.world.goal));if(!target||target.x>=bounds.left&&target.x<=bounds.right)return;
+    const right=target.x>camera.centerX,x=right?state.w-20:20,y=state.h*.48;ctx.save();ctx.translate(x,y);ctx.scale(right?1:-1,1);ctx.fillStyle=owl.carrying?'rgba(169,215,176,.94)':(state.meadow||state.fireflyQuest?'rgba(223,255,141,.92)':'rgba(242,213,138,.9)');ctx.strokeStyle='#0a1020';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(12,0);ctx.lineTo(-8,-10);ctx.lineTo(-3,0);ctx.lineTo(-8,10);ctx.closePath();ctx.fill();ctx.stroke();if(owl.carrying){ctx.beginPath();ctx.arc(-4,0,5,0,Math.PI);ctx.stroke()}ctx.restore();
   }
 
   function drawBush(bush){
@@ -1696,10 +1752,46 @@
       ctx.strokeStyle='#31512f';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,-4);ctx.quadraticCurveTo(5,-18,16,-19);ctx.stroke();ctx.fillStyle='#5f8f4d';ctx.beginPath();ctx.ellipse(11,-18,8,4,-.35,0,Math.PI*2);ctx.fill();
       ctx.fillStyle='#d85f6b';ctx.strokeStyle='#572d3a';ctx.lineWidth=2;for(const [x,y] of [[-8,0],[2,-5],[10,2],[-1,7]]){ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fill();ctx.stroke()}
       ctx.fillStyle='rgba(255,213,218,.65)';ctx.beginPath();ctx.arc(-10,-2,1.7,0,Math.PI*2);ctx.arc(0,-7,1.7,0,Math.PI*2);ctx.fill();
+    }else if(item.type==='seed'){
+      ctx.strokeStyle='#8c7140';ctx.lineWidth=3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-2,15);ctx.quadraticCurveTo(1,-4,0,-24);ctx.stroke();ctx.fillStyle='#e6c982';ctx.strokeStyle='#5b4728';ctx.lineWidth=1.5;for(let i=0;i<6;i++){const y=-20+i*6,side=i%2?-1:1;ctx.beginPath();ctx.ellipse(side*(5+i*.3),y,6,2.6,side*.45,0,Math.PI*2);ctx.fill();ctx.stroke()}
+    }else if(item.type==='beetleFind'){
+      const shell=ctx.createLinearGradient(-14,-10,14,12);shell.addColorStop(0,'#8fe1ce');shell.addColorStop(.45,'#5587bc');shell.addColorStop(1,'#785d9f');ctx.fillStyle=shell;ctx.strokeStyle='#233848';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(-16,7);ctx.quadraticCurveTo(-12,-16,1,-18);ctx.quadraticCurveTo(17,-8,14,13);ctx.quadraticCurveTo(0,7,-16,7);ctx.closePath();ctx.fill();ctx.stroke();ctx.strokeStyle='rgba(235,255,227,.55)';ctx.beginPath();ctx.moveTo(-10,1);ctx.quadraticCurveTo(0,-13,10,-7);ctx.stroke();
     }else{
       ctx.strokeStyle='#3e7544';ctx.lineWidth=4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(0,12);ctx.lineTo(0,-16);ctx.moveTo(0,-5);ctx.lineTo(-13,-13);ctx.moveTo(0,1);ctx.lineTo(14,-8);ctx.stroke();ctx.fillStyle='#8fcf83';for(const [x,y,a] of [[-14,-14,-.5],[15,-9,.45],[-7,-2,-.35],[8,-18,.4]]){ctx.beginPath();ctx.ellipse(x,y,9,4,a,0,Math.PI*2);ctx.fill()}ctx.fillStyle='#dfff8d';ctx.beginPath();ctx.arc(0,-18,3,0,Math.PI*2);ctx.fill();
     }
     ctx.restore();
+  }
+
+  function drawMeadowGate(gate){
+    const s=state.gameScale,active=state.meadow&&gate.stage===state.meadow.stage+1&&!gate.skipped&&!gate.completed,pulse=1+Math.sin(state.elapsed*3+gate.stage)*.045;ctx.save();ctx.translate(gate.x,gate.y);ctx.scale(s*pulse,s*pulse);ctx.globalAlpha=(gate.completed||gate.skipped) ? 0.22 : (active ? 0.94 : 0.3);ctx.lineCap='round';
+    const gradient=ctx.createLinearGradient(0,-58,0,58);gradient.addColorStop(0,'#e9f6b2');gradient.addColorStop(1,'#6eaa78');ctx.strokeStyle=gradient;ctx.lineWidth=active?7:4;ctx.shadowColor='#dfff8d';ctx.shadowBlur=active?18:4;ctx.beginPath();ctx.arc(0,0,gate.radius*.62,Math.PI*.18,Math.PI*.82,true);ctx.stroke();ctx.shadowBlur=0;
+    ctx.fillStyle=active?'#dfff8d':'#86a77d';for(const side of [-1,1])for(let i=0;i<4;i++){const a=(.25+i*.18)*Math.PI,x=Math.cos(a)*gate.radius*.62*side,y=-Math.sin(a)*gate.radius*.62;ctx.save();ctx.translate(x,y);ctx.rotate(side*(a-.2));ctx.beginPath();ctx.ellipse(0,0,10,4,0,0,Math.PI*2);ctx.fill();ctx.restore()}
+    if(active){ctx.fillStyle='#fff4b5';ctx.font='900 15px system-ui';ctx.textAlign='center';ctx.fillText(String(gate.stage),0,6)}ctx.restore();
+  }
+
+  function drawMeadowMouse(mouse){
+    const s=state.gameScale,bob=Math.sin(mouse.phase)*2*s;ctx.save();ctx.translate(mouse.x,mouse.y+bob);ctx.scale(s,s);ctx.fillStyle='rgba(7,12,10,.25)';ctx.beginPath();ctx.ellipse(0,23,42,10,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#3b2928';ctx.lineWidth=4;ctx.fillStyle='#a96f5d';ctx.beginPath();ctx.ellipse(0,0,33,39,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#d99a7e';for(const x of [-25,25]){ctx.beginPath();ctx.arc(x,-26,17,0,Math.PI*2);ctx.fill();ctx.stroke()}ctx.fillStyle='#c78970';ctx.beginPath();ctx.ellipse(0,-17,31,27,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#fff2dc';for(const x of [-11,11]){ctx.beginPath();ctx.arc(x,-19,6,0,Math.PI*2);ctx.fill()}ctx.fillStyle='#2b292b';for(const x of [-11,11]){ctx.beginPath();ctx.arc(x,-19,2.4,0,Math.PI*2);ctx.fill()}ctx.fillStyle='#e9a3a7';ctx.beginPath();ctx.moveTo(0,-9);ctx.lineTo(-6,-3);ctx.lineTo(6,-3);ctx.closePath();ctx.fill();ctx.strokeStyle='#f3d4ba';ctx.lineWidth=2;for(const y of [-5,2]){ctx.beginPath();ctx.moveTo(-5,y);ctx.lineTo(-44,y-5);ctx.moveTo(5,y);ctx.lineTo(44,y-5);ctx.stroke()}ctx.fillStyle='#e1b45f';ctx.strokeStyle='#65462b';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-31,3);ctx.quadraticCurveTo(0,18,31,3);ctx.lineTo(29,15);ctx.quadraticCurveTo(0,28,-29,15);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
+  }
+
+  function drawQuestGrass(){
+    if(!state.fireflyQuest)return;const bounds=camera.bounds(80),spacing=58*state.gameScale,start=Math.max(0,Math.floor(bounds.left/spacing)-1),end=Math.min(Math.ceil(state.world.width/spacing),Math.ceil(bounds.right/spacing)+1);ctx.save();ctx.lineCap='round';
+    for(let i=start;i<=end;i++){const x=i*spacing+Math.sin(i*4.17)*19*state.gameScale,height=(34+((i*37)%46))*state.gameScale,wave=Math.sin(state.elapsed*1.5+i)*4*state.gameScale;ctx.strokeStyle=i%3===0?'#537851':'#3d6847';ctx.lineWidth=(2.4+(i%3)*.45)*state.gameScale;ctx.beginPath();ctx.moveTo(x,state.groundY+5);ctx.quadraticCurveTo(x+wave*.3,state.groundY-height*.55,x+wave,state.groundY-height);ctx.stroke();if(i%4===0){ctx.fillStyle='#81976a';ctx.beginPath();ctx.ellipse(x+wave*.7,state.groundY-height*.72,8*state.gameScale,3.2*state.gameScale,.35,0,Math.PI*2);ctx.fill()}}
+    ctx.restore();
+  }
+
+  function drawFireflyTrail(){
+    const quest=state.fireflyQuest;if(!quest)return;ctx.save();ctx.lineCap='round';for(let index=0;index<quest.points.length;index++){const point=quest.points[index];if(!point.revealed)continue;const next=quest.points[index+1]||(quest.found?quest.lost:null);if(!next)continue;for(let dot=1;dot<=7;dot++){const t=dot/8,x=point.x+(next.x-point.x)*t,y=point.y+(next.y-point.y)*t+Math.sin(t*Math.PI)*18*state.gameScale,alpha=.22+dot*.065,pulse=2.2+Math.sin(state.elapsed*4+dot+index)*.7;ctx.globalAlpha=alpha;ctx.fillStyle='#dfff8d';ctx.shadowColor='#dfff8d';ctx.shadowBlur=9*state.gameScale;ctx.beginPath();ctx.arc(x,y,pulse*state.gameScale,0,Math.PI*2);ctx.fill()}}ctx.restore();
+  }
+
+  function drawHerbField(field){
+    const s=state.gameScale,quest=state.fireflyQuest;ctx.save();ctx.translate(field.x,field.y);ctx.fillStyle='rgba(24,51,35,.38)';ctx.beginPath();ctx.ellipse(0,14*s,field.radius*s,28*s,0,0,Math.PI*2);ctx.fill();
+    for(let i=0;i<15;i++){const offset=(i-7)*12*s,height=(28+(i*17)%30)*s,wave=Math.sin(state.elapsed*1.7+i)*3*s;ctx.strokeStyle=i%3===0?'#8fcf83':'#5e9765';ctx.lineWidth=3*s;ctx.beginPath();ctx.moveTo(offset,12*s);ctx.quadraticCurveTo(offset+wave,-height*.4,offset+wave,-height);ctx.stroke();ctx.fillStyle=i%2?'#d6b5ef':'#dfff8d';for(let petal=0;petal<4;petal++){const angle=petal*Math.PI*.5;ctx.beginPath();ctx.ellipse(offset+wave+Math.cos(angle)*4*s,-height+Math.sin(angle)*4*s,4*s,2*s,angle,0,Math.PI*2);ctx.fill()}}
+    ctx.textAlign='center';ctx.font=`800 ${12*s}px system-ui`;ctx.fillStyle='#e8f1c5';ctx.strokeStyle='rgba(10,20,14,.8)';ctx.lineWidth=4*s;ctx.strokeText(field.herb,0,30*s);ctx.fillText(field.herb,0,30*s);
+    if(quest.arrived)for(let i=0;i<7;i++){const a=i/7*Math.PI*2+state.elapsed*.25,r=(28+i%3*11)*s,x=Math.cos(a)*r,y=-25*s+Math.sin(a)*r*.45;ctx.fillStyle='#f3ffae';ctx.shadowColor='#dfff8d';ctx.shadowBlur=12*s;ctx.beginPath();ctx.arc(x,y,2.8*s,0,Math.PI*2);ctx.fill()}ctx.restore();
+  }
+
+  function drawLostFirefly(lost){
+    const s=state.gameScale,pulse=1+Math.sin(lost.phase)*.12;ctx.save();ctx.translate(lost.x,lost.y);ctx.globalAlpha=state.fireflyQuest.state==='waiting' ? 0.74 : 0.98;const glow=ctx.createRadialGradient(0,0,2*s,0,0,34*s);glow.addColorStop(0,'rgba(245,255,180,.82)');glow.addColorStop(1,'rgba(223,255,141,0)');ctx.fillStyle=glow;ctx.beginPath();ctx.arc(0,0,34*s*pulse,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f5ffb4';ctx.strokeStyle='#42523d';ctx.lineWidth=2*s;ctx.beginPath();ctx.ellipse(0,2*s,6*s,9*s,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#26362e';ctx.beginPath();ctx.arc(-2*s,-1*s,1*s,0,Math.PI*2);ctx.arc(2*s,-1*s,1*s,0,Math.PI*2);ctx.fill();for(const side of [-1,1]){ctx.strokeStyle='rgba(190,235,211,.75)';ctx.lineWidth=2*s;ctx.beginPath();ctx.ellipse(side*8*s,0,8*s,4*s,side*.3,0,Math.PI*2);ctx.stroke()}const count=lost.pattern==='triple'?3:(lost.pattern==='double'?2:1);for(let i=0;i<count;i++){ctx.fillStyle='#dfff8d';ctx.shadowColor='#dfff8d';ctx.shadowBlur=8*s;ctx.beginPath();ctx.arc((i-(count-1)/2)*8*s,12*s,2*s,0,Math.PI*2);ctx.fill()}ctx.restore();
   }
 
   function drawBundle(item){
@@ -1711,7 +1803,7 @@
     if(prey.type==='rabbit')drawRabbit(prey);
     else if(prey.type==='frog')drawFrog(prey);
     else if(prey.type==='beetle')drawBeetle(prey);
-    else if(prey.type==='berry'||prey.type==='herb')drawGatherable(prey);
+    else if(prey.type==='berry'||prey.type==='herb'||prey.type==='seed'||prey.type==='beetleFind')drawGatherable(prey);
     else if(prey.type==='bundle')drawBundle(prey);
     else drawMouse(prey);
     ctx.restore();
@@ -1823,6 +1915,8 @@
       const c=owl.carrying;ctx.save();ctx.translate(0,66);ctx.scale(.82,.82);ctx.fillStyle=c.color;ctx.strokeStyle='#151517';ctx.lineWidth=4;
       if(c.type==='bundle'){ctx.beginPath();ctx.roundRect(-18,-10,36,24,6);ctx.fill();ctx.stroke();ctx.strokeStyle='#f0d49a';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,-10);ctx.lineTo(0,14);ctx.moveTo(-18,1);ctx.lineTo(18,1);ctx.stroke()}
       else if(c.type==='berry'){for(const [x,y] of [[-8,0],[2,-5],[10,2],[-1,7]]){ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fill();ctx.stroke()}}
+      else if(c.type==='seed'){ctx.strokeStyle='#8c7140';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,13);ctx.lineTo(0,-14);ctx.stroke();ctx.fillStyle=c.color;for(let i=0;i<5;i++){ctx.beginPath();ctx.ellipse((i%2?-1:1)*6,-11+i*6,6,3,(i%2?-1:1)*.4,0,Math.PI*2);ctx.fill();ctx.stroke()}}
+      else if(c.type==='beetleFind'){ctx.beginPath();ctx.moveTo(-16,7);ctx.quadraticCurveTo(-10,-15,1,-17);ctx.quadraticCurveTo(16,-7,13,12);ctx.closePath();ctx.fill();ctx.stroke();ctx.strokeStyle='#d7fff1';ctx.beginPath();ctx.moveTo(-9,0);ctx.quadraticCurveTo(0,-12,9,-6);ctx.stroke()}
       else if(c.type==='herb'){ctx.strokeStyle='#3e7544';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,12);ctx.lineTo(0,-16);ctx.moveTo(0,-5);ctx.lineTo(-13,-13);ctx.moveTo(0,1);ctx.lineTo(14,-8);ctx.stroke();ctx.fillStyle=c.color;for(const [x,y,a] of [[-14,-14,-.5],[15,-9,.45],[-7,-2,-.35]]){ctx.beginPath();ctx.ellipse(x,y,9,4,a,0,Math.PI*2);ctx.fill()}}
       else if(c.type==='rabbit'){ctx.beginPath();ctx.ellipse(0,0,23,13,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.ellipse(-13,-15,4,13,-.25,0,Math.PI*2);ctx.ellipse(-4,-16,4,13,.1,0,Math.PI*2);ctx.fill();ctx.stroke()}
       else if(c.type==='frog'){ctx.beginPath();ctx.ellipse(0,1,20,12,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.arc(-9,-8,6,0,Math.PI*2);ctx.arc(9,-8,6,0,Math.PI*2);ctx.fill();ctx.stroke()}
@@ -1938,12 +2032,15 @@
     ctx.save();camera.apply(ctx);
     state.world.landmarks.filter(item=>camera.isVisible(item,180)).forEach(item=>parallax.drawLandmark(ctx,item,state.gameScale));
     state.groundDetails.filter(item=>camera.isVisible(item,40)).forEach(drawGroundDetail);
+    if(state.meadow){state.meadow.gates.filter(item=>camera.isVisible(item,110)).forEach(drawMeadowGate);state.meadow.finds.filter(item=>!item.picked&&camera.isVisible(item,70)).forEach(drawGatherable);if(state.meadow.mouse&&camera.isVisible(state.meadow.mouse,100))drawMeadowMouse(state.meadow.mouse)}
+    if(state.fireflyQuest){drawQuestGrass();drawFireflyTrail();if(camera.isVisible(state.fireflyQuest.field,180))drawHerbField(state.fireflyQuest.field)}
     state.hootContexts.filter(item=>camera.isVisible(item,80)).forEach(drawHootContext);
     drawStoryDebug();
     if(camera.isVisible(nest(),180)){drawStoryGuests();drawNest()}
     state.safePerches.filter(item=>camera.isVisible(item,160)).forEach(drawSafePerch);
     state.branches.filter(item=>camera.isVisible(item,220)).forEach(drawBranch);
     state.fireflies.filter(item=>camera.isVisible(item,50)).forEach(drawFirefly);
+    if(state.fireflyQuest?.found&&camera.isVisible(state.fireflyQuest.lost,70))drawLostFirefly(state.fireflyQuest.lost);
     state.mice.filter(item=>camera.isVisible(item,60)).forEach(drawPrey);
     state.bushes.filter(item=>camera.isVisible(item,80)).forEach(drawBush);
     state.bats.filter(item=>camera.isVisible(item,100)).forEach(drawBat);

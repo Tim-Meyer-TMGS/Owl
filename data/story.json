@@ -7,7 +7,8 @@
     "ava": { "name": "Ava", "symbol": "AV", "color": "#d9c7a4", "motif": [294, 392] },
     "bruno": { "name": "Bruno", "symbol": "BR", "color": "#c59a70", "motif": [185, 247] },
     "kauz": { "name": "Alter Kauz", "symbol": "AK", "color": "#b9c990", "motif": [220, 330] },
-    "glow": { "name": "Glühwürmchen", "symbol": "✦", "color": "#dfff8d", "motif": [740, 990] }
+    "glow": { "name": "Glühwürmchen", "symbol": "✦", "color": "#dfff8d", "motif": [740, 990] },
+    "marta": { "name": "Marta Maus", "symbol": "MM", "color": "#e6b58a", "motif": [245, 294, 220] }
   },
   "giftChoices": [
     { "id": "feather", "icon": "◜", "name": "weiche Feder" },
@@ -32,12 +33,12 @@
     {
       "id": "meadow", "number": "Kapitel 1", "title": "Die Wiesenprüfung", "startLevel": 2, "endLevel": 4,
       "lines": [
-        { "speaker": "lumi", "text": "Die Mondwiese. Mäuse, Käfer und Beeren – das wird leicht." },
-        { "speaker": "fynn", "text": "Das hast du vor drei Mäusen auch gesagt." }
+        { "speaker": "lumi", "text": "Die Mondwiese. Breite Bögen, klare Wege – das klingt machbar." },
+        { "speaker": "fynn", "text": "Ava sagt: Der beste Weg ist der, auf dem du sicher zurückkommst." }
       ],
       "beats": [
-        { "progress": 0.35, "speaker": "fynn", "text": "War das gerade ein gefährliches Tier?" },
-        { "progress": 0.7, "speaker": "lumi", "text": "Nein. Ein sehr schlecht gelaunter Frosch." }
+        { "progress": 0.35, "speaker": "fynn", "text": "Du musst nicht die engste Lücke nehmen. Such dir deinen Bogen." },
+        { "progress": 0.7, "speaker": "lumi", "text": "Route merken, Fund aufnehmen, sicher heim. Langsam verstehe ich die Prüfung." }
       ]
     },
     {

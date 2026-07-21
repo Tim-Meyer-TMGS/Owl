@@ -85,12 +85,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-02-heckenpfad",
       "order": 2,
-      "name": "Heckenpfad",
+      "name": "Der breite Mondpfad",
       "presentation": {
         "theme": "meadow",
-        "intro": "Zwischen engen Hecken werden die ersten Ausweichmanöver nötig.",
-        "mission": "Sammle 35 Futterpunkte im Nest.",
-        "shortMission": "35 Futterpunkte",
+        "intro": "Fynn zeigt Lumi die breiten Fluglinien über der Mondwiese.",
+        "mission": "Folge vier Routentoren und bringe drei Naturfunde ins Nest.",
+        "shortMission": "4 Tore · 3 Funde",
         "scenery": {
           "terrain": "rolling-hills",
           "trees": [
@@ -104,8 +104,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 35,
+        "type": "natureFinds",
+        "target": 3,
         "requiredPrey": null
       },
       "timeBonusSeconds": 19,
@@ -133,8 +133,8 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 4.13
       },
       "hazards": {
-        "branches": 2,
-        "maximumBats": 4,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.8,
           "max": 4.38
@@ -163,14 +163,14 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-03-bachufer",
       "order": 3,
-      "name": "Bachufer",
+      "name": "Zwei Wege im Tau",
       "presentation": {
-        "theme": "forest",
-        "intro": "Am Bachufer huscht die Beute zwischen Wasser und Wurzeln.",
-        "mission": "Sammle 40 Futterpunkte im Nest.",
-        "shortMission": "40 Futterpunkte",
+        "theme": "meadow",
+        "intro": "Zwischen Tauhalmen darf Lumi ihre sichere Route selbst wählen.",
+        "mission": "Wähle eine Fluglinie, folge fünf Toren und bringe drei Funde heim.",
+        "shortMission": "5 Tore · 3 Funde",
         "scenery": {
-          "terrain": "deep-forest",
+          "terrain": "rolling-hills",
           "trees": [
             "pine",
             "oak",
@@ -184,8 +184,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 40,
+        "type": "natureFinds",
+        "target": 3,
         "requiredPrey": null
       },
       "timeBonusSeconds": 19,
@@ -214,8 +214,8 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 4.05
       },
       "hazards": {
-        "branches": 2,
-        "maximumBats": 4,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.73,
           "max": 4.26
@@ -244,14 +244,14 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-04-mondwald",
       "order": 4,
-      "name": "Mondwald",
+      "name": "Prüfung im Vollmond",
       "presentation": {
-        "theme": "forest",
-        "intro": "Im Mondwald kreuzen mehr Fledermäuse und Äste deinen Weg.",
-        "mission": "Sammle 45 Futterpunkte im Nest.",
-        "shortMission": "45 Futterpunkte",
+        "theme": "meadow",
+        "intro": "Die längste Wiesenroute führt an einer ungewöhnlich großen Maus vorbei.",
+        "mission": "Fliege sechs Tore, finde vier Vorräte, triff Marta und kehre heim.",
+        "shortMission": "6 Tore · 4 Funde · Marta",
         "scenery": {
-          "terrain": "deep-forest",
+          "terrain": "rolling-hills",
           "trees": [
             "oak",
             "birch",
@@ -265,8 +265,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 45,
+        "type": "natureFinds",
+        "target": 4,
         "requiredPrey": null
       },
       "timeBonusSeconds": 20,
@@ -295,13 +295,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.98
       },
       "hazards": {
-        "branches": 3,
-        "maximumBats": 5,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.65,
           "max": 4.14
         },
-        "maximumRivalOwls": 1,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 6.8,
           "max": 9
@@ -325,12 +325,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-05-dornenhain",
       "order": 5,
-      "name": "Dornenhain",
+      "name": "Das erste Blinken",
       "presentation": {
         "theme": "forest",
-        "intro": "Der Dornenhain lässt nur schmale Flugwege offen.",
-        "mission": "Sammle 50 Futterpunkte im Nest.",
-        "shortMission": "50 Futterpunkte",
+        "intro": "Im Birkenhain endet die vertraute Lichtspur plötzlich im hohen Gras.",
+        "mission": "Enthülle vier Lichtspuren und begleite Funke zum Mondthymian.",
+        "shortMission": "4 Spuren · Funke",
         "scenery": {
           "terrain": "deep-forest",
           "trees": [
@@ -346,8 +346,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 50,
+        "type": "lightTrail",
+        "target": 4,
         "requiredPrey": null
       },
       "timeBonusSeconds": 21,
@@ -377,13 +377,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.9
       },
       "hazards": {
-        "branches": 3,
-        "maximumBats": 5,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.57,
           "max": 4.02
         },
-        "maximumRivalOwls": 1,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 6.6,
           "max": 8.8
@@ -407,12 +407,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-06-nebelmoor",
       "order": 6,
-      "name": "Nebelmoor",
+      "name": "Licht im Birkennebel",
       "presentation": {
         "theme": "mist",
-        "intro": "Im Nebelmoor verschwinden Beute und Hindernisse im Dunst.",
-        "mission": "Sammle 55 Futterpunkte im Nest.",
-        "shortMission": "55 Futterpunkte",
+        "intro": "Im flachen Nebel sind nur Flimmers langsam blinkende Zeichen zu sehen.",
+        "mission": "Enthülle vier Lichtspuren und begleite Flimmer zur Nebelmelisse.",
+        "shortMission": "4 Spuren · Flimmer",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -428,8 +428,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 55,
+        "type": "lightTrail",
+        "target": 4,
         "requiredPrey": null
       },
       "timeBonusSeconds": 21,
@@ -459,13 +459,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.83
       },
       "hazards": {
-        "branches": 3,
-        "maximumBats": 5,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.5,
           "max": 3.9
         },
-        "maximumRivalOwls": 1,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 6.4,
           "max": 8.6
@@ -489,12 +489,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-07-froschsumpf",
       "order": 7,
-      "name": "Froschsumpf",
+      "name": "Blinken im hohen Gras",
       "presentation": {
         "theme": "mist",
-        "intro": "Frösche springen unberechenbar durch den tiefen Sumpf.",
-        "mission": "Sammle 60 Futterpunkte im Nest.",
-        "shortMission": "60 Futterpunkte",
+        "intro": "Zwischen hohen Halmen antwortet Tupf mit drei kleinen Lichtzeichen.",
+        "mission": "Enthülle vier Lichtspuren und begleite Tupf zur Sumpfminze.",
+        "shortMission": "4 Spuren · Tupf",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -510,8 +510,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 60,
+        "type": "lightTrail",
+        "target": 4,
         "requiredPrey": null
       },
       "timeBonusSeconds": 22,
@@ -541,13 +541,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.75
       },
       "hazards": {
-        "branches": 4,
-        "maximumBats": 6,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.42,
           "max": 3.78
         },
-        "maximumRivalOwls": 1,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 6.2,
           "max": 8.4
@@ -571,12 +571,12 @@ window.OWL_LEVEL_DATA = {
     {
       "id": "level-08-kaferlichtung",
       "order": 8,
-      "name": "Käferlichtung",
+      "name": "Zurück zur Lichterfamilie",
       "presentation": {
         "theme": "mist",
-        "intro": "Kleine Käfer verstecken sich zwischen dichten Nebelbänken.",
-        "mission": "Sammle 65 Futterpunkte im Nest.",
-        "shortMission": "65 Futterpunkte",
+        "intro": "Minis Herzlicht führt zum letzten Duftkräuterfeld der Glühwürmchenfamilie.",
+        "mission": "Enthülle vier Lichtspuren und begleite Mini zum Sternlavendel.",
+        "shortMission": "4 Spuren · Mini",
         "scenery": {
           "terrain": "marsh",
           "trees": [
@@ -592,8 +592,8 @@ window.OWL_LEVEL_DATA = {
         }
       },
       "objective": {
-        "type": "foodPoints",
-        "target": 65,
+        "type": "lightTrail",
+        "target": 4,
         "requiredPrey": null
       },
       "timeBonusSeconds": 23,
@@ -623,13 +623,13 @@ window.OWL_LEVEL_DATA = {
         "breakSeconds": 3.68
       },
       "hazards": {
-        "branches": 4,
-        "maximumBats": 6,
+        "branches": 0,
+        "maximumBats": 0,
         "batSpawnDelaySeconds": {
           "min": 2.34,
           "max": 3.66
         },
-        "maximumRivalOwls": 1,
+        "maximumRivalOwls": 0,
         "rivalOwlSpawnDelaySeconds": {
           "min": 6,
           "max": 8.2

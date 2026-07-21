@@ -359,3 +359,101 @@ P1-Paket 6 baut den Prolog als vollständigen Vertical Slice neu: ruhige Nestsze
 ### Nächstes Arbeitspaket
 
 P1-Paket 7 baut die Wiesenprüfung in Level 2 bis 4 als sichere Routensuche mit Beeren, Samen, Käferfunden, Kräutern und einer humorvollen Mausbegegnung um.
+
+## 21. Juli 2026 – P1-Paket 7: Die Wiesenprüfung
+
+### Umgesetzt
+
+1. Datengetriebene Wiesenrouten
+   - `data/meadow-routes.json` beschreibt drei Szenen, 19 Tore und 10 feste Naturfunde.
+   - Mehrere Tore derselben Stufe bilden echte, gleichwertige Routenalternativen.
+   - Der Generator prüft Levelbezüge, IDs, Routenstufen, Fundarten und Abschlussanforderungen.
+
+2. Eigenständige Kapitelmechanik
+   - Level 2 bis 4 verwenden Routenserien statt Jagdserien.
+   - Beeren, Samen, gefundene Käferflügel und Kräuter werden ohne Sturzflug aufgenommen und einzeln heimgebracht.
+   - Zufallsbeute, Fledermäuse, Rivalen und schädliche Zufallshindernisse sind in diesen Leveln deaktiviert.
+   - Der Abschluss verlangt die vollständige Route, alle vorgesehenen Funde und die Rückkehr ins Nest.
+
+3. Marta Maus und audiovisuelle Führung
+   - Level 4 enthält Marta als große, gezeichnete Mausfigur mit humorvollem Zweizeilendialog.
+   - Marta besitzt ein eigenes Portrait, eine Figurenfarbe und ein dreistufiges Audiomotiv.
+   - Leuchtende Blätterbögen, Fundgrafiken, Richtungsanzeige und mobiles Symbol-HUD führen ohne lange Erklärtexte.
+   - Route, Fund und Begegnung verwenden getrennte Klangsignale.
+
+4. Persistenz
+   - Checkpoints speichern Torwahl, Fundzustände, Routenserie und Marta-Begegnung.
+   - Ein aktuell getragener Fund wird ebenfalls wiederhergestellt.
+   - Naturfunde können nicht versehentlich auf einem sicheren Ast verloren gehen.
+
+### Prüfungen
+
+- Build erfolgreich: 3 Wiesenszenen, 19 Tore und 10 Funde.
+- Automatischer Komplettlauf für Level 2 bis 4 jeweils erfolgreich.
+- Ergebnisse: 4/4, 5/5 und 6/6 Routenstufen; 3/3, 3/3 und 4/4 Lieferungen.
+- Marta wurde in Level 4 als verpflichtende Bedingung erkannt.
+- Alle Abschlüsse erfolgten erst nach Rückkehr ins Nest.
+- In allen drei Tests: null Zufallsbeute, null Fledermäuse und null Rivalen.
+- Handy-Querformat 740 × 400 und Tablet-Querformat 1366 × 900 visuell geprüft.
+- Temporäre Testinstrumentierung, Profile und Screenshots entfernt.
+
+### Bewusst noch offen
+
+- Die finalen Figuren sollen später von Canvas-Pfaden auf manuell erstellte SVG-Assets migriert werden.
+- Ein eigenes Zugänglichkeitsmenü für Routentor-Kontrast und Serienzeit ist noch nicht vorhanden.
+- Kapitel 2 benötigt nun sein eigenes Lichtspur- und Begleittempo-System.
+
+### Nächstes Arbeitspaket
+
+P1-Paket 8 baut Level 5 bis 8 als Glühwürmchen-Suche um: abschnittsweise Huuu-Lichtspur, langsame sichere Begleitung und Duftkräuterfeld als Belohnungsort.
+
+## 21. Juli 2026 – P1-Paket 8: Das verschwundene Glühwürmchen
+
+### Umgesetzt
+
+1. Datengetriebene Glühwürmchenquests
+   - `data/firefly-quests.json` definiert vier Quests und 16 vorhandene Huuu-Spurkontexte.
+   - Fundort, Blinkmuster, Kräuterfeld und sämtliche Begleitabstände sind pro Level konfigurierbar.
+   - Der Generator validiert Kontextverweise, Sequenzen, Figuren-IDs und Abstandslogik.
+
+2. Lichtspur und Huuu
+   - Ausschließlich der nächste offene Abschnitt reagiert auf den Ruf.
+   - Enthüllte Abschnitte zeichnen eine zusammenhängende Folge kleiner Lichtpunkte.
+   - Eine Enthüllung lädt 48 Prozent Huuu zurück, damit der nächste Abschnitt nach dem Orientierungsflug verfügbar ist.
+   - Calm-Fireflies-Kontexte werden während der Suche zurückgestellt und können keine verfrühte Familienmeldung mehr auslösen.
+
+3. Sichere Begleitung
+   - Funke, Flimmer, Tupf und Mini werden nach vier Spuren sichtbar und folgen deutlich langsamer als Lumi fliegt.
+   - Bei zu großem Abstand bleiben sie stehen; Position und Fortschritt bleiben erhalten.
+   - Erneute Nähe setzt die Begleitung weich fort.
+   - Ohne Trennung wird das Bonusziel „Behutsam begleiten“ erfüllt.
+
+4. Grafik, Audio und Abschluss
+   - Hohes animiertes Gras, Lichtpunkte, vier Blinkmuster und vier benannte Duftkräuterfelder ergänzen die Birkenwelten.
+   - Spur, Fund, Warten und Ankunft besitzen getrennte Klangsignale.
+   - Zufallsbeute, Fledermäuse, Rivalen, Elitegegner und Schadenshindernisse sind deaktiviert.
+   - Abschluss und Belohnung erfolgen ausschließlich nach gemeinsamer Ankunft im Kräuterfeld.
+
+5. Persistenz
+   - Checkpoints speichern enthüllte Spuren, Begleiterzustand, Position, Geschwindigkeit, Trennungen und Ankunft.
+   - Ältere V1-Checkpoints bleiben durch Fallbackwerte lesbar.
+
+### Prüfungen
+
+- Build erfolgreich: vier Quests und 16 Lichtspurabschnitte.
+- Level 5 bis 8 automatisch vollständig abgeschlossen: jeweils 4/4 Spuren, gefunden und angekommen.
+- Gezielter Trennungstest in Level 6: gestoppt, Position bewahrt, erneut angenähert und weitergeflogen.
+- Levelabschluss in allen vier Szenen erst nach Ankunft ausgelöst.
+- In allen Läufen null Zufallsbeute, null Fledermäuse und null Rivalen.
+- 740 × 400 und 1366 × 900 visuell geprüft.
+- Testinstrumentierung, Prüfbilder und Browserprofil entfernt.
+
+### Bewusst noch offen
+
+- Die Glühwürmchenfamilie verwendet weiterhin prozedurale Canvas-Figuren statt finaler SVG-Assets.
+- Ein optionaler Modus mit dauerhaft sichtbarer Lichtspur ist noch nicht im Zugänglichkeitsmenü vorhanden.
+- Das folgende Bruno-Kapitel benötigt eine eigene Renn-, Tor- und Windschattenlogik.
+
+### Nächstes Arbeitspaket
+
+P1-Paket 9 baut Level 9 bis 12 als freundschaftliches Bruno-Rennen mit handgesetzten Flugtoren, Windschatten und beweglichem Nachtfalter um.
